@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACIKY - Horario de Clases</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/black.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Header will be inserted by common.js -->
+    <div class="grid-container">
+        <main class="middle">
+            <section class="blog-intro">
+                <h2>Clases en Casa de Asia</h2>
+                <div>
+                    <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Día</th>
+                            <th>Hora</th>
+                            <th>Clase</th>
+                            <th>Instructor</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Día">Lunes</td>
+                            <td data-label="Hora">10:00 AM</td>
+                            <td data-label="Clase">Kundalini Yoga</td>
+                            <td data-label="Instructor">Ady Nam (Betty)</td>
+                            <td><button class="remind-btn">Recordar</button></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Día">Martes</td>
+                            <td data-label="Hora">10:00 AM</td>
+                            <td data-label="Clase">Kundalini Yoga</td>
+                            <td data-label="Instructor">Mahan Devi (Claudia)</td>
+                            <td><button class="remind-btn">Recordar</button></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Día">Miércoles</td>
+                            <td data-label="Hora">10:00 AM</td>
+                            <td data-label="Clase">Kundalini Yoga</td>
+                            <td data-label="Instructor">Hari Mehtab (Pedro)</td>
+                            <td><button class="remind-btn">Recordar</button></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Día">Jueves</td>
+                            <td data-label="Hora">10:00 AM</td>
+                            <td data-label="Clase">Kundalini Yoga</td>
+                            <td data-label="Instructor">Chand Krishan (Tania)</td>
+                            <td><button class="remind-btn">Recordar</button></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Día">Jueves</td>
+                            <td data-label="Hora">11:11 AM</td>
+                            <td data-label="Clase">Kundalini Yoga</td>
+                            <td data-label="Instructor">Chand Devpal (Raidel)</td>
+                            <td><button class="remind-btn">Recordar</button></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Día">Viernes</td>
+                            <td data-label="Hora">10:00 AM</td>
+                            <td data-label="Clase">Kundalini Yoga</td>
+                            <td data-label="Instructor">Narayan Nam (Elizabeth)</td>
+                            <td><button class="remind-btn">Recordar</button></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                
+            </section>
+            <section id="reminders-section" class="blog-intro">
+                <h3>Recordatorios guardados</h3>
+                <ul id="reminders-list"></ul>
+            </section>
+        </main>
+    <!-- Footer will be inserted by common.js -->
+    </div>
+    <script src="common.js"></script>
+        <script>
+            insertYogiQuote("La actitud de gratitud es la más alta forma de yoga.", "Yogi Bhajan");
+        </script>
+    <script>
+    // Highlight today's class in the schedule table
+    (function() {
+        const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        const today = new Date().getDay();
+        const todayName = days[today];
+        const rows = document.querySelectorAll('.schedule-table tbody tr');
+        rows.forEach(row => {
+            const dayCell = row.querySelector('td[data-label="Día"]');
+            if (dayCell && dayCell.textContent.trim() === todayName) {
+                row.querySelectorAll('td').forEach(td => td.classList.add('today'));
+            }
+        });
+    })();
+
+    // Add click event to 'Recordar' buttons
+    function renderReminders() {
+        const reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
+        const list = document.getElementById('reminders-list');
+        list.innerHTML = '';
+        if (reminders.length === 0) {
+            list.innerHTML = '<li>No hay recordatorios guardados.</li>';
+        } else {
+            reminders.forEach(function(reminder, idx) {
+                const li = document.createElement('li');
+                li.textContent = 'Recordatorio fijado para el ' + reminder.day + ' a las ' + reminder.hour;
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Eliminar';
+                removeBtn.className = 'remove-reminder-btn';
+                removeBtn.onclick = function() {
+                    let remindersArr = JSON.parse(localStorage.getItem('reminders') || '[]');
+                    remindersArr.splice(idx, 1);
+                    localStorage.setItem('reminders', JSON.stringify(remindersArr));
+                    renderReminders();
+                };
+                li.appendChild(removeBtn);
+                list.appendChild(li);
+            });
+        }
+    }
+    document.querySelectorAll('.remind-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const row = btn.closest('tr');
+            const day = row.querySelector('td[data-label="Día"]').textContent.trim();
+            const hour = row.querySelector('td[data-label="Hora"]')?.textContent.trim();
+            // Save reminder to localStorage
+            let reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
+            reminders.push({ day, hour });
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+            alert('Recordatorio fijado para el ' + day + ' a las ' + hour);
+            renderReminders();
+        });
+    });
+    // Render reminders on page load
+    renderReminders();
+    </script>
+</body>
+</html>

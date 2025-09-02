@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACIKY - Contacto</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/black.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Header will be inserted by common.js -->
+    <div class="main-quote-wrapper">
+    <main>
+    <section class="blog-intro">
+            <h2>Contacto</h2>
+            <form class="contact-form" autocomplete="on">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Mensaje:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+
+                <button type="submit">Enviar</button>
+            </form>
+    </section>
+    </main>
+    <!-- Footer will be inserted by common.js -->
+    </div>
+    <script src="common.js"></script>
+    <script>
+        insertYogiQuote("La comunicación es el puente entre dos almas.", "Yogi Bhajan");
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('¡Gracias por contactarnos! Pronto responderemos a tu mensaje.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postura de Yoga</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/black.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Header will be inserted by common.js -->
+    <div class="main-quote-wrapper">
+    <main>
+        <section id="pose-detail">
+            <h2 id="pose-name">Postura</h2>
+            <img id="pose-img" src="" alt="Postura de Yoga" style="max-width:350px;display:block;margin:1.5em auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.13);">
+            <p id="pose-desc"></p>
+            <a href="#" id="back-to-gallery">&larr; Volver a la galería</a>
+        </section>
+    </main>
+    </div>
+    <footer>
+        <!-- Footer will be inserted by common.js -->
+    </footer>
+    <script src="common.js"></script>
+    <script>
+    // Parse query string and display pose info
+    function getQueryParam(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name) || '';
+    }
+    const src = decodeURIComponent(getQueryParam('src'));
+    const name = decodeURIComponent(getQueryParam('name'));
+    const desc = decodeURIComponent(getQueryParam('desc'));
+    document.getElementById('pose-img').src = src;
+    document.getElementById('pose-img').alt = name;
+    document.getElementById('pose-name').textContent = name;
+    document.getElementById('pose-desc').textContent = desc;
+
+    // Back link closes tab or goes back
+    document.getElementById('back-to-gallery').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (window.opener) {
+            window.close();
+        } else {
+            window.history.back();
+        }
+    });
+    </script>
+</body>
+</html>
