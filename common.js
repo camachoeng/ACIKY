@@ -22,8 +22,13 @@ function insertYogiQuote(phrase, author) {
 document.addEventListener('DOMContentLoaded', function() {
     // Header
     const header = document.createElement('header');
-    header.innerHTML = `
-        <h1>ACIKY - Yoga para Todos</h1>
+    header.innerHTML = `<h1>ACIKY - Yoga para Todos</h1>`;
+    document.body.insertBefore(header, document.body.firstChild);
+
+    // Nav below header, inside a scrollable div
+    const navScroll = document.createElement('div');
+    navScroll.className = 'nav-scroll';
+    navScroll.innerHTML = `
         <nav>
             <ul>
                 <li><a href="index.html">Inicio</a></li>
@@ -36,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </ul>
         </nav>
     `;
-    document.body.insertBefore(header, document.body.firstChild);
+    header.insertAdjacentElement('afterend', navScroll);
 
     // Footer
     const footer = document.createElement('footer');

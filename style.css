@@ -1,6 +1,5 @@
 * {
     margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
@@ -435,16 +434,6 @@
     font-size: 0.95em;
     color: #888;
 }
-/* Main and floating Yogi Bhajan quote */
-.grid-container {
-    display:grid;
-    grid-template-areas: 
-    'header header header header header header' 
-    'left middle middle middle middle right'
-    'left middle middle middle middle right'
-    'left middle middle middle middle right' 
-    'footer footer footer footer footer footer';
-}
 
 #reminders-section ul {
     list-style: none;
@@ -582,9 +571,11 @@ body {
     margin: 0;
     padding: 0;
     color: #292a25;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 header {
-    grid-area: header;
     background: rgba(41, 42, 37, 0.9);
     background-image: url('images/logo_aciky2.png');
     background-size: contain;
@@ -593,10 +584,9 @@ header {
     color: #fff;
     padding: 1rem 0;
     display: flex;
-    align-items: center;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 1.5rem;
 }
 header h1 {
     background: none;
@@ -605,6 +595,14 @@ header h1 {
     font-weight: bold;
     text-shadow: 1px 1px 4px #000;
     text-align: left;
+    margin-left: 0.5rem;
+    flex: 0 1 auto;
+}
+
+.nav-scroll {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
 }
 nav ul {
     background: none;
@@ -631,6 +629,13 @@ nav ul li:hover {
     transition: background 0.2s;
 }
 
+.nav-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    background-color: rgba(41, 42, 37, 0.9);
+}
+
 nav a {
     color: #fff !important;
     text-decoration: none;
@@ -644,27 +649,7 @@ main {
     padding: 2rem;
     margin: 2rem auto;
     box-sizing: border-box;
-}
-
-.left,
-.middle,
-.right {
-  padding: 10px;
-}
-
-/* Style the left column */
-.left {
-  grid-area: left;
-}
-
-/* Style the middle column */
-.middle {
-  grid-area: middle;
-}
-
-/* Style the right column */
-.right {
-  grid-area: right;
+    flex: 1 1 auto;
 }
 
 section {
@@ -675,10 +660,10 @@ section {
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 footer {
-    grid-area: footer;
     background: rgba(41, 42, 37, 0.9);
     color: #fff;
     text-align: center;
     padding: 1rem 0;
+    margin-top: auto;
 }
 
