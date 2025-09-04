@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, copilot/fix-f583813d-f540-4f84-bb42-45a2ba3a11d1 ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
