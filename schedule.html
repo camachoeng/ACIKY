@@ -90,6 +90,7 @@
         rows.forEach(row => {
             const dayCell = row.querySelector('td[data-label="Día"]');
             if (dayCell && dayCell.textContent.trim() === todayName) {
+                row.classList.add('today');
                 row.querySelectorAll('td').forEach(td => td.classList.add('today'));
             }
         });

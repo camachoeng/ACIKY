@@ -17,6 +17,9 @@
             <a href="#" id="back-to-gallery">&larr; Volver a la galería</a>
         </section>
     </main>
+    <footer>
+        <!-- Footer will be inserted by common.js -->
+    </footer>
     <script src="common.js"></script>
     <script>
     // Parse query string and display pose info
@@ -27,14 +30,38 @@
     const src = decodeURIComponent(getQueryParam('src'));
     const name = decodeURIComponent(getQueryParam('name'));
     const desc = decodeURIComponent(getQueryParam('desc'));
-    document.getElementById('pose-img').src = src;
-    document.getElementById('pose-img').alt = name;
+    // If src contains commas, show all images
+    const poseImg = document.getElementById('pose-img');
+    if (src.includes(',')) {
+        const srcs = src.split(',');
+        const container = document.createElement('div');
+        container.id = 'pose-imgs';
+        container.style.display = 'flex';
+        container.style.flexWrap = 'wrap';
+        container.style.justifyContent = 'center';
+        container.style.gap = '1em';
+        srcs.forEach(s => {
+            const img = document.createElement('img');
+            img.src = s.trim();
+            img.alt = name;
+            img.style.maxWidth = '150px';
+            img.style.margin = '0.5em';
+            img.style.borderRadius = '12px';
+            img.style.boxShadow = '0 2px 12px rgba(0,0,0,0.13)';
+            container.appendChild(img);
+        });
+        poseImg.replaceWith(container);
+    } else {
+        poseImg.src = src;
+        poseImg.alt = name;
+    }
     document.getElementById('pose-name').textContent = name;
     document.getElementById('pose-desc').textContent = desc;
 
     // Back link closes tab or goes back
     document.getElementById('back-to-gallery').addEventListener('click', function(e) {
         e.preventDefault();
+        document.activeElement.blur(); // Remove focus from button
         if (window.opener) {
             window.close();
         } else {

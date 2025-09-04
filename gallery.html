@@ -191,10 +191,20 @@
     // Gallery image click: open pose.html with info in query string
     document.querySelectorAll('.gallery-img').forEach(function(img) {
         img.addEventListener('click', function() {
-            const src = encodeURIComponent(img.getAttribute('src'));
-            const name = encodeURIComponent(img.getAttribute('data-name'));
-            const desc = encodeURIComponent(img.getAttribute('data-desc'));
-            window.open(`pose.html?src=${src}&name=${name}&desc=${desc}`, '_blank');
+            let src, name, desc;
+            // If this image is inside a multi-img-container, send all images
+            const multiContainer = img.closest('.multi-img-container');
+            if (multiContainer) {
+                const imgs = multiContainer.querySelectorAll('img');
+                src = Array.from(imgs).map(i => i.getAttribute('src')).join(',');
+                name = encodeURIComponent(img.getAttribute('data-name'));
+                desc = encodeURIComponent(img.getAttribute('data-desc'));
+            } else {
+                src = img.getAttribute('src');
+                name = encodeURIComponent(img.getAttribute('data-name'));
+                desc = encodeURIComponent(img.getAttribute('data-desc'));
+            }
+            window.open(`pose.html?src=${encodeURIComponent(src)}&name=${name}&desc=${desc}`, '_blank');
         });
     });
     </script>

@@ -10,7 +10,7 @@
 <body>
     <!-- Header will be inserted by common.js -->
     <main>
-    <section class="blog-intro">
+        <section class="blog-intro">
             <h2>Contacto</h2>
             <form class="contact-form" autocomplete="on">
                 <label for="name">Nombre:</label>
@@ -24,17 +24,17 @@
 
                 <button type="submit">Enviar</button>
             </form>
-    </section>
+        </section>
     </main>
     <!-- Footer will be inserted by common.js -->
-    <script src="common.js"></script>
-    <script>
+</body>
+<script src="common.js"></script>
+<script>
         insertYogiQuote("La comunicación es el puente entre dos almas.", "Yogi Bhajan");
         document.querySelector('.contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('¡Gracias por contactarnos! Pronto responderemos a tu mensaje.');
             this.reset();
         });
-    </script>
-</body>
+</script>
 </html>
