@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="testimonials.html">Testimonios</a></li>
                 <li><a href="#about">Acerca de</a></li>
-                <li><a href="contact.html">Contacto</a></li>
             </ul>
         </nav>
     `;
