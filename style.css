@@ -619,17 +619,31 @@ body {
 }
 header {
     background: rgba(41, 42, 37, 0.9);
-    background-image: url('images/logo_aciky2.png');
-    background-size: contain;
+    background-size: 80px 80px;
     background-repeat: no-repeat;
-    background-position: center;
-    color: #fff;
-    padding: 1rem 0;
+    background-position: left center;
+    position: relative;
+    height: 80px;
+    padding-left: 80px;
+    align-items: center;
     display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    gap: 1.5rem;
+    color: #fff;
 }
+/* Clickable logo area in header */
+#header-logo-link {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px;
+    height: 80px;
+    z-index: 2;
+    cursor: pointer;
+    text-indent: -9999px;
+    background: transparent;
+    border: none;
+    display: block;
+}
+
 header h1 {
     background: none;
     padding: 10px;

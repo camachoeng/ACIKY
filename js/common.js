@@ -20,9 +20,13 @@ function insertYogiQuote(phrase, author) {
 // Dynamically insert header and footer for all pages
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Header
+        // Header
     const header = document.createElement('header');
-    header.innerHTML = `<h1>ACIKY - Yoga para Todos</h1>`;
+    header.style.backgroundImage = "url('images/logo_aciky2.png')";
+    header.innerHTML = `
+        <a id="header-logo-link" href="index.html" title="Inicio">Inicio</a>
+        <h1>ACIKY - Yoga para Todos</h1>
+    `;
     document.body.insertBefore(header, document.body.firstChild);
 
     // Nav below header, inside a scrollable div
