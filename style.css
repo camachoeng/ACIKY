@@ -1,3 +1,35 @@
+/* Modern social media links styling */
+/* Simple modern social media links styling with icons */
+.social-media {
+    display: flex;
+    gap: 1.2em;
+    justify-content: center;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.social-media a {
+    display: inline-flex;
+    align-items: center;
+    color: #4e8c36;
+    font-weight: 600;
+    font-size: 1.08em;
+    text-decoration: none;
+    transition: color 0.25s, text-shadow 0.25s;
+    border: none;
+    padding: 0.2em 0.7em;
+}
+.social-media a:hover {
+    color: #b2f037;
+    text-shadow: 0 2px 8px rgba(178, 240, 55, 0.13);
+}
+.social-media a .icon {
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.5em;
+    vertical-align: middle;
+    font-size: 1.2em;
+}
 .schedule-table tr.today {
     background: #ffbf66 !important;
     color: #222;

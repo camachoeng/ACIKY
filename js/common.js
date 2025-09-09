@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <li><a href="gallery.html">Galería</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="testimonials.html">Testimonios</a></li>
-                <li><a href="#about">Acerca de</a></li>
+                <li><a href="about.html">Sobre Nosotros</a></li>
             </ul>
         </nav>
     `;
