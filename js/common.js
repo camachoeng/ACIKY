@@ -29,6 +29,16 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.body.insertBefore(header, document.body.firstChild);
 
+    // Promo slider logic (homepage only)
+    if (document.getElementById('promo-slider')) {
+        const slides = document.querySelectorAll('.promo-slide');
+        let current = 0;
+        setInterval(() => {
+            slides[current].classList.remove('active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('active');
+        }, 3000);
+    }
     // Nav below header, inside a scrollable div
     const navScroll = document.createElement('div');
     navScroll.className = 'nav-scroll';

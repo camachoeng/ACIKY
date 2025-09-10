@@ -1,3 +1,88 @@
+/* --- Promo Slider Styles --- */
+
+
+@media (min-width: 900px) {
+    .promo-slider {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
+        height: 420px;
+        aspect-ratio: 16/5;
+        border-radius: 0;
+        margin: 0 auto 2em auto;
+        box-shadow: 0 2px 12px rgba(41,42,37,0.13);
+        overflow: visible;
+    }
+    .promo-images {
+        position: relative;
+        width: 100vw;
+        height: 420px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .promo-slide {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 420px;
+        object-fit: cover;
+        border-radius: 0;
+        box-shadow: 0 2px 12px rgba(41,42,37,0.09);
+        opacity: 0;
+        transition: opacity 0.7s ease;
+    }
+    .promo-slide.active {
+        opacity: 1;
+        z-index: 2;
+    }
+}
+.promo-slider {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    position: relative;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(41,42,37,0.13);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: calc(-50vw + 50%);
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 2em;
+    max-width: none;
+}
+.promo-images {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.promo-slide {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(41,42,37,0.13);
+    transition: opacity 0.7s ease;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(41,42,37,0.09);
+}
+.promo-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
 
 /* Simple modern social media links styling with icons */
 .social-media {
@@ -431,7 +516,7 @@ html, body {
 }
 
 .multi-img-caption {
-    padding: 2.45rem 2rem;
+        min-height: 220px;
     margin-bottom: -5rem;
     margin-left: -2.5rem;
     width: 180px;
@@ -607,7 +692,7 @@ html, body {
 }
 
 body {
-    background: linear-gradient(rgba(245,245,245,0.55), rgba(245,245,245,0.55)), url('images/screen.jpg') no-repeat center center fixed;
+    background: linear-gradient(rgba(245,245,245,0.55), rgba(245,245,245,0.55));
     background-size: cover;
     font-family: Arial, sans-serif;
     margin: 0;
