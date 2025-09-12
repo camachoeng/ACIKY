@@ -9,9 +9,9 @@
     position: absolute;
     left: 0;
     top: 100%;
-    background: #fff;
+    background: rgba(41, 42, 37, 0.9);
     box-shadow: 0 2px 12px rgba(41,42,37,0.13);
-    border-radius: 8px;
+    border-radius: 3px;
     min-width: 140px;
     padding: 0.5em 0;
     z-index: 100; 
@@ -54,15 +54,13 @@ nav ul {
 }
 .submenu li a {
     color: #4e8c36;
-    padding: 0.5em 1.2em;
+    padding: 0.4em 1.2em;
     display: block;
     text-decoration: none;
     font-size: 1em;
-    border-radius: 4px;
     transition: background 0.2s, color 0.2s;
 }
 .submenu li a:hover {
-    background: #eaffd0;
     color: #438b26;
 }
 /* Promo Button Styles - visually appealing and positioned as overlay */
@@ -868,17 +866,24 @@ nav ul {
 
 nav ul li {
     background: none;
-    display: inline-block;
-    padding: 0;
+    display: inline-block;    
 }
+
+@media (min-width: 601px) {
+    nav ul li {
+        padding: 0.5em 0.7em;
+    }
+}
+
 nav ul li:hover {
+    cursor: pointer;
     text-shadow:
         -1px -1px 0 #000000,
          1px -1px 0 #000000,
         -1px  1px 0 #000000,
          1px  1px 0 #000000;    
     background: #b2f037;
-    border-radius: 6px;
+    border-radius: 3px;
     transition: background 0.2s;
 }
 

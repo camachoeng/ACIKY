@@ -47,10 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <ul>
                 <li><a href="schedule.html">Clases</a></li>
                 <li class="has-submenu">
-                    <a href="gallery.html">Galería</a>
+                    <a>Galería</a>
                     <ul class="submenu">
-                        <li><a href="gallery.html#fotos">Fotos</a></li>
-                        <li><a href="gallery.html#videos">Videos</a></li>
+                        <li><a href="gallery.html">Posturas</a></li>
                     </ul>
                 </li>
                 <li><a href="blog.html">Blog</a></li>
