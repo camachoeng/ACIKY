@@ -39,6 +39,22 @@ document.addEventListener('DOMContentLoaded', function() {
             slides[current].classList.add('active');
         }, 3000);
     }
+
+    // Activities grid auto-scroll (homepage only)
+    const activitiesGrid = document.querySelector('.activities-grid');
+    if (activitiesGrid) {
+        let scrollAmount = 0;
+        let direction = 1;
+        const maxScroll = activitiesGrid.scrollWidth - activitiesGrid.clientWidth;
+        function autoScrollActivities() {
+            if (!activitiesGrid) return;
+            // If at end, reverse direction
+            if (activitiesGrid.scrollLeft >= maxScroll) direction = -1;
+            if (activitiesGrid.scrollLeft <= 0) direction = 1;
+            activitiesGrid.scrollLeft += direction * 1.2; // Adjust speed here
+        }
+        setInterval(autoScrollActivities, 16); // ~60fps
+    }
     // Nav below header, inside a scrollable div
     const navScroll = document.createElement('div');
     navScroll.className = 'nav-scroll';

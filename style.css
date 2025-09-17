@@ -1,3 +1,96 @@
+/* --- Activities Promo Grid Styles --- */
+.activities-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 2em;
+    justify-content: flex-start;
+    margin-left: calc(-50vw + 50%);
+    margin-right: 0;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    width: 100vw;
+    max-width: none;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1em;
+    scrollbar-width: none; /* Firefox */
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.activities-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.activity-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 140px;
+    min-width: 140px;
+    max-width: 180px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(41,42,37,0.09);
+    padding: 1em 0.5em 1em 0.5em;
+    transition: box-shadow 0.2s, transform 0.2s;
+    flex: 0 0 auto;
+}
+.activity-card:hover {
+    box-shadow: 0 6px 24px rgba(178, 240, 55, 0.18);
+    transform: translateY(-4px) scale(1.04);
+}
+.activity-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.activity-img {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 12px rgba(41,42,37,0.13);
+    margin-bottom: 1em;
+    border: 3px solid #b2f037;
+    background: #f9f9f6;
+    transition: box-shadow 0.2s, border 0.2s;
+}
+.activity-card:hover .activity-img {
+    box-shadow: 0 8px 32px rgba(178, 240, 55, 0.18);
+    border-color: #438b26;
+}
+.activity-title {
+    font-size: 1.08em;
+    font-weight: bold;
+    color: #4e8c36;
+    text-align: center;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    letter-spacing: 0.01em;
+}
+@media (min-width: 900px) {
+    .activities-grid {
+        gap: 3em;
+    }
+    .activity-card {
+        width: 180px;
+        min-width: 160px;
+        max-width: 220px;
+        padding: 1.2em 0.7em 1.2em 0.7em;
+    }
+    .activity-img {
+        width: 140px;
+        height: 140px;
+    }
+    .activity-title {
+        font-size: 1.18em;
+    }
+}
+/* --- End Activities Promo Grid Styles --- */
+
 /* Submenu styles: hidden by default, shown on .open */
 /* Submenu styles: hidden by default, shown on hover */
 /* Submenu styles: hidden by default, shown on hover */
@@ -64,14 +157,10 @@ nav ul {
     color: #438b26;
 }
 /* Promo Button Styles - visually appealing and positioned as overlay */
-.promo-slide.active {
-    position: relative;
-}
 .promo-btn {
     position: absolute;
     bottom: 2em;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 27%;
     background: #b2f037;
     color: #fff;
     padding: 0.8em 2em;
@@ -89,7 +178,7 @@ nav ul {
     background: #438b26;
     color: #fff;
     box-shadow: 0 4px 24px rgba(41,42,37,0.18);
-    transform: translateX(-50%) scale(1.07);
+    transform: scale(1.07);
 }
 .promo-img {
     width: 100%;
@@ -98,24 +187,15 @@ nav ul {
     display: block;
     border-radius: 0;
 }
-/* Promo Button Styles */
-.promo-btn {
-    transition: background 0.25s, color 0.25s, box-shadow 0.25s, transform 0.25s;
-}
-.promo-btn:hover {
-    background: #438b26;
-    color: #fff;
-    box-shadow: 0 4px 24px rgba(41,42,37,0.18);
-    transform: scale(1.07);
-}
 /* --- Promo Slider Styles --- */
 
 
 @media (min-width: 900px) {
+    .promo-btn {
+        left: 40%;
+    }
     .promo-slider {
         position: relative;
-        left: 50%;
-        transform: translateX(-50%);
         width: 100vw;
         height: 420px;
         aspect-ratio: 16/5;
@@ -443,6 +523,15 @@ html, body {
 
 /* --- End Testimonials Section Styles --- */
 /* --- Blog Section Styles --- */
+@media (min-width: 900px) {
+    .blog-intro {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        margin-right: 0;
+        border-radius: 0;
+    }
+}
+
 .blog-intro {
     background: linear-gradient(90deg, #f5f5f5 60%, #eaffd0 100%);
     border-radius: 10px;
