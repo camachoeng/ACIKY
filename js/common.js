@@ -71,6 +71,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(startAutoScroll, 1200);
             });
         }
+        // Touch drag scroll for activities grid and pause auto-scroll on interaction
+        if (grid) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            grid.addEventListener('touchstart', function(e) {
+                isDown = true;
+                startX = e.touches[0].pageX - grid.offsetLeft;
+                scrollLeft = grid.scrollLeft;
+                pauseAutoScroll();
+            });
+            grid.addEventListener('touchmove', function(e) {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.touches[0].pageX - grid.offsetLeft;
+                const walk = (startX - x); // drag direction
+                grid.scrollLeft = scrollLeft + walk;
+            }, { passive: false });
+            grid.addEventListener('touchend', function() {
+                isDown = false;
+                setTimeout(startAutoScroll, 1200);
+            });
+        }
 
     // Activities grid auto-scroll (homepage only)
     const activitiesGrid = document.querySelector('.activities-grid');

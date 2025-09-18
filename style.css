@@ -7,6 +7,14 @@
     min-height: 160px;
     display: block;
 }
+.scroll-left, .scroll-right {
+    /* ...existing styles... */
+}
+@media (max-width: 900px) {
+    .scroll-left, .scroll-right {
+        display: none !important;
+    }
+}
 
 .scroll-left, .scroll-right {
     width: 48px;
