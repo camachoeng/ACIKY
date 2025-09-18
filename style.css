@@ -1,4 +1,46 @@
 /* --- Activities Promo Grid Styles --- */
+/* Manual scroll controls wrapper for activities grid */
+.activities-scroll-controls {
+    position: relative;
+    width: 100vw;
+    max-width: none;
+    min-height: 160px;
+    display: block;
+}
+
+.scroll-left, .scroll-right {
+    width: 48px;
+    height: 48px;
+    background: #fff;
+    border: 2px solid #b2f037;
+    border-radius: 50%;
+    box-shadow: 0 2px 12px rgba(41,42,37,0.13);
+    color: #4e8c36;
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 105%;
+    transform: translateY(-50%);
+    z-index: 2;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.scroll-left {
+    left: 0.5em;
+}
+.scroll-right {
+    right: 0.5em;
+    margin-right: 0.8em;
+}
+.scroll-left:hover, .scroll-right:hover {
+    background: #b2f037;
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(178, 240, 55, 0.18);
+}
+
 .activities-grid {
     display: flex;
     flex-direction: row;

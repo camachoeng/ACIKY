@@ -1,3 +1,5 @@
+// Manual scroll for activities grid
+// Move manual scroll event listeners to main DOMContentLoaded block below
 // Insert a floating aside with a customizable quote and author
 function insertYogiQuote(phrase, author) {
     // Remove any existing quote aside
@@ -40,6 +42,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
+        // Manual scroll for activities grid (after all DOM insertions)
+        var leftBtn = document.querySelector('.scroll-left');
+        var rightBtn = document.querySelector('.scroll-right');
+        var grid = document.querySelector('.activities-grid');
+        var autoScrollInterval = null;
+        var autoScrollPaused = false;
+        function startAutoScroll() {
+            if (autoScrollInterval) clearInterval(autoScrollInterval);
+            autoScrollPaused = false;
+            autoScrollInterval = setInterval(autoScrollActivities, 16);
+        }
+        function pauseAutoScroll() {
+            if (autoScrollInterval) clearInterval(autoScrollInterval);
+            autoScrollPaused = true;
+        }
+        if (leftBtn && rightBtn && grid) {
+            leftBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                pauseAutoScroll();
+                grid.scrollBy({ left: -100, behavior: 'smooth' });
+                setTimeout(startAutoScroll, 1200);
+            });
+            rightBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                pauseAutoScroll();
+                grid.scrollBy({ left: 100, behavior: 'smooth' });
+                setTimeout(startAutoScroll, 1200);
+            });
+        }
+
     // Activities grid auto-scroll (homepage only)
     const activitiesGrid = document.querySelector('.activities-grid');
     if (activitiesGrid) {
@@ -47,13 +79,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let direction = 1;
         const maxScroll = activitiesGrid.scrollWidth - activitiesGrid.clientWidth;
         function autoScrollActivities() {
-            if (!activitiesGrid) return;
+            if (!activitiesGrid || autoScrollPaused) return;
             // If at end, reverse direction
             if (activitiesGrid.scrollLeft >= maxScroll) direction = -1;
             if (activitiesGrid.scrollLeft <= 0) direction = 1;
             activitiesGrid.scrollLeft += direction * 1.2; // Adjust speed here
         }
-        setInterval(autoScrollActivities, 16); // ~60fps
+        startAutoScroll();
     }
     // Nav below header, inside a scrollable div
     const navScroll = document.createElement('div');
