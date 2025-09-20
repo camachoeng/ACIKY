@@ -43,57 +43,99 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
         // Manual scroll for activities grid (after all DOM insertions)
-        var leftBtn = document.querySelector('.scroll-left');
-        var rightBtn = document.querySelector('.scroll-right');
-        var grid = document.querySelector('.activities-grid');
-        var autoScrollInterval = null;
-        var autoScrollPaused = false;
-        function startAutoScroll() {
-            if (autoScrollInterval) clearInterval(autoScrollInterval);
-            autoScrollPaused = false;
-            autoScrollInterval = setInterval(autoScrollActivities, 16);
+    var leftBtn = document.querySelector('.scroll-left');
+    var rightBtn = document.querySelector('.scroll-right');
+    var grid = document.querySelector('.activities-grid');
+    var autoScrollInterval = null;
+    var autoScrollPaused = false;
+    function startAutoScroll() {
+        if (autoScrollInterval) clearInterval(autoScrollInterval);
+        autoScrollPaused = false;
+        autoScrollInterval = setInterval(autoScrollActivities, 16);
+    }
+    function pauseAutoScroll() {
+        if (autoScrollInterval) clearInterval(autoScrollInterval);
+        autoScrollPaused = true;
+    }
+    if (leftBtn && rightBtn && grid) {
+        leftBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            pauseAutoScroll();
+            grid.scrollBy({ left: -100, behavior: 'smooth' });
+            setTimeout(startAutoScroll, 1200);
+        });
+        rightBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            pauseAutoScroll();
+            grid.scrollBy({ left: 100, behavior: 'smooth' });
+            setTimeout(startAutoScroll, 1200);
+        });
+    }
+    // Attach universal drag logic using pointer events (Owl-like polish)
+    if (grid) {
+        let isDragging = false;
+        let startX = 0;
+        let scrollLeft = 0;
+        let lastX = 0;
+        let velocity = 0;
+        let inertiaFrame;
+        let dragStarted = false;
+    const dragThreshold = 4; // easier to start drag
+    const maxVelocity = 14; // even lower max velocity
+    const friction = 0.88; // softer stop
+    const minVelocity = 0.12; // minimum for inertia
+        // Add grab cursor
+        grid.style.cursor = 'grab';
+        grid.addEventListener('pointerdown', function(e) {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            isDragging = true;
+            dragStarted = false;
+            grid.setPointerCapture(e.pointerId);
+            grid.classList.add('dragging');
+            grid.style.cursor = 'grabbing';
+            startX = e.clientX;
+            lastX = startX;
+            scrollLeft = grid.scrollLeft;
+            velocity = 0;
+            if (inertiaFrame) cancelAnimationFrame(inertiaFrame);
+            pauseAutoScroll();
+            document.body.style.userSelect = 'none';
+        });
+        grid.addEventListener('pointermove', function(e) {
+            if (!isDragging) return;
+            const x = e.clientX;
+            const moved = Math.abs(x - startX);
+            if (!dragStarted && moved > dragThreshold) dragStarted = true;
+            if (!dragStarted) return;
+            const walk = (startX - x) / 2.2;
+            grid.scrollLeft = scrollLeft + walk;
+            velocity = Math.max(-maxVelocity, Math.min(maxVelocity, lastX - x));
+            lastX = x;
+        });
+        function endDrag(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            dragStarted = false;
+            grid.classList.remove('dragging');
+            grid.style.cursor = 'grab';
+            document.body.style.userSelect = '';
+            function inertia() {
+                if (Math.abs(velocity) > minVelocity) {
+                    grid.scrollLeft += velocity;
+                    velocity *= friction;
+                    inertiaFrame = requestAnimationFrame(inertia);
+                } else {
+                    startAutoScroll();
+                }
+            }
+            inertia();
         }
-        function pauseAutoScroll() {
-            if (autoScrollInterval) clearInterval(autoScrollInterval);
-            autoScrollPaused = true;
-        }
-        if (leftBtn && rightBtn && grid) {
-            leftBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                pauseAutoScroll();
-                grid.scrollBy({ left: -100, behavior: 'smooth' });
-                setTimeout(startAutoScroll, 1200);
-            });
-            rightBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                pauseAutoScroll();
-                grid.scrollBy({ left: 100, behavior: 'smooth' });
-                setTimeout(startAutoScroll, 1200);
-            });
-        }
-        // Touch drag scroll for activities grid and pause auto-scroll on interaction
-        if (grid) {
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-            grid.addEventListener('touchstart', function(e) {
-                isDown = true;
-                startX = e.touches[0].pageX - grid.offsetLeft;
-                scrollLeft = grid.scrollLeft;
-                pauseAutoScroll();
-            });
-            grid.addEventListener('touchmove', function(e) {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.touches[0].pageX - grid.offsetLeft;
-                const walk = (startX - x); // drag direction
-                grid.scrollLeft = scrollLeft + walk;
-            }, { passive: false });
-            grid.addEventListener('touchend', function() {
-                isDown = false;
-                setTimeout(startAutoScroll, 1200);
-            });
-        }
+        grid.addEventListener('pointerup', endDrag);
+        grid.addEventListener('pointercancel', endDrag);
+        grid.addEventListener('pointerleave', function(e) {
+            if (isDragging) endDrag(e);
+        });
+    }
 
     // Activities grid auto-scroll (homepage only)
     const activitiesGrid = document.querySelector('.activities-grid');
@@ -132,37 +174,37 @@ document.addEventListener('DOMContentLoaded', function() {
     header.insertAdjacentElement('afterend', navScroll);
 
         // Mobile-first submenu toggle
-        function setupMobileSubmenuToggle() {
-            // Only enable on touch devices or small screens
-            const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches || window.innerWidth < 900;
-            if (!isMobile) return;
-            document.querySelectorAll('.has-submenu > a').forEach(function(parentLink) {
-                parentLink.addEventListener('click', function(e) {
-                    const parentLi = parentLink.closest('.has-submenu');
-                    if (parentLi) {
-                        // Prevent navigation if submenu exists
-                        if (parentLink.getAttribute('href') === '#' || parentLi.querySelector('.submenu')) {
-                            e.preventDefault();
-                        }
-                        // Toggle .open class
-                        parentLi.classList.toggle('open');
-                        // Close other open submenus
-                        document.querySelectorAll('.has-submenu.open').forEach(function(li) {
-                            if (li !== parentLi) li.classList.remove('open');
-                        });
+    function setupMobileSubmenuToggle() {
+        // Only enable on touch devices or small screens
+        const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches || window.innerWidth < 900;
+        if (!isMobile) return;
+        document.querySelectorAll('.has-submenu > a').forEach(function(parentLink) {
+            parentLink.addEventListener('click', function(e) {
+                const parentLi = parentLink.closest('.has-submenu');
+                if (parentLi) {
+                    // Prevent navigation if submenu exists
+                    if (parentLink.getAttribute('href') === '#' || parentLi.querySelector('.submenu')) {
+                        e.preventDefault();
                     }
-                });
-            });
-            // Close submenu when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.has-submenu')) {
+                    // Toggle .open class
+                    parentLi.classList.toggle('open');
+                    // Close other open submenus
                     document.querySelectorAll('.has-submenu.open').forEach(function(li) {
-                        li.classList.remove('open');
+                        if (li !== parentLi) li.classList.remove('open');
                     });
                 }
             });
-        }
-        setupMobileSubmenuToggle();
+        });
+        // Close submenu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.has-submenu')) {
+                document.querySelectorAll('.has-submenu.open').forEach(function(li) {
+                    li.classList.remove('open');
+                });
+            }
+        });
+    }
+    setupMobileSubmenuToggle();
 
     // Footer
     const footer = document.createElement('footer');
