@@ -65,6 +65,9 @@
     touch-action: pan-x;
     padding-bottom: 1em;
     scrollbar-width: none; /* Firefox */
+    /* Mobile scroll snapping - one card at a time */
+    scroll-snap-type: x mandatory;
+    scroll-padding: 2rem;
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 .activities-grid::-webkit-scrollbar {
@@ -84,6 +87,8 @@
     padding: 1em 0.5em 1em 0.5em;
     transition: box-shadow 0.2s, transform 0.2s;
     flex: 0 0 auto;
+    /* Mobile scroll snap target */
+    scroll-snap-align: center;
 }
 .activity-card:hover {
     box-shadow: 0 6px 24px rgba(178, 240, 55, 0.18);

@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function startAutoScroll() {
         if (autoScrollInterval) clearInterval(autoScrollInterval);
         autoScrollPaused = false;
-        autoScrollInterval = setInterval(autoScrollActivities, 16);
+        // Slower interval for card-by-card scrolling (every 3 seconds)
+        autoScrollInterval = setInterval(autoScrollActivities, 3000);
     }
     function pauseAutoScroll() {
         if (autoScrollInterval) clearInterval(autoScrollInterval);
@@ -61,95 +62,189 @@ document.addEventListener('DOMContentLoaded', function() {
         leftBtn.addEventListener('click', function(e) {
             e.preventDefault();
             pauseAutoScroll();
-            grid.scrollBy({ left: -100, behavior: 'smooth' });
-            setTimeout(startAutoScroll, 1200);
+            // Scroll by one card width
+            const cardWidth = grid.querySelector('.activity-card')?.offsetWidth || 180;
+            const gap = parseInt(getComputedStyle(grid).gap) || 32;
+            grid.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
+            setTimeout(startAutoScroll, 2000);
         });
         rightBtn.addEventListener('click', function(e) {
             e.preventDefault();
             pauseAutoScroll();
-            grid.scrollBy({ left: 100, behavior: 'smooth' });
-            setTimeout(startAutoScroll, 1200);
+            // Scroll by one card width
+            const cardWidth = grid.querySelector('.activity-card')?.offsetWidth || 180;
+            const gap = parseInt(getComputedStyle(grid).gap) || 32;
+            grid.scrollBy({ left: cardWidth + gap, behavior: 'smooth' });
+            setTimeout(startAutoScroll, 2000);
         });
     }
-    // Attach universal drag logic using pointer events (Owl-like polish)
+    // Attach drag logic - desktop gets custom drag, mobile gets native scroll snapping
     if (grid) {
-        let isDragging = false;
-        let startX = 0;
-        let scrollLeft = 0;
-        let lastX = 0;
-        let velocity = 0;
-        let inertiaFrame;
-        let dragStarted = false;
-    const dragThreshold = 4; // easier to start drag
-    const maxVelocity = 14; // even lower max velocity
-    const friction = 0.88; // softer stop
-    const minVelocity = 0.12; // minimum for inertia
-        // Add grab cursor
-        grid.style.cursor = 'grab';
-        grid.addEventListener('pointerdown', function(e) {
-            if (e.pointerType === 'mouse' && e.button !== 0) return;
-            isDragging = true;
-            dragStarted = false;
-            grid.setPointerCapture(e.pointerId);
-            grid.classList.add('dragging');
-            grid.style.cursor = 'grabbing';
-            startX = e.clientX;
-            lastX = startX;
-            scrollLeft = grid.scrollLeft;
-            velocity = 0;
-            if (inertiaFrame) cancelAnimationFrame(inertiaFrame);
-            pauseAutoScroll();
-            document.body.style.userSelect = 'none';
-        });
-        grid.addEventListener('pointermove', function(e) {
-            if (!isDragging) return;
-            const x = e.clientX;
-            const moved = Math.abs(x - startX);
-            if (!dragStarted && moved > dragThreshold) dragStarted = true;
-            if (!dragStarted) return;
-            const walk = (startX - x) / 2.2;
-            grid.scrollLeft = scrollLeft + walk;
-            velocity = Math.max(-maxVelocity, Math.min(maxVelocity, lastX - x));
-            lastX = x;
-        });
-        function endDrag(e) {
-            if (!isDragging) return;
-            isDragging = false;
-            dragStarted = false;
-            grid.classList.remove('dragging');
+        // Check if this is a mobile device
+        const isMobileDevice = window.innerWidth <= 900 || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+        
+        if (!isMobileDevice) {
+            // Desktop: Custom drag functionality
+            let isDragging = false;
+            let startX = 0;
+            let startY = 0;
+            let scrollLeft = 0;
+            let lastX = 0;
+            let velocity = 0;
+            let inertiaFrame;
+            let hasMovedSignificantly = false;
+            let pointerType = '';
+            
+            // Thresholds
+            const dragThreshold = 3;
+            const clickThreshold = 8;
+            const maxVelocity = 16;
+            const friction = 0.90;
+            const minVelocity = 0.15;
+            
+            // Add grab cursor for desktop
             grid.style.cursor = 'grab';
-            document.body.style.userSelect = '';
-            function inertia() {
+            
+            grid.addEventListener('pointerdown', function(e) {
+                if (e.pointerType === 'mouse' && e.button !== 0) return;
+                
+                isDragging = true;
+                hasMovedSignificantly = false;
+                pointerType = e.pointerType;
+                grid.setPointerCapture(e.pointerId);
+                grid.classList.add('dragging');
+                grid.style.cursor = 'grabbing';
+                
+                startX = e.clientX;
+                startY = e.clientY;
+                lastX = startX;
+                scrollLeft = grid.scrollLeft;
+                velocity = 0;
+                
+                if (inertiaFrame) cancelAnimationFrame(inertiaFrame);
+                pauseAutoScroll();
+                document.body.style.userSelect = 'none';
+            });
+            
+            grid.addEventListener('pointermove', function(e) {
+                if (!isDragging) return;
+                
+                const x = e.clientX;
+                const y = e.clientY;
+                const moveX = Math.abs(x - startX);
+                const moveY = Math.abs(y - startY);
+                
+                if (moveX > dragThreshold || moveY > dragThreshold) {
+                    if (moveX > clickThreshold) {
+                        hasMovedSignificantly = true;
+                    }
+                    
+                    if (moveX > moveY && moveX > dragThreshold) {
+                        const walk = (startX - x) * 0.6;
+                        grid.scrollLeft = scrollLeft + walk;
+                        velocity = Math.max(-maxVelocity, Math.min(maxVelocity, (lastX - x) * 0.8));
+                        lastX = x;
+                    }
+                }
+            });
+            
+            function endDrag(e) {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                grid.classList.remove('dragging');
+                grid.style.cursor = 'grab';
+                document.body.style.userSelect = '';
+                
+                if (hasMovedSignificantly) {
+                    const preventNextClick = (clickEvent) => {
+                        clickEvent.preventDefault();
+                        clickEvent.stopPropagation();
+                    };
+                    
+                    document.addEventListener('click', preventNextClick, { capture: true, once: true });
+                    setTimeout(() => {
+                        document.removeEventListener('click', preventNextClick, { capture: true });
+                    }, 50);
+                }
+                
+                function inertia() {
+                    if (Math.abs(velocity) > minVelocity) {
+                        grid.scrollLeft += velocity;
+                        velocity *= friction;
+                        inertiaFrame = requestAnimationFrame(inertia);
+                    } else {
+                        startAutoScroll();
+                    }
+                }
+                
                 if (Math.abs(velocity) > minVelocity) {
-                    grid.scrollLeft += velocity;
-                    velocity *= friction;
-                    inertiaFrame = requestAnimationFrame(inertia);
+                    inertia();
                 } else {
                     startAutoScroll();
                 }
             }
-            inertia();
+            
+            grid.addEventListener('pointerup', endDrag);
+            grid.addEventListener('pointercancel', endDrag);
+            grid.addEventListener('pointerleave', function(e) {
+                if (isDragging) endDrag(e);
+            });
+        } else {
+            // Mobile: Use native scroll snapping (no custom drag logic)
+            grid.style.cursor = 'default';
+            // The CSS scroll-snap properties will handle the one-by-one scrolling
         }
-        grid.addEventListener('pointerup', endDrag);
-        grid.addEventListener('pointercancel', endDrag);
-        grid.addEventListener('pointerleave', function(e) {
-            if (isDragging) endDrag(e);
-        });
     }
 
-    // Activities grid auto-scroll (homepage only)
+    // Updated auto-scroll for card-by-card scrolling (homepage only)
     const activitiesGrid = document.querySelector('.activities-grid');
     if (activitiesGrid) {
-        let scrollAmount = 0;
+        let currentCardIndex = 0;
         let direction = 1;
-        const maxScroll = activitiesGrid.scrollWidth - activitiesGrid.clientWidth;
+        
+        function getCardWidth() {
+            const card = activitiesGrid.querySelector('.activity-card');
+            if (!card) return 180; // fallback width
+            const cardStyle = getComputedStyle(card);
+            const cardWidth = card.offsetWidth;
+            const cardMargin = parseInt(cardStyle.marginRight) || 0;
+            const gap = parseInt(getComputedStyle(activitiesGrid).gap) || 32; // 2em default
+            return cardWidth + gap;
+        }
+        
+        function getTotalCards() {
+            return activitiesGrid.querySelectorAll('.activity-card').length;
+        }
+        
         function autoScrollActivities() {
             if (!activitiesGrid || autoScrollPaused) return;
-            // If at end, reverse direction
-            if (activitiesGrid.scrollLeft >= maxScroll) direction = -1;
-            if (activitiesGrid.scrollLeft <= 0) direction = 1;
-            activitiesGrid.scrollLeft += direction * 1.2; // Adjust speed here
+            
+            const cardWidth = getCardWidth();
+            const totalCards = getTotalCards();
+            const maxIndex = totalCards - 1;
+            
+            // Move to next/previous card
+            currentCardIndex += direction;
+            
+            // Reverse direction at ends
+            if (currentCardIndex >= maxIndex) {
+                direction = -1;
+                currentCardIndex = maxIndex;
+            }
+            if (currentCardIndex <= 0) {
+                direction = 1;
+                currentCardIndex = 0;
+            }
+            
+            // Smooth scroll to the target card
+            const targetScrollLeft = currentCardIndex * cardWidth;
+            activitiesGrid.scrollTo({
+                left: targetScrollLeft,
+                behavior: 'smooth'
+            });
         }
+        
         startAutoScroll();
     }
     // Nav below header, inside a scrollable div
