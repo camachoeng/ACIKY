@@ -78,123 +78,61 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(startAutoScroll, 2000);
         });
     }
-    // Attach drag logic - desktop gets custom drag, mobile gets native scroll snapping
+    // Simple drag scrolling for activities grid
     if (grid) {
-        // Check if this is a mobile device
-        const isMobileDevice = window.innerWidth <= 900 || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+        let isDragging = false;
+        let hasMouseMoved = false;
+        let startX = 0;
+        let scrollLeft = 0;
         
-        if (!isMobileDevice) {
-            // Desktop: Custom drag functionality
-            let isDragging = false;
-            let startX = 0;
-            let startY = 0;
-            let scrollLeft = 0;
-            let lastX = 0;
-            let velocity = 0;
-            let inertiaFrame;
-            let hasMovedSignificantly = false;
-            let pointerType = '';
-            
-            // Thresholds
-            const dragThreshold = 3;
-            const clickThreshold = 8;
-            const maxVelocity = 16;
-            const friction = 0.90;
-            const minVelocity = 0.15;
-            
-            // Add grab cursor for desktop
-            grid.style.cursor = 'grab';
-            
-            grid.addEventListener('pointerdown', function(e) {
-                if (e.pointerType === 'mouse' && e.button !== 0) return;
-                
-                isDragging = true;
-                hasMovedSignificantly = false;
-                pointerType = e.pointerType;
-                grid.setPointerCapture(e.pointerId);
-                grid.classList.add('dragging');
-                grid.style.cursor = 'grabbing';
-                
-                startX = e.clientX;
-                startY = e.clientY;
-                lastX = startX;
-                scrollLeft = grid.scrollLeft;
-                velocity = 0;
-                
-                if (inertiaFrame) cancelAnimationFrame(inertiaFrame);
-                pauseAutoScroll();
-                document.body.style.userSelect = 'none';
-            });
-            
-            grid.addEventListener('pointermove', function(e) {
-                if (!isDragging) return;
-                
-                const x = e.clientX;
-                const y = e.clientY;
-                const moveX = Math.abs(x - startX);
-                const moveY = Math.abs(y - startY);
-                
-                if (moveX > dragThreshold || moveY > dragThreshold) {
-                    if (moveX > clickThreshold) {
-                        hasMovedSignificantly = true;
-                    }
-                    
-                    if (moveX > moveY && moveX > dragThreshold) {
-                        const walk = (startX - x) * 0.6;
-                        grid.scrollLeft = scrollLeft + walk;
-                        velocity = Math.max(-maxVelocity, Math.min(maxVelocity, (lastX - x) * 0.8));
-                        lastX = x;
-                    }
-                }
-            });
-            
-            function endDrag(e) {
-                if (!isDragging) return;
-                
-                isDragging = false;
-                grid.classList.remove('dragging');
-                grid.style.cursor = 'grab';
-                document.body.style.userSelect = '';
-                
-                if (hasMovedSignificantly) {
-                    const preventNextClick = (clickEvent) => {
-                        clickEvent.preventDefault();
-                        clickEvent.stopPropagation();
-                    };
-                    
-                    document.addEventListener('click', preventNextClick, { capture: true, once: true });
-                    setTimeout(() => {
-                        document.removeEventListener('click', preventNextClick, { capture: true });
-                    }, 50);
-                }
-                
-                function inertia() {
-                    if (Math.abs(velocity) > minVelocity) {
-                        grid.scrollLeft += velocity;
-                        velocity *= friction;
-                        inertiaFrame = requestAnimationFrame(inertia);
-                    } else {
-                        startAutoScroll();
-                    }
-                }
-                
-                if (Math.abs(velocity) > minVelocity) {
-                    inertia();
-                } else {
-                    startAutoScroll();
-                }
+        // Mouse events for desktop drag
+        grid.addEventListener('mousedown', function(e) {
+            // Only start drag on empty space, not on links
+            if (e.target.tagName === 'A' || e.target.closest('a')) {
+                return; // Let links work normally
             }
             
-            grid.addEventListener('pointerup', endDrag);
-            grid.addEventListener('pointercancel', endDrag);
-            grid.addEventListener('pointerleave', function(e) {
-                if (isDragging) endDrag(e);
-            });
-        } else {
-            // Mobile: Use native scroll snapping (no custom drag logic)
-            grid.style.cursor = 'default';
-            // The CSS scroll-snap properties will handle the one-by-one scrolling
-        }
+            isDragging = true;
+            hasMouseMoved = false;
+            startX = e.pageX - grid.offsetLeft;
+            scrollLeft = grid.scrollLeft;
+            grid.style.cursor = 'grabbing';
+            
+            // Pause auto-scroll during manual interaction
+            pauseAutoScroll();
+            
+            e.preventDefault(); // Only prevent on drag start, not on links
+        });
+        
+        grid.addEventListener('mouseleave', function() {
+            isDragging = false;
+            hasMouseMoved = false;
+            grid.style.cursor = 'grab';
+            // Resume auto-scroll after a delay
+            setTimeout(() => startAutoScroll(), 2000);
+        });
+        
+        grid.addEventListener('mouseup', function() {
+            isDragging = false;
+            hasMouseMoved = false;
+            grid.style.cursor = 'grab';
+            // Resume auto-scroll after a delay
+            setTimeout(() => startAutoScroll(), 2000);
+        });
+        
+        grid.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            
+            hasMouseMoved = true;
+            const x = e.pageX - grid.offsetLeft;
+            const distance = x - startX;
+            grid.scrollLeft = scrollLeft - distance;
+            
+            e.preventDefault();
+        });
+        
+        // Set initial cursor
+        grid.style.cursor = 'grab';
     }
 
     // Updated auto-scroll for card-by-card scrolling (homepage only)
