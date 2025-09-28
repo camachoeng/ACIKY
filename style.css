@@ -84,72 +84,94 @@
 }
 
 .activity-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 140px;
-    min-width: 140px;
-    max-width: 180px;
+    width: 180px;
+    min-width: 180px;
+    max-width: 200px;
     background: #fff;
     border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(41,42,37,0.09);
-    padding: 1em 0.5em 1em 0.5em;
-    transition: box-shadow 0.2s, transform 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 1.5rem 1rem 1rem;
+    transition: all 0.3s ease;
     flex: 0 0 auto;
-    /* Mobile scroll snap target */
     scroll-snap-align: center;
+    border: 1px solid rgba(178, 240, 55, 0.1);
 }
+
 .activity-card:hover {
-    box-shadow: 0 6px 24px rgba(178, 240, 55, 0.18);
-    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 8px 30px rgba(78, 140, 54, 0.15);
+    transform: translateY(-8px);
 }
+
 .activity-link {
     text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
+
 .activity-img {
-    width: 110px;
-    height: 110px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     border-radius: 50%;
-    box-shadow: 0 2px 12px rgba(41,42,37,0.13);
-    margin-bottom: 1em;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
     border: 3px solid #b2f037;
     background: #f9f9f6;
-    transition: box-shadow 0.2s, border 0.2s;
+    transition: all 0.3s ease;
 }
+
 .activity-card:hover .activity-img {
-    box-shadow: 0 8px 32px rgba(178, 240, 55, 0.18);
+    box-shadow: 0 8px 25px rgba(78, 140, 54, 0.2);
     border-color: #4e8c36;
+    transform: scale(1.05);
 }
+
+.activity-info {
+    text-align: center;
+    width: 100%;
+}
+
 .activity-title {
-    font-size: 1.08em;
+    font-size: 1.1rem;
     font-weight: bold;
     color: #4e8c36;
-    text-align: center;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-    letter-spacing: 0.01em;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
 }
+
+.activity-description {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+    margin: 0;
+}
+
 @media (min-width: 900px) {
     .activities-grid {
         gap: 3em;
     }
     .activity-card {
-        width: 180px;
-        min-width: 160px;
+        width: 200px;
+        min-width: 200px;
         max-width: 220px;
-        padding: 1.2em 0.7em 1.2em 0.7em;
+        padding: 1.5rem 1rem 1rem;
     }
     .activity-img {
         width: 140px;
         height: 140px;
     }
     .activity-title {
-        font-size: 1.18em;
+        font-size: 1.2rem;
+    }
+    .activity-description {
+        font-size: 1rem;
     }
 }
 /* --- End Activities Promo Grid Styles --- */
@@ -1727,43 +1749,97 @@ footer {
     background: #fff;
 }
 
-/* Enhanced Activity Cards */
+/* Enhanced Activity Cards - Card Layout */
 .activity-card {
     position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 180px;
+    min-width: 180px;
+    max-width: 200px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 1.5rem 1rem 1rem;
+    transition: all 0.3s ease;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    border: 1px solid rgba(178, 240, 55, 0.1);
 }
 
-.activity-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent 20%, rgba(0,0,0,0.75) 60%, rgba(0,0,0,0.95) 100%);
-    color: white;
-    padding: 2rem 1rem 1rem;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-    border-radius: 0 0 16px 16px;
+.activity-card:hover {
+    box-shadow: 0 8px 30px rgba(78, 140, 54, 0.15);
+    transform: translateY(-8px);
 }
 
-.activity-card:hover .activity-overlay {
-    transform: translateY(0);
+.activity-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.activity-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    border: 3px solid #b2f037;
+    background: #f9f9f6;
+    transition: all 0.3s ease;
+}
+
+.activity-card:hover .activity-img {
+    box-shadow: 0 8px 25px rgba(78, 140, 54, 0.2);
+    border-color: #4e8c36;
+    transform: scale(1.05);
+}
+
+.activity-info {
+    text-align: center;
+    width: 100%;
 }
 
 .activity-title {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: bold;
-    margin-bottom: 0.25rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,1);
-    color: #ffffff;
+    color: #4e8c36;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
 }
 
 .activity-description {
-    font-size: 1rem;
-    opacity: 1;
+    font-size: 0.9rem;
+    color: #666;
     line-height: 1.4;
-    text-shadow: 2px 2px 4px rgba(0,0,0,1);
-    color: #ffffff;
+    margin: 0;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .activity-card {
+        width: 160px;
+        min-width: 160px;
+        padding: 1rem 0.75rem 1rem;
+    }
+    
+    .activity-img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .activity-title {
+        font-size: 1rem;
+    }
+    
+    .activity-description {
+        font-size: 0.85rem;
+    }
 }
 
 /* Quiz Section */
@@ -2352,9 +2428,9 @@ footer {
 
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1000px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -2364,17 +2440,33 @@ footer {
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .gallery-item:hover {
     transform: scale(1.03);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
 }
 
-.gallery-img {
+.about-gallery .gallery-img {
     width: 100%;
-    height: 250px;
+    height: 350px;
     object-fit: cover;
+    transition: transform 0.3s ease;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    cursor: default;
+    max-width: none;
+    max-height: none;
+    min-width: auto;
+    min-height: auto;
+}
+
+.about-gallery .gallery-item:hover .gallery-img {
+    transform: scale(1.05);
 }
 
 .gallery-overlay {
@@ -2386,11 +2478,33 @@ footer {
     color: white;
     padding: 2rem 1.5rem 1.5rem;
     transform: translateY(50%);
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
 }
 
-.gallery-item:hover .gallery-overlay {
-    transform: translateY(0);
+.gallery-overlay p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Desktop hover behavior */
+@media (hover: hover) and (pointer: fine) {
+    .gallery-item:hover .gallery-overlay {
+        transform: translateY(0);
+    }
+}
+
+/* Mobile/Touch behavior - always show overlay */
+@media (hover: none) or (pointer: coarse) {
+    .gallery-overlay {
+        transform: translateY(0);
+        background: linear-gradient(transparent 40%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.85) 100%);
+        padding: 1.5rem 1rem 1rem;
+    }
+    
+    .gallery-overlay p {
+        font-size: 1rem;
+    }
 }
 
 .gallery-overlay p {
@@ -2457,6 +2571,20 @@ footer {
     
     .gallery-grid {
         grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+    
+    .about-gallery .gallery-img {
+        height: 300px;
+    }
+    
+    .gallery-overlay {
+        padding: 1.2rem 1rem 0.8rem;
+    }
+    
+    .gallery-overlay p {
+        font-size: 0.95rem;
     }
     
     .vision-section h2 {

@@ -239,6 +239,58 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     setupMobileSubmenuToggle();
 
+    // Enhanced touch support for activity cards
+    function setupActivityTouchSupport() {
+        const activityCards = document.querySelectorAll('.activity-card');
+        
+        // Check if device supports touch
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        if (isTouchDevice) {
+            activityCards.forEach(card => {
+                let touchStartTime = 0;
+                
+                card.addEventListener('touchstart', function(e) {
+                    touchStartTime = Date.now();
+                }, { passive: true });
+                
+                card.addEventListener('touchend', function(e) {
+                    const touchDuration = Date.now() - touchStartTime;
+                    
+                    // If it's a quick tap (not a scroll), toggle the overlay
+                    if (touchDuration < 500) {
+                        e.preventDefault();
+                        card.classList.toggle('touched');
+                        
+                        // Remove touched class from other cards
+                        activityCards.forEach(otherCard => {
+                            if (otherCard !== card) {
+                                otherCard.classList.remove('touched');
+                            }
+                        });
+                    }
+                }, { passive: false });
+                
+                // Remove touched class when scrolling starts
+                card.addEventListener('touchmove', function() {
+                    card.classList.remove('touched');
+                }, { passive: true });
+            });
+            
+            // Remove all touched classes when tapping outside
+            document.addEventListener('touchend', function(e) {
+                if (!e.target.closest('.activity-card')) {
+                    activityCards.forEach(card => {
+                        card.classList.remove('touched');
+                    });
+                }
+            }, { passive: true });
+        }
+    }
+    
+    // Initialize touch support after DOM is fully loaded
+    setupActivityTouchSupport();
+
     // Footer
     const footer = document.createElement('footer');
     footer.innerHTML = `<p>&copy; 2025 ACIKY</p>`;
