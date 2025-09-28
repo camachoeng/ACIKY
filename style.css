@@ -2866,23 +2866,26 @@ footer {
 }
 
 .contact-header {
-    background: linear-gradient(135deg, rgba(78, 140, 54, 0.95) 0%, rgba(78, 140, 54, 0.8) 100%);
+    background: linear-gradient(135deg, #4e8c36, #b2f037);
     color: white;
     text-align: center;
     padding: 4rem 2rem 3rem;
     margin-bottom: 3rem;
+    border-radius: 30px;
 }
 
 .contact-header h1 {
     font-size: 2.8rem;
     margin: 0 0 1rem;
     font-weight: bold;
+    color: #fff;
 }
 
 .contact-header p {
     font-size: 1.2rem;
-    opacity: 0.9;
     max-width: 600px;
+    color: #fff;
+    margin: 0 auto;
     margin: 0 auto;
 }
 
@@ -2894,9 +2897,12 @@ footer {
 
 .contact-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    grid-template-columns: 1fr;
+    gap: 3rem;
     margin-bottom: 4rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .contact-form-container {
@@ -3027,6 +3033,26 @@ footer {
     color: #555;
     margin: 0.5rem 0;
     line-height: 1.5;
+}
+
+.instructor-note {
+    background: rgba(178, 240, 55, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid #b2f037;
+    margin-top: 1rem;
+}
+
+.text-link {
+    color: #4e8c36;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.text-link:hover {
+    color: #3a6f2a;
+    text-decoration: underline;
 }
 
 .map-link {
@@ -3226,9 +3252,9 @@ footer {
     }
     
     .contact-layout {
-        grid-template-columns: 1fr;
         gap: 2rem;
         padding: 0 1rem;
+        max-width: none;
     }
     
     .contact-form-container,
