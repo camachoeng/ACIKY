@@ -291,6 +291,41 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize touch support after DOM is fully loaded
     setupActivityTouchSupport();
 
+    // Gallery Slider Auto-slide (gallery page only)
+    function initializeGallerySliders() {
+        const sliders = document.querySelectorAll('.gallery-slider');
+        
+        sliders.forEach(slider => {
+            const images = slider.querySelectorAll('.slider-img');
+            let currentSlide = 0;
+            let slideInterval;
+            
+            if (images.length <= 1) return; // Skip if only one image
+            
+            // Initialize first image as active
+            images[0].classList.add('active');
+            
+            // Auto-slide function
+            function nextSlide() {
+                images[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % images.length;
+                images[currentSlide].classList.add('active');
+            }
+            
+            // Start auto-sliding every 3 seconds
+            slideInterval = setInterval(nextSlide, 3000);
+            
+            // Pause on hover, resume on mouse leave
+            slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            slider.addEventListener('mouseleave', () => {
+                slideInterval = setInterval(nextSlide, 3000);
+            });
+        });
+    }
+    
+    // Initialize gallery sliders
+    initializeGallerySliders();
+
     // Footer
     const footer = document.createElement('footer');
     footer.innerHTML = `<p>&copy; 2025 ACIKY</p>`;
