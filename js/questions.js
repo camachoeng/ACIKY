@@ -1,4 +1,5 @@
-export const questions = [
+// Yoga quiz questions
+const questions = [
   {
     question: "¿Qué es Kundalini Yoga?",
     options: ["Un tipo de danza", "Una técnica de meditación", "Un sistema de yoga que trabaja la energía interna", "Un estilo de música"],

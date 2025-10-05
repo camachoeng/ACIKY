@@ -138,7 +138,11 @@
             <div class="quiz-layout">
                 <div class="quiz-container">
                     <div class="quiz-card">
-                        <section id="quiz"></section>
+                        <section id="quiz">
+                            <div style="color: #292a25 !important; font-size: 18px; font-weight: bold; text-align: center; padding: 20px;">
+                                Cargando preguntas del quiz...
+                            </div>
+                        </section>
                         <button id="next-btn" style="display:none;">Siguiente pregunta</button>
                         <div id="result" style="display:none;"></div>
                         <button id="restart-btn" style="display:none;">Reiniciar Quiz</button>
@@ -187,11 +191,9 @@
             </div>
         </section>
     </main>
-    <script type="module" src="js/app.js"></script>
     <script src="js/common.js"></script>
-    <script>
-        insertYogiQuote("Si no puedes ver a Dios en todo, no puedes ver a Dios en nada.", "Yogi Bhajan");
-    </script>
+    <script src="js/questions.js"></script>
+    <script src="js/app.js"></script>
     <script>
         insertYogiQuote("Si no puedes ver a Dios en todo, no puedes ver a Dios en nada.", "Yogi Bhajan");
     </script>
