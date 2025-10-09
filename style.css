@@ -1825,7 +1825,8 @@ footer {
 
 .promo-images {
     position: relative;
-    height: 350px;
+    width: 400px;
+    height: 600px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0,0,0,0.1);
@@ -2290,6 +2291,12 @@ footer {
         font-size: 1.1rem;
     }
     
+    .promo-images {
+        width: 360px;
+        height: 540px;
+        margin: 0 auto;
+    }
+    
     .quiz-layout {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -2325,7 +2332,9 @@ footer {
     }
     
     .promo-images {
-        height: 250px;
+        width: 240px;
+        height: 360px;
+        margin: 0 auto;
     }
 }
 /* --- End Modern Homepage Styles --- */
