@@ -1,3 +1,42 @@
 {
-    "livePreview.defaultPreviewPath": "/index.html"
+    "livePreview.defaultPreviewPath": "/index.html",
+    
+    // Performance optimizations
+    "files.autoSave": "onFocusChange",
+    "files.autoSaveDelay": 5000,
+    "editor.quickSuggestions": {
+        "other": false,
+        "comments": false,
+        "strings": false
+    },
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.parameterHints.enabled": false,
+    "editor.wordBasedSuggestions": "off",
+    "editor.semanticHighlighting.enabled": false,
+    "extensions.autoUpdate": false,
+    "telemetry.telemetryLevel": "off",
+    "search.followSymlinks": false,
+    "files.watcherExclude": {
+        "**/.git/**": true,
+        "**/node_modules/**": true,
+        "**/.vscode/**": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/.git": true
+    },
+    // Disable heavy features for this simple project
+    "git.autofetch": false,
+    "git.decorations.enabled": false,
+    "breadcrumbs.enabled": false,
+    "editor.minimap.enabled": false,
+    
+    // GitHub Copilot optimizations
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": false,
+        "plaintext": false,
+        "markdown": false
+    }
 }

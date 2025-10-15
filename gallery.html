@@ -73,7 +73,7 @@
                     <figcaption>Postura de Célibe</figcaption>
                 </figure>
                 <figure class="gallery-thumb">
-                    <img src="images/gallery/postura-de-cuervo.jpg" alt="Postura de Cuervo" class="gallery-img" data-name="Postura de Cuervo" data-desc="Una postura que mejora la flexibilidad de la columna.">
+                    <img src="images/gallery/postura-de-cuervo.png" alt="Postura de Cuervo" class="gallery-img" data-name="Postura de Cuervo" data-desc="Una postura que mejora la flexibilidad de la columna.">
                     <figcaption>Postura de Cuervo</figcaption>
                 </figure>
                 <figure class="gallery-thumb">
@@ -199,13 +199,15 @@
     document.querySelectorAll('.gallery-img').forEach(function(img) {
         img.addEventListener('click', function() {
             let src, name, desc;
-            // If this image is inside a multi-img-container, send all images
-            const multiContainer = img.closest('.multi-img-container');
-            if (multiContainer) {
-                const imgs = multiContainer.querySelectorAll('img');
+            // If this image is inside a gallery-slider, send all images
+            const sliderContainer = img.closest('.gallery-slider');
+            if (sliderContainer) {
+                const imgs = sliderContainer.querySelectorAll('.slider-img');
                 src = Array.from(imgs).map(i => i.getAttribute('src')).join(',');
-                name = encodeURIComponent(img.getAttribute('data-name'));
-                desc = encodeURIComponent(img.getAttribute('data-desc'));
+                // Use the slider's figcaption as name, or fall back to clicked image's data-name
+                const figcaption = sliderContainer.querySelector('figcaption');
+                name = figcaption ? encodeURIComponent(figcaption.textContent) : encodeURIComponent(img.getAttribute('data-name'));
+                desc = encodeURIComponent('Colección de posturas relacionadas'); // Generic description for sliders
             } else {
                 src = img.getAttribute('src');
                 name = encodeURIComponent(img.getAttribute('data-name'));
