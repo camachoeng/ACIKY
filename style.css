@@ -71,7 +71,6 @@
     overflow-x: auto;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
     padding-bottom: 1em;
     scrollbar-width: none; /* Firefox */
     /* Mobile scroll snapping - one card at a time */
@@ -1814,17 +1813,19 @@ footer {
     background: linear-gradient(135deg, #f8fffe, #f0f8f4);
     padding: 4rem 0;
     margin-top: 2rem;
-    border-radius: 30px;
+    border-radius: 0;
     overflow: hidden;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
 }
 
 .hero-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    display: flex;
+    justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 1200px;
+    max-width: none;
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -1868,26 +1869,35 @@ footer {
 }
 
 .promo-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.promo-card {
     position: relative;
-    width: 400px;
-    height: 600px;
+    width: 100%;
+    height: 500px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.promo-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
+.promo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+}
+
+.promo-card a {
+    display: block;
     width: 100%;
     height: 100%;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-}
-
-.promo-slide.active {
-    opacity: 1;
+    transition: transform 0.3s ease;
 }
 
 .promo-img {
@@ -2013,6 +2023,23 @@ footer {
     
     .activity-title {
         font-size: 1rem;
+    }
+    
+    .activity-link {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        -webkit-tap-highlight-color: rgba(107, 155, 107, 0.2);
+    }
+    
+    .activity-info {
+        pointer-events: none;
+    }
+    
+    .activity-card {
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(107, 155, 107, 0.2);
     }
     
     .activity-description {
@@ -2326,23 +2353,20 @@ footer {
 /* Responsive Design for Homepage */
 @media (max-width: 900px) {
     .hero-content {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 2rem;
         text-align: center;
     }
     
-    .hero-title {
-        font-size: 2.2rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.1rem;
-    }
-    
     .promo-images {
-        width: 360px;
-        height: 540px;
-        margin: 0 auto;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        max-width: 400px;
+        padding: 0 1rem;
+    }
+    
+    .promo-card {
+        height: 400px;
     }
     
     .nav-scroll {
@@ -2405,9 +2429,14 @@ footer {
     }
     
     .promo-images {
-        width: 240px;
-        height: 360px;
-        margin: 0 auto;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        max-width: 300px;
+        padding: 0 0.5rem;
+    }
+    
+    .promo-card {
+        height: 420px;
     }
     
     nav ul {
@@ -3655,6 +3684,8 @@ footer {
 /* Promo slider link styling */
 .promo-slide a {
     display: block;
+    width: 100%;
+    height: 100%;
     transition: transform 0.3s ease;
 }
 
@@ -4475,6 +4506,2661 @@ footer {
     
     .requirements-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Enhanced mobile touch support for activity cards */
+@media (hover: none) and (pointer: coarse) {
+    .activity-link {
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+    }
+    
+    .activity-card {
+        touch-action: manipulation !important;
+    }
+}
+
+/* =============================================
+   WAHEGURU FESTIVAL PAGE STYLES
+============================================= */
+
+.waheguru-main {
+    padding-top: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Hero Section */
+.waheguru-hero {
+    background: linear-gradient(135deg, #8B4513 0%, #CD853F 50%, #DEB887 100%);
+    padding: 4rem 2rem;
+    color: white;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.waheguru-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.waheguru-hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.waheguru-hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    object-fit: cover;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.waheguru-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+.waheguru-location {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+.waheguru-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge.primary {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #8B4513;
+}
+
+.badge.secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.badge.accent {
+    background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+    color: white;
+}
+
+/* Festival Overview Section */
+.festival-overview {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.overview-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.intro-text {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #495057;
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #FFD700;
+}
+
+.festival-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.festival-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid #FFD700;
+}
+
+.festival-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.festival-card h3 {
+    color: #8B4513;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.festival-card p {
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Expectations Timeline Section */
+.expectations-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
+    color: white;
+}
+
+.expectations-timeline {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.timeline-icon {
+    font-size: 3rem;
+    background: rgba(255, 215, 0, 0.2);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #FFD700;
+}
+
+.timeline-content h3 {
+    color: #FFD700;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.timeline-content p {
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* Benefits Section */
+.benefits-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.benefit-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-left: 5px solid #FFD700;
+}
+
+.benefit-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.benefit-card h3 {
+    color: #8B4513;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.benefit-card p {
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Audience Section */
+.audience-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+}
+
+.audience-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.audience-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-top: 4px solid #8B4513;
+}
+
+.audience-card:hover {
+    transform: translateY(-5px);
+}
+
+.audience-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.audience-card h3 {
+    color: #8B4513;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.audience-card p {
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Preparation Section */
+.preparation-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.preparation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.prep-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #CD853F;
+    transition: transform 0.3s ease;
+}
+
+.prep-card:hover {
+    transform: translateY(-3px);
+}
+
+.prep-card h3 {
+    color: #8B4513;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.prep-card p {
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Contact Section */
+.contact-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
+    color: white;
+    text-align: center;
+}
+
+.contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contact-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.contact-info h3 {
+    color: #FFD700;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.contact-details {
+    margin: 1.5rem 0;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.contact-icon {
+    font-size: 1.5rem;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #8B4513;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-secondary:hover {
+    background: white;
+    color: #8B4513;
+}
+
+/* Quote Section */
+.quote-section {
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    text-align: center;
+}
+
+.quote-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.festival-quote {
+    background: white;
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #FFD700;
+    font-style: italic;
+}
+
+.festival-quote p {
+    font-size: 1.5rem;
+    color: #8B4513;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.festival-quote cite {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+/* Section Headers for Waheguru Page */
+.waheguru-main .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.waheguru-main .section-header h2 {
+    font-size: 2.5rem;
+    color: #8B4513;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.waheguru-main .section-header p {
+    font-size: 1.2rem;
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Responsive Design for Waheguru Page */
+@media (max-width: 768px) {
+    .waheguru-hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .waheguru-subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .timeline-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .timeline-icon {
+        margin: 0 auto;
+    }
+    
+    .festival-grid,
+    .benefits-grid,
+    .audience-cards,
+    .preparation-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* =============================================
+   REBIRTHING PAGE STYLES
+============================================= */
+
+.rebirthing-main {
+    padding-top: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Hero Section */
+.rebirthing-hero {
+    background: linear-gradient(135deg, #4A5568 0%, #2D3748 50%, #1A202C 100%);
+    padding: 4rem 2rem;
+    color: white;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.rebirthing-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.rebirthing-hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.rebirthing-hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+}
+
+.rebirthing-hero .hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    background: linear-gradient(45deg, #E53E3E, #F56565, #FC8181);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.rebirthing-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+.rebirthing-location {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+.rebirthing-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.rebirthing-badges .badge.primary {
+    background: linear-gradient(45deg, #E53E3E, #F56565);
+    color: white;
+}
+
+.rebirthing-badges .badge.secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.rebirthing-badges .badge.accent {
+    background: linear-gradient(45deg, #9F7AEA, #B794F6);
+    color: white;
+}
+
+/* Rebirthing Overview Section */
+.rebirthing-overview {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.rebirthing-overview .overview-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.rebirthing-overview .intro-text {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #2D3748;
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #E53E3E;
+}
+
+.rebirthing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.rebirthing-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid #E53E3E;
+}
+
+.rebirthing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.rebirthing-card .card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.rebirthing-card h3 {
+    color: #2D3748;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.rebirthing-card p {
+    color: #4A5568;
+    line-height: 1.6;
+}
+
+/* Process Timeline Section */
+.process-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
+    color: white;
+}
+
+.process-timeline {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+}
+
+.process-timeline .timeline-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.process-timeline .timeline-icon {
+    font-size: 3rem;
+    background: rgba(229, 62, 62, 0.2);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #E53E3E;
+}
+
+.process-timeline .timeline-content h3 {
+    color: #F56565;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.process-timeline .timeline-content p {
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* Ceremonies Section */
+.ceremonies-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #f7fafc 0%, #ffffff 100%);
+}
+
+.ceremonies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.ceremony-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+    border-left: 5px solid #E53E3E;
+}
+
+.ceremony-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ceremony-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.ceremony-card h3 {
+    color: #2D3748;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.ceremony-card p {
+    color: #4A5568;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.ceremony-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.feature {
+    background: #EDF2F7;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #2D3748;
+}
+
+/* Benefits Section for Rebirthing */
+.rebirthing-main .benefits-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+}
+
+.rebirthing-main .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.rebirthing-main .benefit-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-left: 5px solid #E53E3E;
+}
+
+.rebirthing-main .benefit-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.rebirthing-main .benefit-card h3 {
+    color: #2D3748;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.rebirthing-main .benefit-card p {
+    color: #4A5568;
+    line-height: 1.6;
+}
+
+/* Events Section */
+.events-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f7fafc 100%);
+}
+
+.events-calendar {
+    display: grid;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.event-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    transition: transform 0.3s ease;
+    border-left: 5px solid #E53E3E;
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.event-date {
+    text-align: center;
+    background: linear-gradient(135deg, #E53E3E, #F56565);
+    color: white;
+    padding: 1rem;
+    border-radius: 12px;
+    min-width: 80px;
+}
+
+.event-date .day {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.event-date .month {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.event-info h3 {
+    color: #2D3748;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.event-info p {
+    color: #4A5568;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.event-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.event-details span {
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
+    color: white;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.testimonial-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.testimonial-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.testimonial-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.author-name {
+    font-weight: bold;
+    color: #F56565;
+}
+
+.author-location {
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* Participation Section */
+.participation-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+}
+
+.participation-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.participation-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-top: 4px solid #2D3748;
+}
+
+.participation-card:hover {
+    transform: translateY(-5px);
+}
+
+.participation-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.participation-card h3 {
+    color: #2D3748;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.participation-card p {
+    color: #4A5568;
+    line-height: 1.6;
+}
+
+/* Contact Section for Rebirthing */
+.rebirthing-main .contact-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
+    color: white;
+    text-align: center;
+}
+
+.rebirthing-main .contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.rebirthing-main .contact-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.rebirthing-main .contact-info h3 {
+    color: #F56565;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.rebirthing-main .contact-details {
+    margin: 1.5rem 0;
+}
+
+.rebirthing-main .contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.rebirthing-main .contact-icon {
+    font-size: 1.5rem;
+}
+
+.rebirthing-main .btn-primary {
+    background: linear-gradient(45deg, #E53E3E, #F56565);
+    color: white;
+}
+
+.rebirthing-main .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(229, 62, 62, 0.4);
+}
+
+.rebirthing-main .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.rebirthing-main .btn-secondary:hover {
+    background: white;
+    color: #2D3748;
+}
+
+/* Quote Section for Rebirthing */
+.rebirthing-main .quote-section {
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    text-align: center;
+}
+
+.rebirthing-quote {
+    background: white;
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #E53E3E;
+    font-style: italic;
+}
+
+.rebirthing-quote p {
+    font-size: 1.5rem;
+    color: #2D3748;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.rebirthing-quote cite {
+    color: #4A5568;
+    font-size: 1.1rem;
+}
+
+/* Section Headers for Rebirthing Page */
+.rebirthing-main .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rebirthing-main .section-header h2 {
+    font-size: 2.5rem;
+    color: #2D3748;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.rebirthing-main .section-header p {
+    font-size: 1.2rem;
+    color: #4A5568;
+    line-height: 1.6;
+}
+
+/* Responsive Design for Rebirthing Page */
+@media (max-width: 768px) {
+    .rebirthing-hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .rebirthing-hero .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .rebirthing-subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .process-timeline .timeline-item,
+    .event-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .process-timeline .timeline-icon {
+        margin: 0 auto;
+    }
+    
+    .event-date {
+        margin: 0 auto;
+    }
+    
+    .rebirthing-grid,
+    .ceremonies-grid,
+    .benefits-grid,
+    .testimonials-grid,
+    .participation-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .rebirthing-main .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .rebirthing-main .btn-primary,
+    .rebirthing-main .btn-secondary {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* =============================================
+   GOLDEN ROUTES PAGE STYLES
+============================================= */
+
+.goldenroutes-main {
+    padding-top: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Hero Section */
+.goldenroutes-hero {
+    background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 50%, #F7DC6F 100%);
+    padding: 4rem 2rem;
+    color: #2C3E50;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.goldenroutes-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.goldenroutes-hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.goldenroutes-hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    object-fit: cover;
+}
+
+.goldenroutes-hero .hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #B8860B, #DAA520);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.goldenroutes-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #2C3E50;
+    font-style: italic;
+}
+
+.goldenroutes-location {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #34495E;
+}
+
+.goldenroutes-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.goldenroutes-badges .badge.primary {
+    background: linear-gradient(45deg, #B8860B, #DAA520);
+    color: white;
+}
+
+.goldenroutes-badges .badge.secondary {
+    background: rgba(44, 62, 80, 0.1);
+    color: #2C3E50;
+    border: 1px solid rgba(44, 62, 80, 0.3);
+}
+
+.goldenroutes-badges .badge.accent {
+    background: linear-gradient(45deg, #E67E22, #F39C12);
+    color: white;
+}
+
+/* Mission Overview Section */
+.mission-overview {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #fdfefe 0%, #f8f9fa 100%);
+}
+
+.mission-overview .overview-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mission-overview .intro-text {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #2C3E50;
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #D4AF37;
+}
+
+.mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.mission-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid #D4AF37;
+}
+
+.mission-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.mission-card .card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.mission-card h3 {
+    color: #2C3E50;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.mission-card p {
+    color: #5D6D7E;
+    line-height: 1.6;
+}
+
+/* Centers Section */
+.centers-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #F7DC6F 0%, #F4D03F 100%);
+    color: #2C3E50;
+}
+
+.centers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.center-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.center-card:hover {
+    transform: translateY(-5px);
+}
+
+.center-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+    text-align: center;
+}
+
+.center-info h3 {
+    color: #2C3E50;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.center-description {
+    color: #5D6D7E;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.center-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 10px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #B8860B;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #5D6D7E;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.center-routes h4 {
+    color: #2C3E50;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.route-tag {
+    display: inline-block;
+    background: #D4AF37;
+    color: white;
+    padding: 0.3rem 0.8rem;
+    margin: 0.2rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Process Timeline Section */
+.goldenroutes-main .process-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    color: white;
+}
+
+.goldenroutes-main .process-timeline {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+}
+
+.goldenroutes-main .process-timeline .timeline-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.goldenroutes-main .process-timeline .timeline-icon {
+    font-size: 3rem;
+    background: rgba(212, 175, 55, 0.2);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #D4AF37;
+}
+
+.goldenroutes-main .process-timeline .timeline-content h3 {
+    color: #F4D03F;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.goldenroutes-main .process-timeline .timeline-content p {
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* Routes Section */
+.routes-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #fdfefe 0%, #f8f9fa 100%);
+}
+
+.routes-map {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+}
+
+.route-item {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-left: 5px solid #D4AF37;
+}
+
+.route-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.route-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.route-header h3 {
+    color: #2C3E50;
+    font-size: 1.4rem;
+}
+
+.route-status {
+    padding: 0.3rem 1rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.route-status.active {
+    background: #27AE60;
+    color: white;
+}
+
+.route-status.planning {
+    background: #F39C12;
+    color: white;
+}
+
+.route-path {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.origin {
+    color: #2C3E50;
+    background: rgba(212, 175, 55, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}
+
+.arrow {
+    color: #D4AF37;
+    font-size: 1.5rem;
+}
+
+.destination {
+    color: #2C3E50;
+    background: rgba(39, 174, 96, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}
+
+.route-item p {
+    color: #5D6D7E;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.route-stats {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.route-stats .stat {
+    background: #ECF0F1;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #2C3E50;
+}
+
+/* Impact Section */
+.impact-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%);
+    color: #2C3E50;
+}
+
+.impact-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.impact-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.impact-card:hover {
+    transform: translateY(-5px);
+}
+
+.impact-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #B8860B;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.impact-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2C3E50;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.impact-card p {
+    color: #5D6D7E;
+    line-height: 1.6;
+}
+
+/* Testimonials Section for Golden Routes */
+.goldenroutes-main .testimonials-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    color: white;
+}
+
+.goldenroutes-main .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.goldenroutes-main .testimonial-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.goldenroutes-main .testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.goldenroutes-main .testimonial-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.goldenroutes-main .testimonial-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.goldenroutes-main .author-name {
+    font-weight: bold;
+    color: #F4D03F;
+}
+
+.goldenroutes-main .author-location {
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* Involvement Section */
+.involvement-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135d, #fdfefe 0%, #f8f9fa 100%);
+}
+
+.involvement-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.option-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-top: 4px solid #D4AF37;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.option-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+    text-align: center;
+}
+
+.option-card h3 {
+    color: #2C3E50;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.option-card p {
+    color: #5D6D7E;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.requirements {
+    background: #F8F9FA;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.requirements h4 {
+    color: #2C3E50;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+}
+
+.req {
+    display: block;
+    color: #5D6D7E;
+    margin: 0.3rem 0;
+    font-size: 0.9rem;
+    padding-left: 1rem;
+}
+
+/* Vision Section */
+.vision-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #F7DC6F 0%, #F4D03F 100%);
+    color: #2C3E50;
+}
+
+.vision-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.vision-goals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.goal-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.goal-card:hover {
+    transform: translateY(-5px);
+}
+
+.goal-card h3 {
+    color: #2C3E50;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.goal-card p {
+    color: #5D6D7E;
+    line-height: 1.6;
+}
+
+/* Contact Section for Golden Routes */
+.goldenroutes-main .contact-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    color: white;
+    text-align: center;
+}
+
+.goldenroutes-main .contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.goldenroutes-main .contact-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.goldenroutes-main .contact-info h3 {
+    color: #F4D03F;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.goldenroutes-main .contact-details {
+    margin: 1.5rem 0;
+}
+
+.goldenroutes-main .contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.goldenroutes-main .contact-icon {
+    font-size: 1.5rem;
+}
+
+.goldenroutes-main .btn-primary {
+    background: linear-gradient(45deg, #D4AF37, #F4D03F);
+    color: #2C3E50;
+}
+
+.goldenroutes-main .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+.goldenroutes-main .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.goldenroutes-main .btn-secondary:hover {
+    background: white;
+    color: #2C3E50;
+}
+
+/* Quote Section for Golden Routes */
+.goldenroutes-main .quote-section {
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #fdfefe 0%, #f8f9fa 100%);
+    text-align: center;
+}
+
+.goldenroutes-quote {
+    background: white;
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #D4AF37;
+    font-style: italic;
+}
+
+.goldenroutes-quote p {
+    font-size: 1.5rem;
+    color: #2C3E50;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.goldenroutes-quote cite {
+    color: #5D6D7E;
+    font-size: 1.1rem;
+}
+
+/* Section Headers for Golden Routes Page */
+.goldenroutes-main .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.goldenroutes-main .section-header h2 {
+    font-size: 2.5rem;
+    color: #2C3E50;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.goldenroutes-main .section-header p {
+    font-size: 1.2rem;
+    color: #5D6D7E;
+    line-height: 1.6;
+}
+
+/* Responsive Design for Golden Routes Page */
+@media (max-width: 768px) {
+    .goldenroutes-hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .goldenroutes-hero .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .goldenroutes-subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .goldenroutes-main .process-timeline .timeline-item,
+    .center-stats {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .goldenroutes-main .process-timeline .timeline-icon {
+        margin: 0 auto;
+    }
+    
+    .route-path {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .mission-grid,
+    .centers-grid,
+    .routes-map,
+    .impact-stats,
+    .testimonials-grid,
+    .involvement-options,
+    .vision-goals {
+        grid-template-columns: 1fr;
+    }
+    
+    .goldenroutes-main .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .goldenroutes-main .btn-primary,
+    .goldenroutes-main .btn-secondary {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* =============================================
+   ONLINE SADHANA PAGE STYLES
+============================================= */
+
+.onlinesadhana-main {
+    padding-top: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Hero Section */
+.onlinesadhana-hero {
+    background: linear-gradient(135deg, #6A1B9A 0%, #8E24AA 50%, #AB47BC 100%);
+    padding: 4rem 2rem;
+    color: white;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.onlinesadhana-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.onlinesadhana-hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.onlinesadhana-hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+}
+
+.onlinesadhana-hero .hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    background: linear-gradient(45deg, #E1BEE7, #F3E5F5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.onlinesadhana-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+.onlinesadhana-location {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+.onlinesadhana-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.onlinesadhana-badges .badge.primary {
+    background: linear-gradient(45deg, #8E24AA, #AB47BC);
+    color: white;
+}
+
+.onlinesadhana-badges .badge.secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.onlinesadhana-badges .badge.accent {
+    background: linear-gradient(45deg, #E91E63, #F06292);
+    color: white;
+}
+
+/* Sadhana Overview Section */
+.sadhana-overview {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+}
+
+.sadhana-overview .overview-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sadhana-overview .intro-text {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #4A148C;
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #8E24AA;
+}
+
+.sadhana-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.sadhana-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid #8E24AA;
+}
+
+.sadhana-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.sadhana-card .card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.sadhana-card h3 {
+    color: #4A148C;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.sadhana-card p {
+    color: #6A1B9A;
+    line-height: 1.6;
+}
+
+/* Schedule Section */
+.schedule-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #4A148C 0%, #6A1B9A 100%);
+    color: white;
+}
+
+.schedule-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.schedule-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.schedule-card:hover {
+    transform: translateY(-5px);
+}
+
+.schedule-day {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #E1BEE7;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.schedule-time {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #F3E5F5;
+    margin-bottom: 1rem;
+}
+
+.schedule-card h3 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.schedule-details p {
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.practice-elements {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+.element {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.instructor-info {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.instructor {
+    font-style: italic;
+    color: #E1BEE7;
+    font-size: 0.9rem;
+}
+
+/* Benefits Section for Online Sadhana */
+.onlinesadhana-main .benefits-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+}
+
+.onlinesadhana-main .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.onlinesadhana-main .benefit-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-left: 5px solid #8E24AA;
+}
+
+.onlinesadhana-main .benefit-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.onlinesadhana-main .benefit-card h3 {
+    color: #4A148C;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.onlinesadhana-main .benefit-card p {
+    color: #6A1B9A;
+    line-height: 1.6;
+}
+
+/* Join Steps Section */
+.join-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+}
+
+.join-steps {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+}
+
+.step-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-left: 5px solid #8E24AA;
+}
+
+.step-card:hover {
+    transform: translateY(-3px);
+}
+
+.step-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #8E24AA;
+    background: rgba(142, 36, 170, 0.1);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #8E24AA;
+}
+
+.step-content h3 {
+    color: #4A148C;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.step-content p {
+    color: #6A1B9A;
+    line-height: 1.6;
+}
+
+/* Technology Section */
+.tech-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #4A148C 0%, #6A1B9A 100%);
+    color: white;
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.tech-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.tech-card:hover {
+    transform: translateY(-5px);
+}
+
+.tech-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.tech-card h3 {
+    color: #E1BEE7;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.tech-card p {
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* Monthly Themes Section */
+.themes-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+}
+
+.themes-calendar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.theme-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-top: 4px solid #8E24AA;
+}
+
+.theme-card:hover {
+    transform: translateY(-5px);
+}
+
+.theme-month {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #8E24AA;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.theme-card h3 {
+    color: #4A148C;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.theme-card p {
+    color: #6A1B9A;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.theme-focus {
+    background: rgba(142, 36, 170, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #4A148C;
+    font-weight: bold;
+}
+
+/* Stories Section */
+.stories-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #4A148C 0%, #6A1B9A 100%);
+    color: white;
+}
+
+.stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.story-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.story-card:hover {
+    transform: translateY(-5px);
+}
+
+.story-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.story-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.story-author .author-name {
+    font-weight: bold;
+    color: #E1BEE7;
+}
+
+.story-author .author-location {
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* Tips Section */
+.tips-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tip-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-left: 5px solid #8E24AA;
+}
+
+.tip-card:hover {
+    transform: translateY(-3px);
+}
+
+.tip-card h3 {
+    color: #4A148C;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.tip-card p {
+    color: #6A1B9A;
+    line-height: 1.6;
+}
+
+/* Contact Section for Online Sadhana */
+.onlinesadhana-main .contact-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #4A148C 0%, #6A1B9A 100%);
+    color: white;
+    text-align: center;
+}
+
+.onlinesadhana-main .contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.onlinesadhana-main .contact-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.onlinesadhana-main .contact-info h3 {
+    color: #E1BEE7;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.onlinesadhana-main .contact-details {
+    margin: 1.5rem 0;
+}
+
+.onlinesadhana-main .contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.onlinesadhana-main .contact-icon {
+    font-size: 1.5rem;
+}
+
+.onlinesadhana-main .btn-primary {
+    background: linear-gradient(45deg, #8E24AA, #AB47BC);
+    color: white;
+}
+
+.onlinesadhana-main .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(142, 36, 170, 0.4);
+}
+
+.onlinesadhana-main .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.onlinesadhana-main .btn-secondary:hover {
+    background: white;
+    color: #4A148C;
+}
+
+/* Quote Section for Online Sadhana */
+.onlinesadhana-main .quote-section {
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    text-align: center;
+}
+
+.onlinesadhana-quote {
+    background: white;
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #8E24AA;
+    font-style: italic;
+}
+
+.onlinesadhana-quote p {
+    font-size: 1.5rem;
+    color: #4A148C;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.onlinesadhana-quote cite {
+    color: #6A1B9A;
+    font-size: 1.1rem;
+}
+
+/* Section Headers for Online Sadhana Page */
+.onlinesadhana-main .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.onlinesadhana-main .section-header h2 {
+    font-size: 2.5rem;
+    color: #4A148C;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.onlinesadhana-main .section-header p {
+    font-size: 1.2rem;
+    color: #6A1B9A;
+    line-height: 1.6;
+}
+
+/* Responsive Design for Online Sadhana Page */
+@media (max-width: 768px) {
+    .onlinesadhana-hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .onlinesadhana-hero .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .onlinesadhana-subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .step-card,
+    .schedule-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .step-number {
+        margin: 0 auto;
+    }
+    
+    .sadhana-grid,
+    .schedule-grid,
+    .benefits-grid,
+    .join-steps,
+    .tech-grid,
+    .themes-calendar,
+    .stories-grid,
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .onlinesadhana-main .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .onlinesadhana-main .btn-primary,
+    .onlinesadhana-main .btn-secondary {
+        width: 100%;
+        max-width: 300px;
     }
 }
 
