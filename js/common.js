@@ -22,6 +22,31 @@ function insertYogiQuote(phrase, author) {
 // Dynamically insert header and footer for all pages
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Fix all relative links for GitHub Pages
+    if (window.location.hostname.includes('github.io')) {
+        const links = document.querySelectorAll('a[href^="pages/"], a[href="index.html"], a[href="../"], a[href="./"]');
+        links.forEach(link => {
+            let href = link.getAttribute('href');
+            
+            // Convert relative paths to absolute GitHub Pages paths
+            if (href.startsWith('pages/')) {
+                link.setAttribute('href', '/ACIKY/' + href);
+            } else if (href === 'index.html' || href === '../' || href === './') {
+                link.setAttribute('href', '/ACIKY/');
+            } else if (href.startsWith('../')) {
+                // Handle relative paths from subdirectories
+                const depth = (href.match(/\.\.\//g) || []).length;
+                const remainingPath = href.replace(/\.\.\//g, '');
+                if (remainingPath) {
+                    link.setAttribute('href', '/ACIKY/' + remainingPath);
+                } else {
+                    link.setAttribute('href', '/ACIKY/');
+                }
+            }
+        });
+        console.log('GitHub Pages links updated');
+    }
+    
     // Use requestAnimationFrame to defer heavy DOM operations
     requestAnimationFrame(() => {
         // Header
@@ -31,12 +56,18 @@ document.addEventListener('DOMContentLoaded', function() {
         let homeLink = 'index.html';
         let imagePath = 'images/';
         
+        // Check if we're on GitHub Pages
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        
         // Count directory depth by counting slashes and removing the filename
         const pathParts = currentPath.split('/').filter(part => part !== '');
         // Remove the filename (last part) if it ends with .html
         const dirDepth = pathParts.length - (pathParts[pathParts.length - 1]?.includes('.html') ? 1 : 0);
         
-        if (dirDepth > 0) {
+        if (isGitHubPages) {
+            homeLink = '/ACIKY/';
+            imagePath = '/ACIKY/images/';
+        } else if (dirDepth > 0) {
             const prefix = '../'.repeat(dirDepth);
             homeLink = prefix;
             imagePath = prefix + 'images/';
@@ -309,10 +340,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Determine the correct path prefix based on current location
         let pagePrefix = 'pages/';
+        let rootPrefix = '';
+        
+        // Check if we're on GitHub Pages
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        if (isGitHubPages) {
+            rootPrefix = '/ACIKY/';
+            pagePrefix = '/ACIKY/pages/';
+        }
+        
         if (dirDepth === 1) {
-            pagePrefix = '';  // We're in pages directory
+            pagePrefix = isGitHubPages ? '/ACIKY/pages/' : '';  // We're in pages directory
         } else if (dirDepth === 2) {
-            pagePrefix = '../';  // We're in pages/subdirectory (like pages/cards/)
+            pagePrefix = isGitHubPages ? '/ACIKY/pages/' : '../';  // We're in pages/subdirectory (like pages/cards/)
         }
         
         navScroll.innerHTML = `
