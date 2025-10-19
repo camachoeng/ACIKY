@@ -317,6 +317,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         navScroll.innerHTML = `
             <nav>
+                <button class="mobile-menu-toggle" aria-label="Abrir menú">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
                 <ul>
                     <li><a href="${pagePrefix}schedule.html">Clases</a></li>
                     <li class="has-submenu">
@@ -337,6 +342,76 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Insert all elements at once to minimize reflows
         document.body.insertBefore(fragment, document.body.firstChild);
+
+        // Add mobile menu functionality
+        setTimeout(() => {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navMenu = document.querySelector('nav ul');
+            
+            if (mobileMenuToggle && navMenu) {
+                // Toggle mobile menu
+                mobileMenuToggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    mobileMenuToggle.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                    
+                    // Prevent body scroll when menu is open
+                    if (navMenu.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('nav') && navMenu.classList.contains('active')) {
+                        mobileMenuToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                // Close menu when clicking on links (except submenu toggles)
+                const navLinks = navMenu.querySelectorAll('a:not(.has-submenu > a)');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenuToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+                
+                // Handle submenu toggles
+                const submenuToggles = navMenu.querySelectorAll('.has-submenu > a');
+                submenuToggles.forEach(toggle => {
+                    toggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const parentLi = toggle.closest('.has-submenu');
+                        if (parentLi) {
+                            parentLi.classList.toggle('open');
+                            
+                            // Close other open submenus
+                            const openMenus = navMenu.querySelectorAll('.has-submenu.open');
+                            openMenus.forEach(menu => {
+                                if (menu !== parentLi) {
+                                    menu.classList.remove('open');
+                                }
+                            });
+                        }
+                    });
+                });
+                
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                        mobileMenuToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        }, 100);
 
         // Defer menu setup to avoid blocking
         setTimeout(() => {
