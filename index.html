@@ -193,7 +193,15 @@
     <script src="js/questions.js"></script>
     <script src="js/app.js"></script>
     <script>
-        insertYogiQuote("Si no puedes ver a Dios en todo, no puedes ver a Dios en nada.", "Yogi Bhajan");
+        // Safely call insertYogiQuote when available to avoid ReferenceError if scripts load differently
+        (function waitForInsert() {
+            if (typeof insertYogiQuote === 'function') {
+                insertYogiQuote("Si no puedes ver a Dios en todo, no puedes ver a Dios en nada.", "Yogi Bhajan");
+            } else {
+                // Try again shortly
+                setTimeout(waitForInsert, 50);
+            }
+        })();
     </script>
 </body>
 </html>
