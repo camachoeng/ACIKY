@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let homeLink = 'index.html';
         let imagePath = 'images/';
         
-    // Check if we're on GitHub Pages (variable declared earlier)
-    // reused `isGitHubPages` from above to avoid duplicate declaration
+        // Check if we're on GitHub Pages
+        const isGitHubPages = window.location.hostname.includes('github.io');
         
         // Count directory depth by counting slashes and removing the filename
         const pathParts = currentPath.split('/').filter(part => part !== '');
@@ -342,8 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let pagePrefix = 'pages/';
         let rootPrefix = '';
         
-        // Check if we're on GitHub Pages
-        const isGitHubPages = window.location.hostname.includes('github.io');
+        // Use isGitHubPages variable declared earlier
         if (isGitHubPages) {
             rootPrefix = '/ACIKY/';
             pagePrefix = '/ACIKY/pages/';
