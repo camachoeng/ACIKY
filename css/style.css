@@ -1190,8 +1190,90 @@ header h1 {
     flex: 0 1 auto;
 }
 
+/* Auth buttons in header */
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    margin-right: 20px;
+    align-items: center;
+}
+
+.btn-login,
+.btn-register {
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.btn-login {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-login:hover {
+    background: white;
+    color: #2c5f4f;
+}
+
+.btn-register {
+    background: white;
+    color: #2c5f4f;
+    border: 2px solid white;
+}
+
+.btn-register:hover {
+    background: #2c5f4f;
+    color: white;
+    border-color: white;
+}
+
+/* User menu in header */
+.user-menu {
+    display: flex;
+    gap: 15px;
+    margin-left: auto;
+    margin-right: 20px;
+    align-items: center;
+    color: white;
+}
+
+.user-menu span {
+    font-weight: 600;
+}
+
+.btn-logout {
+    padding: 8px 16px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.btn-logout:hover {
+    background: white;
+    color: #2c5f4f;
+}
+
 /* Mobile header responsive styles */
 @media (max-width: 768px) {
+    /* Hide auth buttons in header on mobile */
+    .auth-buttons {
+        display: none !important;
+    }
+    
+    .user-menu {
+        display: none !important;
+    }
+    
     header h1 {
         font-size: 1.4rem;
         padding: 8px;
@@ -1369,6 +1451,32 @@ nav ul li {
         box-shadow: none;
     }
     
+    /* Mobile-only auth menu items */
+    .mobile-only {
+        display: list-item !important;
+    }
+    
+    /* Hide desktop-only items on mobile */
+    .desktop-only {
+        display: none !important;
+    }
+    
+    .auth-menu-item a {
+        font-weight: 700 !important;
+        color: #2c5f4f !important;
+        background: linear-gradient(135deg, #f0f8f0 0%, #ffffff 100%) !important;
+    }
+    
+    .auth-menu-item:first-of-type {
+        margin-top: 20px;
+        border-top: 2px solid #6b9b6b;
+    }
+    
+    .auth-menu-item a:hover {
+        background: linear-gradient(135deg, #6b9b6b 0%, #4d7a4d 100%) !important;
+        color: white !important;
+    }
+    
     /* Mobile submenu styles */
     .has-submenu .submenu {
         position: static;
@@ -1422,6 +1530,14 @@ nav ul li {
     .mobile-menu-toggle {
         display: none;
     }
+    
+    /* Hide mobile-only menu items on desktop */
+    .mobile-only {
+        display: none !important;
+    }
+    
+    /* Hide desktop-only menu items on mobile (already in mobile media query) */
+    /* Desktop-only items are visible here */
     
     nav ul {
         display: flex;

@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentPath = window.location.pathname;
         let homeLink = 'index.html';
         let imagePath = 'images/';
+        let pagePrefix = 'pages/';
         
         // Check if we're on GitHub Pages
         const isGitHubPages = window.location.hostname.includes('github.io');
@@ -67,15 +68,31 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isGitHubPages) {
             homeLink = '/ACIKY/';
             imagePath = '/ACIKY/images/';
+            pagePrefix = '/ACIKY/pages/';
         } else if (dirDepth > 0) {
             const prefix = '../'.repeat(dirDepth);
             homeLink = prefix;
             imagePath = prefix + 'images/';
+            // For auth buttons: if we're in pages/ directory, don't add prefix
+            // If we're deeper (like pages/cards/), use the prefix
+            if (dirDepth === 1) {
+                pagePrefix = '';  // We're in pages/, link to same directory
+            } else {
+                pagePrefix = prefix;  // We're deeper, use ../
+            }
         }
         
         header.innerHTML = `
             <a id="header-logo-link" href="${homeLink}" title="Inicio">ACIKY</a>
             <h1>ACIKY - Yoga para Todos</h1>
+            <div class="auth-buttons" id="authButtons">
+                <a href="${pagePrefix}login.html" class="btn-login">Iniciar Sesión</a>
+                <a href="${pagePrefix}register.html" class="btn-register">Registrarse</a>
+            </div>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <span id="userDisplayName"></span>
+                <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
+            </div>
         `;
         
         // Use document fragment to minimize reflows
@@ -338,20 +355,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const navScroll = document.createElement('div');
         navScroll.className = 'nav-scroll';
         
-        // Determine the correct path prefix based on current location
-        let pagePrefix = 'pages/';
-        let rootPrefix = '';
+        // Determine the correct path prefix for navigation based on current location
+        // Use a different variable to avoid overwriting pagePrefix from header
+        let navPrefix = pagePrefix;  // Start with same value as header
         
-        // Use isGitHubPages variable declared earlier
-        if (isGitHubPages) {
-            rootPrefix = '/ACIKY/';
-            pagePrefix = '/ACIKY/pages/';
-        }
-        
+        // Adjust navPrefix for navigation links (different from header auth buttons)
         if (dirDepth === 1) {
-            pagePrefix = isGitHubPages ? '/ACIKY/pages/' : '';  // We're in pages directory
+            navPrefix = isGitHubPages ? '/ACIKY/pages/' : '';  // We're in pages directory
         } else if (dirDepth === 2) {
-            pagePrefix = isGitHubPages ? '/ACIKY/pages/' : '../';  // We're in pages/subdirectory (like pages/cards/)
+            navPrefix = isGitHubPages ? '/ACIKY/pages/' : '../';  // We're in pages/subdirectory (like pages/cards/)
         }
         
         navScroll.innerHTML = `
@@ -362,16 +374,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span class="hamburger-line"></span>
                 </button>
                 <ul>
-                    <li><a href="${pagePrefix}schedule.html">Clases</a></li>
-                    <li class="has-submenu">
+                    <li><a href="${navPrefix}schedule.html">Clases</a></li>
+                    <li class="has-submenu desktop-only">
                         <a>Galería</a>
                         <ul class="submenu">
-                            <li><a href="${pagePrefix}gallery.html">Posturas</a></li>
+                            <li><a href="${navPrefix}gallery.html">Posturas</a></li>
                         </ul>
                     </li>
-                    <li><a href="${pagePrefix}blog.html">Blog</a></li>
-                    <li><a href="${pagePrefix}testimonials.html">Testimonios</a></li>
-                    <li><a href="${pagePrefix}about.html">Sobre Nosotros</a></li>
+                    <li class="mobile-only"><a href="${navPrefix}gallery.html">Posturas</a></li>
+                    <li><a href="${navPrefix}blog.html">Blog</a></li>
+                    <li><a href="${navPrefix}testimonials.html">Testimonios</a></li>
+                    <li><a href="${navPrefix}about.html">Sobre Nosotros</a></li>
+                    <li class="mobile-only auth-menu-item"><a href="${pagePrefix}login.html">Iniciar Sesión</a></li>
+                    <li class="mobile-only auth-menu-item"><a href="${pagePrefix}register.html">Registrarse</a></li>
                 </ul>
             </nav>
         `;
