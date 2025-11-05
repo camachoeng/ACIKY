@@ -1,9 +1,9 @@
 // Authentication JavaScript for ACIKY Yoga Website
-// Connects to the backend API at http://localhost:3000
+// Connects to the backend API at http://127.0.0.1:3000
 // Version 3 - WITH DOMContentLoaded wrapper and null checks
 console.log('🔵 Auth.js loaded - VERSION 3');
 
-const API_URL = 'http://localhost:3000/api/auth';
+const API_URL = 'http://127.0.0.1:3000/api/auth';
 
 // Helper function to show error messages
 function showError(message) {
@@ -93,6 +93,7 @@ if (loginForm) {
         submitBtn.textContent = 'Iniciando sesión...';
         
         try {
+            console.log('🔐 Attempting login...');
             const response = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: {
@@ -102,18 +103,25 @@ if (loginForm) {
                 body: JSON.stringify({ email, password })
             });
             
+            console.log('📡 Login response status:', response.status);
+            console.log('🍪 Response headers:', response.headers);
+            
             const data = await response.json();
+            console.log('📦 Login response data:', data);
             
             if (data.success) {
-                showSuccess('¡Inicio de sesión exitoso! Redirigiendo...');
+                showSuccess('¡Inicio de sesión exitoso! Redirigiendo a tu panel...');
                 
                 // Store user info in localStorage
                 localStorage.setItem('user', JSON.stringify(data.user));
                 
-                // Redirect to home page after 1 second
+                console.log('✅ Login successful, redirecting in 1.5s...');
+                
+                // Redirect to dashboard after 1.5 seconds to ensure session cookie is set
                 setTimeout(() => {
-                    window.location.href = '../index.html';
-                }, 1000);
+                    console.log('🔄 Redirecting to dashboard.html');
+                    window.location.href = 'dashboard.html';
+                }, 1500);
             } else {
                 showError(data.message || 'Correo o contraseña incorrectos');
                 submitBtn.disabled = false;
@@ -280,22 +288,32 @@ async function checkAuth() {
     }
 }
 
-// Logout function
+// Logout function - works from any page
 async function logout() {
     try {
-        const response = await fetch(`${API_URL}/logout`, {
+        await fetch(`${API_URL}/logout`, {
             method: 'POST',
             credentials: 'include'
         });
+        localStorage.removeItem('user');
         
-        const data = await response.json();
-        
-        if (data.success) {
-            localStorage.removeItem('user');
-            window.location.href = 'pages/login.html';
+        // Determine correct path to login.html based on current location
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('/pages/')) {
+            window.location.href = 'login.html'; // Already in pages directory
+        } else {
+            window.location.href = 'pages/login.html'; // In root
         }
     } catch (error) {
         console.error('Logout error:', error);
+        localStorage.removeItem('user');
+        // Still redirect even if backend fails
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('/pages/')) {
+            window.location.href = 'login.html';
+        } else {
+            window.location.href = 'pages/login.html';
+        }
     }
 }
 

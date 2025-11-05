@@ -29,50 +29,46 @@
                         <td data-label="Hora">10:00 AM</td>
                         <td data-label="Clase">Kundalini Yoga</td>
                         <td data-label="Instructor">Ady Nam (Betty)</td>
-                        <td><button class="remind-btn">Recordar</button></td>
+                        <td><button class="remind-btn" data-instructor="ady-nam">Reservar</button></td>
                     </tr>
                     <tr>
                         <td data-label="Día">Martes</td>
                         <td data-label="Hora">10:00 AM</td>
                         <td data-label="Clase">Kundalini Yoga</td>
                         <td data-label="Instructor">Mahan Devi (Claudia)</td>
-                        <td><button class="remind-btn">Recordar</button></td>
+                        <td><button class="remind-btn" data-instructor="mahan-devi">Reservar</button></td>
                     </tr>
                     <tr>
                         <td data-label="Día">Miércoles</td>
                         <td data-label="Hora">10:00 AM</td>
                         <td data-label="Clase">Kundalini Yoga</td>
                         <td data-label="Instructor">Hari Mehtab (Pedro)</td>
-                        <td><button class="remind-btn">Recordar</button></td>
+                        <td><button class="remind-btn" data-instructor="hari-mehtab">Reservar</button></td>
                     </tr>
                     <tr>
                         <td data-label="Día">Jueves</td>
                         <td data-label="Hora">10:00 AM</td>
                         <td data-label="Clase">Kundalini Yoga</td>
                         <td data-label="Instructor">Chand Krishan (Tania)</td>
-                        <td><button class="remind-btn">Recordar</button></td>
+                        <td><button class="remind-btn" data-instructor="chand-krishan">Reservar</button></td>
                     </tr>
                     <tr>
                         <td data-label="Día">Jueves</td>
                         <td data-label="Hora">11:11 AM</td>
                         <td data-label="Clase">Meditación</td>
                         <td data-label="Instructor">Chand Devpal (Raidel)</td>
-                        <td><button class="remind-btn">Recordar</button></td>
+                        <td><button class="remind-btn" data-instructor="chand-devpal">Reservar</button></td>
                     </tr>
                     <tr>
                         <td data-label="Día">Viernes</td>
                         <td data-label="Hora">10:00 AM</td>
                         <td data-label="Clase">Kundalini Yoga</td>
                         <td data-label="Instructor">Narayan Nam (Elizabeth)</td>
-                        <td><button class="remind-btn">Recordar</button></td>
+                        <td><button class="remind-btn" data-instructor="narayan-nam">Reservar</button></td>
                     </tr>
                 </tbody>
                 </table>
             </div>
-        </section>
-        <section id="reminders-section" class="blog-intro">
-            <h3>Recordatorios guardados</h3>
-            <ul id="reminders-list"></ul>
         </section>
     </main>
     <!-- Footer will be inserted by common.js -->
@@ -96,46 +92,43 @@
         });
     })();
 
-    // Add click event to 'Recordar' buttons
-    function renderReminders() {
-        const reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
-        const list = document.getElementById('reminders-list');
-        list.innerHTML = '';
-        if (reminders.length === 0) {
-            list.innerHTML = '<li>No hay recordatorios guardados.</li>';
-        } else {
-            reminders.forEach(function(reminder, idx) {
-                const li = document.createElement('li');
-                li.textContent = 'Recordatorio fijado para el ' + reminder.day + ' a las ' + reminder.hour;
-                const removeBtn = document.createElement('button');
-                removeBtn.textContent = 'Eliminar';
-                removeBtn.className = 'remove-reminder-btn';
-                removeBtn.onclick = function() {
-                    let remindersArr = JSON.parse(localStorage.getItem('reminders') || '[]');
-                    remindersArr.splice(idx, 1);
-                    localStorage.setItem('reminders', JSON.stringify(remindersArr));
-                    renderReminders();
-                };
-                li.appendChild(removeBtn);
-                list.appendChild(li);
-            });
-        }
-    }
-    document.querySelectorAll('.remind-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            const row = btn.closest('tr');
+    // Instructor WhatsApp numbers mapping
+    const instructorWhatsApp = {
+        'ady-nam': '5353962531',           // Define WhatsApp number for Ady Nam (Betty)
+        'mahan-devi': '5353020375',     // Mahan Devi (Claudia)
+        'hari-mehtab': '5358408299',       // Define WhatsApp number for Hari Mehtab (Pedro)
+        'chand-krishan': '5353200499',     // Define WhatsApp number for Chand Krishan (Tania)
+        'chand-devpal': '5353001446',      // Define WhatsApp number for Chand Devpal (Raidel)
+        'narayan-nam': '5350759360'     // Narayan Nam (Elizabeth)
+    };
+
+    // Add click event to 'Reservar' buttons
+    document.querySelectorAll('.remind-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const instructor = this.getAttribute('data-instructor');
+            const phoneNumber = instructorWhatsApp[instructor];
+            
+            if (!phoneNumber) {
+                alert('WhatsApp no disponible para este instructor. Por favor contacta a ACIKY directamente.');
+                return;
+            }
+            
+            // Get class details from the row
+            const row = this.closest('tr');
             const day = row.querySelector('td[data-label="Día"]').textContent.trim();
-            const hour = row.querySelector('td[data-label="Hora"]')?.textContent.trim();
-            // Save reminder to localStorage
-            let reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
-            reminders.push({ day, hour });
-            localStorage.setItem('reminders', JSON.stringify(reminders));
-            alert('Recordatorio fijado para el ' + day + ' a las ' + hour);
-            renderReminders();
+            const time = row.querySelector('td[data-label="Hora"]').textContent.trim();
+            const classType = row.querySelector('td[data-label="Clase"]').textContent.trim();
+            const instructorName = row.querySelector('td[data-label="Instructor"]').textContent.trim();
+            
+            // Create WhatsApp message
+            const message = `Hola ${instructorName}, me gustaría reservar para la clase de ${classType} del ${day} a las ${time}. ¡Gracias!`;
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Open WhatsApp in new tab
+            window.open(whatsappUrl, '_blank');
         });
     });
-    // Render reminders on page load
-    renderReminders();
+    
     </script>
 </body>
 </html>

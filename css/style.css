@@ -1,3 +1,98 @@
+/* --- Authentication Page Styles (login.html, register.html) --- */
+.auth-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+        
+.auth-container h2 {
+    text-align: center;
+    color: #2c5f4f;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+        
+.form-group input:focus {
+    outline: none;
+    border-color: #2c5f4f;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #2c5f4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-submit:hover {
+    background: #1f4539;
+}
+
+.btn-submit:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+        
+.error-message {
+    background: #fee;
+    color: #c33;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.success-message {
+    background: #efe;
+    color: #3c3;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.auth-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-links a {
+    color: #2c5f4f;
+    text-decoration: none;
+}
+        
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
 /* --- Activities Promo Grid Styles --- */
 /* Manual scroll controls wrapper for activities grid */
 .activities-scroll-controls {
@@ -1131,6 +1226,69 @@ p {
     margin-bottom: 1rem;
 }
 
+/* === Global Button Styles === */
+.btn-primary, .btn-secondary {
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #b3d9b3, #6b9b6b);
+    color: #2d5a29;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #6b9b6b, #4d7a4d);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(168, 213, 163, 0.3);
+}
+
+.btn-secondary {
+    background: #f9f9f6;
+    color: #6b9b6b;
+    border: 2px solid #6b9b6b;
+}
+
+.btn-secondary:hover {
+    background: #6b9b6b;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(168, 213, 163, 0.3);
+}
+
+/* Button variations for specific contexts */
+.cta-actions .btn-secondary,
+.rebirthing-main .hero-section .btn-secondary,
+.goldenroutes-main .hero-section .btn-secondary,
+.onlinesadhana-main .hero-section .btn-secondary,
+.festival-main .hero-section .btn-secondary,
+.retreats-main .hero-section .btn-secondary {
+    background: transparent;
+    color: #fff;
+    border-color: #fff;
+}
+
+.cta-actions .btn-secondary:hover,
+.rebirthing-main .hero-section .btn-secondary:hover,
+.goldenroutes-main .hero-section .btn-secondary:hover,
+.onlinesadhana-main .hero-section .btn-secondary:hover,
+.festival-main .hero-section .btn-secondary:hover,
+.retreats-main .hero-section .btn-secondary:hover {
+    background: #fff;
+    color: #6b9b6b;
+}
+/* === End Global Button Styles === */
+
 header {
     background: linear-gradient(to bottom, 
         rgba(107, 155, 107, 0.9) 0%, 
@@ -1244,6 +1402,25 @@ header h1 {
 
 .user-menu span {
     font-weight: 600;
+    padding: 0 5px;
+}
+
+.btn-dashboard {
+    padding: 8px 16px;
+    border-radius: 5px;
+    background: white;
+    color: #2c5f4f;
+    border: 2px solid white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.btn-dashboard:hover {
+    background: #2c5f4f;
+    color: white;
 }
 
 .btn-logout {
@@ -1256,6 +1433,10 @@ header h1 {
     font-weight: 600;
     transition: all 0.3s;
     font-size: 14px;
+    font-family: inherit;
+    line-height: normal;
+    margin: 0;
+    display: inline-block;
 }
 
 .btn-logout:hover {
@@ -1534,6 +1715,24 @@ nav ul li {
     /* Hide mobile-only menu items on desktop */
     .mobile-only {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        width: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        pointer-events: none !important;
+    }
+    
+    /* Specifically hide mobile auth buttons on desktop */
+    nav ul li.mobile-auth-buttons,
+    nav ul li.mobile-user-menu {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        width: 0 !important;
+        list-style: none !important;
     }
     
     /* Hide desktop-only menu items on mobile (already in mobile media query) */
@@ -1554,6 +1753,11 @@ nav ul li {
         height: auto;
         background: none;
     }
+}
+
+nav ul li.mobile-auth-buttons,
+nav ul li.mobile-user-menu, .mobile-only {
+        list-style: none !important;
 }
 
 nav a {
@@ -1935,7 +2139,7 @@ footer {
 }
 
 .amenity, .class-type {
-    background: linear-gradient(135deg, #b3d9b3, #7cb342);
+    background: linear-gradient(135deg, #b3d9b3, #6b9b6b);
     color: #2d5a29;
     padding: 0.4rem 0.8rem;
     border-radius: 15px;
@@ -1958,7 +2162,7 @@ footer {
 
 .contact-link {
     display: inline-flex;
-    align-items: center;
+    align-items: left;
     padding: 0.5rem 1rem;
     background: #f5f5f5;
     color: #6b9b6b;
@@ -1966,6 +2170,7 @@ footer {
     border-radius: 10px;
     transition: all 0.3s;
     font-size: 0.95em;
+    text-align: left;
 }
 
 .contact-link:hover {
@@ -1974,53 +2179,11 @@ footer {
     transform: translateX(5px);
 }
 
-.contact-link.whatsapp:hover {
-    background: #25d366;
-}
-
 .contact-actions {
     display: flex;
     gap: 1rem;
     margin-top: 2rem;
     flex-wrap: wrap;
-}
-
-.btn-primary, .btn-secondary {
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1em;
-    transition: all 0.3s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 150px;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #b3d9b3, #6b9b6b);
-    color: #2d5a29;
-    border: none;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, #6b9b6b, #4d7a4d);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(168, 213, 163, 0.3);
-}
-
-.btn-secondary {
-    background: #fff;
-    color: #6b9b6b;
-    border: 2px solid #6b9b6b;
-}
-
-.btn-secondary:hover {
-    background: #6b9b6b;
-    color: #2d5a29;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(168, 213, 163, 0.3);
 }
 
 .instructors-grid {
@@ -2064,17 +2227,6 @@ footer {
 .cta-actions .btn-primary:hover {
     background: #f0f8ff;
     transform: translateY(-3px);
-}
-
-.cta-actions .btn-secondary {
-    background: transparent;
-    color: #2d5a29;
-    border-color: #fff;
-}
-
-.cta-actions .btn-secondary:hover {
-    background: #fff;
-    color: #6b9b6b;
 }
 
 /* Responsive Design */
@@ -3376,17 +3528,6 @@ footer {
     transform: translateY(-3px);
 }
 
-.cta-actions .btn-secondary {
-    background: transparent;
-    color: #2d5a29;
-    border-color: #fff;
-}
-
-.cta-actions .btn-secondary:hover {
-    background: #fff;
-    color: #6b9b6b;
-}
-
 /* Community Stats */
 .community-stats {
     padding: 4rem 0;
@@ -3747,25 +3888,6 @@ footer {
     gap: 1rem;
     margin: 1rem 0;
     flex-wrap: wrap;
-}
-
-.contact-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: white;
-    color: #6b9b6b;
-    text-decoration: none;
-    border-radius: 8px;
-    border: 1px solid #6b9b6b;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.contact-link:hover {
-    background: #6b9b6b;
-    color: white;
 }
 
 .specialty {
@@ -5278,36 +5400,15 @@ footer {
     flex-wrap: wrap;
 }
 
-.btn-primary, .btn-secondary {
-    padding: 1rem 2rem;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    display: inline-block;
+.festival-main .btn-primary {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #8B4513;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.btn-primary {
-    background: linear-gradient(45deg, #FFD700, #FFA500);
-    color: #8B4513;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
+.festival-main .btn-primary:hover {
     box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
-}
-
-.btn-secondary {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-}
-
-.btn-secondary:hover {
-    background: white;
-    color: #8B4513;
 }
 
 /* Quote Section */
@@ -5420,7 +5521,7 @@ footer {
 
 /* Hero Section */
 .rebirthing-hero {
-    background: linear-gradient(135deg, #4A5568 0%, #2D3748 50%, #1A202C 100%);
+    background: linear-gradient(135deg, #6b9b6b 0%, #5a8f5a 50%, #4d7a4d 100%);
     padding: 4rem 2rem;
     color: white;
     min-height: 60vh;
@@ -5464,8 +5565,7 @@ footer {
     font-size: 3.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    background: linear-gradient(45deg, #E53E3E, #F56565, #FC8181);
+    background: white;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -5491,8 +5591,8 @@ footer {
 }
 
 .rebirthing-badges .badge.primary {
-    background: linear-gradient(45deg, #E53E3E, #F56565);
-    color: white;
+    background: linear-gradient(45deg, #b3d9b3, #7cb342);
+    color: #2d5a29;
 }
 
 .rebirthing-badges .badge.secondary {
@@ -5502,8 +5602,8 @@ footer {
 }
 
 .rebirthing-badges .badge.accent {
-    background: linear-gradient(45deg, #9F7AEA, #B794F6);
-    color: white;
+    background: linear-gradient(45deg, #90c695, #a8d5a8);
+    color: #2d5a29;
 }
 
 /* Rebirthing Overview Section */
@@ -5520,14 +5620,14 @@ footer {
 .rebirthing-overview .intro-text {
     font-size: 1.3rem;
     line-height: 1.8;
-    color: #2D3748;
+    color: #2d5a29;
     text-align: center;
     margin-bottom: 3rem;
     padding: 2rem;
     background: white;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #E53E3E;
+    border-left: 5px solid #6b9b6b;
 }
 
 .rebirthing-grid {
@@ -5544,7 +5644,7 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-top: 4px solid #E53E3E;
+    border-top: 4px solid #6b9b6b;
 }
 
 .rebirthing-card:hover {
@@ -5559,20 +5659,20 @@ footer {
 }
 
 .rebirthing-card h3 {
-    color: #2D3748;
+    color: #2d5a29;
     margin-bottom: 1rem;
     font-size: 1.4rem;
 }
 
 .rebirthing-card p {
-    color: #4A5568;
+    color: #4d7a4d;
     line-height: 1.6;
 }
 
 /* Process Timeline Section */
 .process-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
+    background: linear-gradient(135deg, #6b9b6b 0%, #5a8f5a 100%);
     color: white;
 }
 
@@ -5596,18 +5696,18 @@ footer {
 
 .process-timeline .timeline-icon {
     font-size: 3rem;
-    background: rgba(229, 62, 62, 0.2);
+    background: rgba(179, 217, 179, 0.2);
     width: 80px;
     height: 80px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid #E53E3E;
+    border: 3px solid #b3d9b3;
 }
 
 .process-timeline .timeline-content h3 {
-    color: #F56565;
+    color: #b3d9b3;
     margin-bottom: 0.5rem;
     font-size: 1.4rem;
 }
@@ -5638,7 +5738,7 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease;
-    border-left: 5px solid #E53E3E;
+    border-left: 5px solid #6b9b6b;
 }
 
 .ceremony-card:hover {
@@ -5653,13 +5753,13 @@ footer {
 }
 
 .ceremony-card h3 {
-    color: #2D3748;
+    color: #2d5a29;
     margin-bottom: 1rem;
     font-size: 1.4rem;
 }
 
 .ceremony-card p {
-    color: #4A5568;
+    color: #4d7a4d;
     line-height: 1.6;
     margin-bottom: 1.5rem;
 }
@@ -5672,11 +5772,11 @@ footer {
 }
 
 .feature {
-    background: #EDF2F7;
+    background: #f0f8ff;
     padding: 0.5rem;
     border-radius: 8px;
     font-size: 0.9rem;
-    color: #2D3748;
+    color: #2d5a29;
 }
 
 /* Benefits Section for Rebirthing */
@@ -5699,7 +5799,7 @@ footer {
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border-left: 5px solid #E53E3E;
+    border-left: 5px solid #6b9b6b;
 }
 
 .rebirthing-main .benefit-card:hover {
@@ -5708,13 +5808,13 @@ footer {
 }
 
 .rebirthing-main .benefit-card h3 {
-    color: #2D3748;
+    color: #2d5a29;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
 
 .rebirthing-main .benefit-card p {
-    color: #4A5568;
+    color: #4d7a4d;
     line-height: 1.6;
 }
 
@@ -5741,7 +5841,7 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     align-items: center;
     transition: transform 0.3s ease;
-    border-left: 5px solid #E53E3E;
+    border-left: 5px solid #6b9b6b;
 }
 
 .event-card:hover {
@@ -5751,7 +5851,7 @@ footer {
 
 .event-date {
     text-align: center;
-    background: linear-gradient(135deg, #E53E3E, #F56565);
+    background: linear-gradient(135deg, #6b9b6b, #7cb342);
     color: white;
     padding: 1rem;
     border-radius: 12px;
@@ -5774,13 +5874,13 @@ footer {
 }
 
 .event-info h3 {
-    color: #2D3748;
+    color: #2d5a29;
     margin-bottom: 0.5rem;
     font-size: 1.3rem;
 }
 
 .event-info p {
-    color: #4A5568;
+    color: #4d7a4d;
     line-height: 1.6;
     margin-bottom: 1rem;
 }
@@ -5799,7 +5899,7 @@ footer {
 /* Testimonials Section */
 .testimonials-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
+    background: linear-gradient(135deg, #6b9b6b 0%, #5a8f5a 100%);
     color: white;
 }
 
@@ -5838,7 +5938,7 @@ footer {
 
 .author-name {
     font-weight: bold;
-    color: #F56565;
+    color: #b3d9b3;
 }
 
 .author-location {
@@ -5867,7 +5967,7 @@ footer {
     text-align: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border-top: 4px solid #2D3748;
+    border-top: 4px solid #6b9b6b;
 }
 
 .participation-card:hover {
@@ -5881,20 +5981,20 @@ footer {
 }
 
 .participation-card h3 {
-    color: #2D3748;
+    color: #2d5a29;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
 
 .participation-card p {
-    color: #4A5568;
+    color: #4d7a4d;
     line-height: 1.6;
 }
 
 /* Contact Section for Rebirthing */
 .rebirthing-main .contact-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
+    background: linear-gradient(135deg, #6b9b6b 0%, #5a8f5a 100%);
     color: white;
     text-align: center;
 }
@@ -5913,7 +6013,7 @@ footer {
 }
 
 .rebirthing-main .contact-info h3 {
-    color: #F56565;
+    color: #b3d9b3;
     margin-bottom: 1rem;
     font-size: 1.5rem;
 }
@@ -5935,24 +6035,12 @@ footer {
 }
 
 .rebirthing-main .btn-primary {
-    background: linear-gradient(45deg, #E53E3E, #F56565);
-    color: white;
+    background: linear-gradient(45deg, #b3d9b3, #7cb342);
+    color: #2d5a29;
 }
 
 .rebirthing-main .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(229, 62, 62, 0.4);
-}
-
-.rebirthing-main .btn-secondary {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-}
-
-.rebirthing-main .btn-secondary:hover {
-    background: white;
-    color: #2D3748;
+    box-shadow: 0 5px 15px rgba(107, 155, 107, 0.4);
 }
 
 /* Quote Section for Rebirthing */
@@ -5967,19 +6055,19 @@ footer {
     padding: 3rem;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #E53E3E;
+    border-left: 5px solid #6b9b6b;
     font-style: italic;
 }
 
 .rebirthing-quote p {
     font-size: 1.5rem;
-    color: #2D3748;
+    color: #2d5a29;
     margin-bottom: 1rem;
     line-height: 1.6;
 }
 
 .rebirthing-quote cite {
-    color: #4A5568;
+    color: #4d7a4d;
     font-size: 1.1rem;
 }
 
@@ -5994,15 +6082,20 @@ footer {
 
 .rebirthing-main .section-header h2 {
     font-size: 2.5rem;
-    color: #2D3748;
+    color: #2d5a29;
     margin-bottom: 1rem;
     font-weight: bold;
 }
 
 .rebirthing-main .section-header p {
     font-size: 1.2rem;
-    color: #4A5568;
+    color: #4d7a4d;
     line-height: 1.6;
+}
+
+.rebirthing-main .process-section .section-header h2,
+.rebirthing-main .process-section .section-header p {
+    color: white;
 }
 
 /* Responsive Design for Rebirthing Page */
@@ -6721,19 +6814,7 @@ footer {
 }
 
 .goldenroutes-main .btn-primary:hover {
-    transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-}
-
-.goldenroutes-main .btn-secondary {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-}
-
-.goldenroutes-main .btn-secondary:hover {
-    background: white;
-    color: #2C3E50;
 }
 
 /* Quote Section for Golden Routes */
@@ -7416,19 +7497,7 @@ footer {
 }
 
 .onlinesadhana-main .btn-primary:hover {
-    transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(142, 36, 170, 0.4);
-}
-
-.onlinesadhana-main .btn-secondary {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-}
-
-.onlinesadhana-main .btn-secondary:hover {
-    background: white;
-    color: #4A148C;
 }
 
 /* Quote Section for Online Sadhana */
@@ -7929,22 +7998,6 @@ footer {
     justify-content: center;
 }
 
-.contact-link {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.8rem 1.5rem;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 25px;
-    transition: all 0.3s ease;
-}
-
-.contact-link:hover {
-    background: rgba(255,255,255,0.2);
-    border-color: white;
-    transform: translateY(-2px);
-}
-
 /* Festival Responsive Design */
 @media (max-width: 768px) {
     .festival-title {
@@ -8245,133 +8298,6 @@ footer {
     background: white;
 }
 
-/* Benefits Section */
-.benefits-section {
-    padding: 6rem 2rem;
-    background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
-    color: white;
-}
-
-.benefits-section .section-header h2 {
-    color: white;
-}
-
-.benefits-section .section-header p {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.benefit-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.benefit-card:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.benefit-card h3 {
-    color: #E8F5E8;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-}
-
-.benefit-card p {
-    opacity: 0.9;
-    line-height: 1.6;
-}
-
-/* Events Calendar Section */
-.events-section {
-    padding: 6rem 2rem;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-.events-calendar {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: grid;
-    gap: 2rem;
-}
-
-.event-card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    transition: transform 0.3s ease;
-}
-
-.event-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-.event-date {
-    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-    color: white;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 120px;
-}
-
-.event-date .day {
-    font-size: 2.5rem;
-    font-weight: bold;
-    line-height: 1;
-}
-
-.event-date .month {
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.9;
-}
-
-.event-info {
-    padding: 2rem;
-}
-
-.event-info h3 {
-    color: #2E7D32;
-    margin-bottom: 0.5rem;
-    font-size: 1.4rem;
-}
-
-.event-info p {
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.event-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.event-details span {
-    color: #888;
-    font-size: 0.9rem;
-}
-
 /* Preparation Section */
 .preparation-section {
     padding: 6rem 2rem;
@@ -8575,39 +8501,18 @@ footer {
     flex-wrap: wrap;
 }
 
-.btn-primary, .btn-secondary {
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-    display: inline-block;
-}
-
-.btn-primary {
+.retreats-main .btn-primary {
     background: #FF6B6B;
     color: white;
     border: 2px solid #FF6B6B;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.btn-primary:hover {
+.retreats-main .btn-primary:hover {
     background: transparent;
-    transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-}
-
-.btn-secondary {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-}
-
-.btn-secondary:hover {
-    background: white;
-    color: #2E7D32;
-    transform: translateY(-2px);
 }
 
 /* Quote Section */
@@ -9685,4 +9590,210 @@ footer {
         font-size: 2rem;
     }
 }
+
+/* --- Article/Blog Post Page Styles --- */
+.article-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.article-meta {
+    color: #666;
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+.article-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+.article-content h2 {
+    color: #2c5f4f;
+    font-size: 1.8rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.article-content h3 {
+    color: #4d7a4d;
+    font-size: 1.4rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.article-content p {
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.article-content ul, .article-content ol {
+    margin: 20px 0;
+    padding-left: 40px;
+}
+
+.article-content li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);
+    border-left: 4px solid #6b9b6b;
+    padding: 20px;
+    margin: 30px 0;
+    border-radius: 5px;
+}
+
+.highlight-box p {
+    margin-bottom: 10px;
+}
+
+.highlight-box p:last-child {
+    margin-bottom: 0;
+}
+
+.quote-box {
+    background: #2c5f4f;
+    color: white;
+    padding: 30px;
+    margin: 40px 0;
+    border-radius: 10px;
+    text-align: center;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+.quote-box cite {
+    display: block;
+    margin-top: 15px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.back-to-blog {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 12px 30px;
+    background: #2c5f4f;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.back-to-blog:hover {
+    background: #1f4539;
+}
+
+.warning-box {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 20px;
+    margin: 30px 0;
+    border-radius: 5px;
+}
+
+.warning-box strong {
+    color: #856404;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+/* Responsive Design for Articles */
+@media (max-width: 768px) {
+    .article-content {
+        font-size: 1rem;
+    }
+    
+    .article-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .article-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    .quote-box {
+        padding: 20px;
+        font-size: 1rem;
+    }
+    
+    .article-content ul, .article-content ol {
+        padding-left: 25px;
+    }
+}
+/* --- End Article/Blog Post Page Styles --- */
+
+/* ============================================
+   DASHBOARD STYLES
+   ============================================ */
+
+.dashboard-container {
+    max-width: 1000px;
+    margin: 120px auto 60px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    box-sizing: border-box;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.profile-card h2 {
+    color: #2c5f4f;
+    margin-top: 0;
+}
+
+.profile-field {
+    margin: 8px 0;
+    color: #333;
+}
+
+.stats {
+    background: linear-gradient(180deg, #f7faf7, #eef6ef);
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+}
+
+.stat-item {
+    margin-bottom: 12px;
+}
+
+.btn-primary-inline {
+    display: inline-block;
+    background: #2c5f4f;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-primary-inline:hover {
+    background: #1f4539;
+}
+
+@media (max-width: 900px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        margin-top: 100px;
+    }
+}
+
+/* --- End Dashboard Styles --- */
 

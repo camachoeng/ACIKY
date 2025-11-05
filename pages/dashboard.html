@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi Perfil • ACIKY</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../images/black.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Header will be inserted by common.js -->
+    <main>
+        <section class="dashboard-container" id="dashboard">
+            <div class="profile-card" id="profileCard">
+                <h2>Mi Cuenta</h2>
+                <div id="profileState">Cargando información...</div>
+            </div>
+
+            <aside class="stats" id="statsCard">
+                <h3 style="margin-top:0; color:#2c5f4f">Miembros • Acciones</h3>
+                <div class="stat-item"><strong>Práctica diaria:</strong> <span id="streak">—</span></div>
+                <div class="stat-item"><strong>Clases registradas:</strong> <span id="classesCount">—</span></div>
+                <div style="margin-top:18px">
+                    <a href="../pages/schedule.html" class="btn-primary-inline">Ver horarios</a>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script>
+        // Dashboard authentication check and content population
+        (async function(){
+            const API = 'http://127.0.0.1:3000/api/auth';
+            
+            // Small delay to ensure session cookie is fully set after redirect
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            try {
+                const resp = await fetch(API + '/check', { credentials: 'include' });
+                
+                if (!resp.ok) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                const data = await resp.json();
+                
+                if (!data.isAuthenticated) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const user = data.user || {};
+                // Populate profile card
+                const profileState = document.getElementById('profileState');
+                profileState.innerHTML = `
+                    <p class="profile-field"><strong>Usuario:</strong> ${user.username || user.name || 'N/A'}</p>
+                    <p class="profile-field"><strong>Correo:</strong> ${user.email || 'N/A'}</p>
+                    <p class="profile-field"><strong>ID:</strong> ${user.id || 'N/A'}</p>
+                    <p style="margin-top:12px">Bienvenido a tu panel. Aquí podrás ver tus clases, recursos exclusivos y tu progreso.</p>
+                    <p style="margin-top:16px"><button id="dashboardLogoutBtn" class="btn-primary-inline" style="border: none; cursor: pointer;">Cerrar sesión</button></p>
+                `;
+
+                // Add logout button event listener
+                document.getElementById('dashboardLogoutBtn').addEventListener('click', async () => {
+                    try {
+                        await fetch('http://127.0.0.1:3000/api/auth/logout', {
+                            method: 'POST',
+                            credentials: 'include'
+                        });
+                    } catch (err) {
+                        console.warn('Logout failed', err);
+                    }
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                });
+
+                // Fill stats placeholders from localStorage or defaults
+                const streak = localStorage.getItem('practiceStreak') || '0 días';
+                const classesCount = localStorage.getItem('registeredClassesCount') || '0';
+                document.getElementById('streak').textContent = streak;
+                document.getElementById('classesCount').textContent = classesCount;
+
+            } catch (err) {
+                console.error('Dashboard error', err);
+                // If fetch fails, redirect to login (or show message)
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/common.js"></script>
+</body>
+</html>

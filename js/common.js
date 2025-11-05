@@ -85,13 +85,13 @@ document.addEventListener('DOMContentLoaded', function() {
         header.innerHTML = `
             <a id="header-logo-link" href="${homeLink}" title="Inicio">ACIKY</a>
             <h1>ACIKY - Yoga para Todos</h1>
-            <div class="auth-buttons" id="authButtons">
+            <div class="auth-buttons desktop-only" id="authButtons">
                 <a href="${pagePrefix}login.html" class="btn-login">Iniciar Sesión</a>
                 <a href="${pagePrefix}register.html" class="btn-register">Registrarse</a>
             </div>
             <div class="user-menu" id="userMenu" style="display: none;">
                 <span id="userDisplayName"></span>
-                <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
+                <a href="${pagePrefix}dashboard.html" class="btn-dashboard">Mi Perfil</a>
             </div>
         `;
         
@@ -385,8 +385,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <li><a href="${navPrefix}blog.html">Blog</a></li>
                     <li><a href="${navPrefix}testimonials.html">Testimonios</a></li>
                     <li><a href="${navPrefix}about.html">Sobre Nosotros</a></li>
-                    <li class="mobile-only auth-menu-item"><a href="${pagePrefix}login.html">Iniciar Sesión</a></li>
-                    <li class="mobile-only auth-menu-item"><a href="${pagePrefix}register.html">Registrarse</a></li>
+                    <li class="mobile-only mobile-auth-buttons"><a href="${pagePrefix}login.html">Iniciar Sesión</a></li>
+                    <li class="mobile-only mobile-auth-buttons"><a href="${pagePrefix}register.html">Registrarse</a></li>
+                    <li class="mobile-only mobile-user-menu" style="display: none;"><a href="${pagePrefix}dashboard.html">Mi Perfil</a></li>
+                    <li class="mobile-only mobile-user-menu" style="display: none;"><a href="#" id="mobileLogoutBtn">Cerrar Sesión</a></li>
                 </ul>
             </nav>
         `;
@@ -396,6 +398,32 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Insert all elements at once to minimize reflows
         document.body.insertBefore(fragment, document.body.firstChild);
+
+        // Add mobile logout functionality
+        setTimeout(() => {
+            const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+            if (mobileLogoutBtn) {
+                mobileLogoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try {
+                        await fetch('http://127.0.0.1:3000/api/auth/logout', {
+                            method: 'POST',
+                            credentials: 'include'
+                        });
+                    } catch (err) {
+                        console.warn('Logout request failed', err);
+                    }
+                    localStorage.removeItem('user');
+                    // Determine correct path to login
+                    const currentPath = window.pathname;
+                    if (currentPath.includes('/pages/')) {
+                        window.location.href = 'login.html';
+                    } else {
+                        window.location.href = 'pages/login.html';
+                    }
+                });
+            }
+        }, 100);
 
         // Add mobile menu functionality
         setTimeout(() => {
@@ -612,6 +640,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         }, 300);
+
+        // Check authentication status and update header
+        setTimeout(async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:3000/api/auth/check', {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                const userMenu = document.getElementById('userMenu');
+                const userDisplayName = document.getElementById('userDisplayName');
+                const authButtons = document.getElementById('authButtons');
+                const mobileAuthButtons = document.querySelectorAll('.mobile-auth-buttons');
+                const mobileUserMenu = document.querySelectorAll('.mobile-user-menu');
+                
+                console.log('🔍 Mobile auth buttons found:', mobileAuthButtons.length);
+                console.log('🔍 Mobile user menu items found:', mobileUserMenu.length);
+                console.log('🔍 Is authenticated:', data.isAuthenticated);
+                
+                if (data.isAuthenticated && data.user) {
+                    // User is logged in - hide desktop auth buttons, show user menu
+                    if (authButtons) authButtons.style.display = 'none';
+                    if (userMenu) {
+                        userMenu.style.display = 'flex';
+                        if (userDisplayName) {
+                            const username = data.user.username || data.user.name || '';
+                            userDisplayName.textContent = username ? `Bienvenido, ${username}` : '';
+                        }
+                    }
+                    // Mobile menu - show user menu items, hide auth buttons
+                    mobileAuthButtons.forEach(el => el.style.setProperty('display', 'none', 'important'));
+                    mobileUserMenu.forEach(el => el.style.setProperty('display', 'list-item', 'important'));
+                } else {
+                    // User is not logged in - show desktop auth buttons, hide user menu
+                    if (authButtons) authButtons.style.display = 'flex';
+                    if (userMenu) userMenu.style.display = 'none';
+                    // Mobile menu - show auth buttons, hide user menu items
+                    mobileAuthButtons.forEach(el => el.style.setProperty('display', 'list-item', 'important'));
+                    mobileUserMenu.forEach(el => el.style.setProperty('display', 'none', 'important'));
+                }
+            } catch (error) {
+                console.log('Auth check skipped (backend may not be running)');
+                // If backend is not running, show desktop auth buttons, hide user menu
+                const userMenu = document.getElementById('userMenu');
+                const authButtons = document.getElementById('authButtons');
+                const mobileAuthButtons = document.querySelectorAll('.mobile-auth-buttons');
+                const mobileUserMenu = document.querySelectorAll('.mobile-user-menu');
+                
+                if (authButtons) authButtons.style.display = 'flex';
+                if (userMenu) userMenu.style.display = 'none';
+                mobileAuthButtons.forEach(el => el.style.setProperty('display', 'list-item', 'important'));
+                mobileUserMenu.forEach(el => el.style.setProperty('display', 'none', 'important'));
+            }
+        }, 400);
 
         // Footer - defer to end
         setTimeout(() => {
