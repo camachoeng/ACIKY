@@ -653,7 +653,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 const response = await fetch(authUrl, {
                     credentials: 'include'
                 });
+                
+                if (!response.ok) {
+                    throw new Error(`Auth check failed: ${response.status}`);
+                }
+                
                 const data = await response.json();
+                
+                console.log('🔍 Auth check response:', data);
                 
                 const userMenu = document.getElementById('userMenu');
                 const userDisplayName = document.getElementById('userDisplayName');
@@ -667,6 +674,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (data.isAuthenticated && data.user) {
                     // User is logged in - hide desktop auth buttons, show user menu
+                    console.log('✅ User is logged in, showing user menu');
                     if (authButtons) authButtons.style.display = 'none';
                     if (userMenu) {
                         userMenu.style.display = 'flex';
@@ -680,6 +688,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     mobileUserMenu.forEach(el => el.style.setProperty('display', 'list-item', 'important'));
                 } else {
                     // User is not logged in - show desktop auth buttons, hide user menu
+                    console.log('❌ User is not logged in, showing auth buttons');
                     if (authButtons) authButtons.style.display = 'flex';
                     if (userMenu) userMenu.style.display = 'none';
                     // Mobile menu - show auth buttons, hide user menu items
@@ -687,7 +696,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     mobileUserMenu.forEach(el => el.style.setProperty('display', 'none', 'important'));
                 }
             } catch (error) {
-                console.log('Auth check skipped (backend may not be running)');
+                console.log('❌ Auth check error:', error);
                 // If backend is not running, show desktop auth buttons, hide user menu
                 const userMenu = document.getElementById('userMenu');
                 const authButtons = document.getElementById('authButtons');
