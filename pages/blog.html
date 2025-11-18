@@ -13,26 +13,74 @@
             <h1>Blog de Yoga</h1>
             <p>Bienvenido a nuestro blog, donde compartimos artículos, consejos y novedades sobre yoga, bienestar y vida saludable.</p>
         </section>
-        <section class="blog-list">
-            <article class="blog-post">
-                <h2>¿Por qué practicar Kundalini Yoga?</h2>
-                <p class="blog-meta">29 de octubre de 2025 | por Equipo ACIKY</p>
-                <p>El Kundalini Yoga es una disciplina milenaria que ayuda a equilibrar cuerpo, mente y espíritu. Descubre qué lo hace único, su origen con Yogi Bhajan, cómo es una clase y si es seguro practicarlo.</p>
-                <a href="articles/kundalini-yoga.html" class="blog-readmore">Leer más</a>
-            </article>
-            <article class="blog-post">
-                <h2>Las Tres Joyas del Kundalini Yoga</h2>
-                <p class="blog-meta">29 de octubre de 2025 | por Equipo ACIKY</p>
-                <p>Descubre las tres prácticas más poderosas del Kundalini Yoga: Sat Kriya, Kirtan Kriya y Sodarshan Chakra Kriya. Conoce sus beneficios, cómo practicarlas y por qué son consideradas las joyas de esta tradición milenaria.</p>
-                <a href="articles/tres-joyas-kundalini.html" class="blog-readmore">Leer más</a>
-            </article>
-            <!-- Puedes agregar más artículos aquí -->
+        <section class="blog-list" id="blogList">
+            <p style="text-align: center; padding: 40px 0;">Cargando artículos...</p>
         </section>
     </main>
-</body>
     <script src="../js/common.js"></script>
-<script>
-    insertYogiQuote("El viaje más largo que harás en tu vida es el viaje del ego al alma.", "Yogi Bhajan");
-</script>
+    <script>
+        insertYogiQuote("El viaje más largo que harás en tu vida es el viaje del ego al alma.", "Yogi Bhajan");
+    </script>
+    <script>
+        // Fetch and display blog posts from API
+        (async function() {
+            const API_URL = window.location.hostname === 'camachoeng.github.io'
+                ? 'https://aciky-backend.herokuapp.com/api/blog'
+                : 'http://127.0.0.1:3000/api/blog';
+            const blogList = document.getElementById('blogList');
+            
+            try {
+                const response = await fetch(`${API_URL}?published=true&limit=20`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch blog posts');
+                }
+                
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.length > 0) {
+                    blogList.innerHTML = '';
+                    
+                    data.data.forEach(post => {
+                        const article = document.createElement('article');
+                        article.className = 'blog-post';
+                        
+                        // Format date
+                        const date = new Date(post.published_at || post.created_at);
+                        const formattedDate = date.toLocaleDateString('es-ES', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                        });
+                        
+                        // Get excerpt or truncate content
+                        const excerpt = post.excerpt || 
+                            (post.content ? post.content.replace(/<[^>]*>/g, '').substring(0, 200) + '...' : 'Sin descripción');
+                        
+                        article.innerHTML = `
+                            <h2>${post.title}</h2>
+                            <p class="blog-meta">${formattedDate} | por ${post.author_name || 'ACIKY'}</p>
+                            ${post.category ? `<span class="blog-category">${post.category}</span>` : ''}
+                            <p>${excerpt}</p>
+                            <a href="blog-post.html?slug=${post.slug}" class="blog-readmore">Leer más</a>
+                        `;
+                        
+                        blogList.appendChild(article);
+                    });
+                } else {
+                    blogList.innerHTML = '<p style="text-align: center; padding: 40px 0;">No hay artículos publicados en este momento.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading blog posts:', error);
+                blogList.innerHTML = `
+                    <p style="text-align: center; padding: 40px 0;">
+                        Error al cargar los artículos. Por favor intenta más tarde.
+                    </p>
+                `;
+            }
+        })();
+    </script>
 </body>
 </html>

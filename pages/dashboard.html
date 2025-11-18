@@ -17,10 +17,10 @@
             </div>
 
             <aside class="stats" id="statsCard">
-                <h3 style="margin-top:0; color:#2c5f4f">Miembros • Acciones</h3>
+                <h3>Miembros • Acciones</h3>
                 <div class="stat-item"><strong>Práctica diaria:</strong> <span id="streak">—</span></div>
                 <div class="stat-item"><strong>Clases registradas:</strong> <span id="classesCount">—</span></div>
-                <div style="margin-top:18px">
+                <div class="btn-wrapper">
                     <a href="../pages/schedule.html" class="btn-primary-inline">Ver horarios</a>
                 </div>
             </aside>
@@ -30,7 +30,9 @@
     <script>
         // Dashboard authentication check and content population
         (async function(){
-            const API = 'http://127.0.0.1:3000/api/auth';
+            const API = window.location.hostname === 'camachoeng.github.io'
+                ? 'https://aciky-backend.herokuapp.com/api/auth'
+                : 'http://127.0.0.1:3000/api/auth';
             
             // Small delay to ensure session cookie is fully set after redirect
             await new Promise(resolve => setTimeout(resolve, 200));
@@ -51,14 +53,25 @@
                 }
 
                 const user = data.user || {};
+                
+                // Debug: log user role
+                console.log('User role:', user.role);
+                
                 // Populate profile card
                 const profileState = document.getElementById('profileState');
+                
+                // Show admin link only for admin users
+                const adminLink = (user.role === 'admin' || user.role === 'instructor') 
+                    ? `<div class="dashboard-action-group"><a href="admin.html" class="btn-primary-inline">📊 Panel de Administración</a></div>` 
+                    : '';
+                
                 profileState.innerHTML = `
                     <p class="profile-field"><strong>Usuario:</strong> ${user.username || user.name || 'N/A'}</p>
                     <p class="profile-field"><strong>Correo:</strong> ${user.email || 'N/A'}</p>
-                    <p class="profile-field"><strong>ID:</strong> ${user.id || 'N/A'}</p>
-                    <p style="margin-top:12px">Bienvenido a tu panel. Aquí podrás ver tus clases, recursos exclusivos y tu progreso.</p>
-                    <p style="margin-top:16px"><button id="dashboardLogoutBtn" class="btn-primary-inline" style="border: none; cursor: pointer;">Cerrar sesión</button></p>
+                    <p class="profile-field"><strong>Rol:</strong> ${user.role || 'user'}</p>
+                    <p class="dashboard-welcome">Bienvenido a tu panel. Aquí podrás ver tus clases, recursos exclusivos y tu progreso.</p>
+                    ${adminLink}
+                    <div class="dashboard-action-group"><button id="dashboardLogoutBtn" class="btn-dashboard">Cerrar sesión</button></div>
                 `;
 
                 // Add logout button event listener

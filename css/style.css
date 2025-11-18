@@ -1,3 +1,294 @@
+/* --- Admin Panel Styles (admin.html) --- */
+.admin-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+.admin-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e0e0e0;
+}
+.admin-tab {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 1em;
+    color: #666;
+    transition: all 0.3s;
+}
+.admin-tab.active {
+    color: #2c5f4f;
+    border-bottom-color: #2c5f4f;
+    font-weight: 600;
+}
+.admin-tab:hover {
+    color: #2c5f4f;
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.btn-primary {
+    background: #2c5f4f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+.btn-primary:hover {
+    background: #1e4838;
+}
+/* Admin table action buttons - override general button styles */
+.content-table .btn-edit {
+    background: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-right: 5px;
+}
+.content-table .btn-edit:hover {
+    background: #5a6268;
+}
+.content-table .btn-delete {
+    background: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+.content-table .btn-delete:hover {
+    background: #c82333;
+}
+.content-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.content-table th {
+    background: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #e0e0e0;
+    font-weight: 600;
+}
+.content-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+.content-table tr:hover {
+    background: #f8f9fa;
+}
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+.status-published {
+    background: #d4edda;
+    color: #155724;
+}
+.status-draft {
+    background: #fff3cd;
+    color: #856404;
+}
+.status-active {
+    background: #d4edda;
+    color: #155724;
+}
+.status-inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+.modal-content {
+    background: white;
+    margin: 50px auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 8px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.modal-close {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #999;
+}
+.modal-close:hover {
+    color: #333;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+    font-family: inherit;
+}
+.form-group textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+.form-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 5px;
+}
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: none;
+}
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: none;
+}
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+/* --- Blog Post Detail Page Styles (blog_post.html) --- */
+.blog-post-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+.blog-post-header {
+    margin-bottom: 30px;
+}
+.blog-post-header h1 {
+    font-size: 2.5em;
+    color: #2c5f4f;
+    margin-bottom: 10px;
+}
+.blog-post-meta {
+    color: #666;
+    font-size: 0.95em;
+    margin-bottom: 20px;
+}
+.blog-post-category {
+    display: inline-block;
+    background: #f0f0f0;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+.blog-post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+.blog-post-body {
+    line-height: 1.8;
+    font-size: 1.1em;
+}
+.blog-post-body h2 {
+    color: #2c5f4f;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+.blog-post-body p {
+    margin-bottom: 20px;
+}
+.blog-post-tags {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+.blog-tag {
+    display: inline-block;
+    background: #e8f4f1;
+    color: #2c5f4f;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+.back-to-blog {
+    display: inline-block;
+    margin-top: 30px;
+    color: #2c5f4f;
+    text-decoration: none;
+    font-weight: 500;
+}
+.back-to-blog:hover {
+    text-decoration: underline;
+}
+.loading-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
 /* --- Authentication Page Styles (login.html, register.html) --- */
 .auth-container {
     max-width: 400px;
@@ -3122,14 +3413,14 @@ footer {
 }
 
 .vision-section h2 {
-    color: white !important;
+    color: #2d5a29 !important;
     font-size: 2.5rem;
     margin-bottom: 2rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .vision-section p {
-    color: white !important;
+    color: #2d5a29 !important;
     font-size: 1.3rem;
     line-height: 1.7;
     opacity: 0.95;
@@ -5565,10 +5856,6 @@ footer {
     font-size: 3.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    background: white;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .rebirthing-subtitle {
@@ -5715,68 +6002,6 @@ footer {
 .process-timeline .timeline-content p {
     opacity: 0.9;
     line-height: 1.6;
-}
-
-/* Ceremonies Section */
-.ceremonies-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #f7fafc 0%, #ffffff 100%);
-}
-
-.ceremonies-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.ceremony-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.3s ease;
-    border-left: 5px solid #6b9b6b;
-}
-
-.ceremony-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.ceremony-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    display: block;
-}
-
-.ceremony-card h3 {
-    color: #2d5a29;
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
-}
-
-.ceremony-card p {
-    color: #4d7a4d;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-}
-
-.ceremony-features {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-.feature {
-    background: #f0f8ff;
-    padding: 0.5rem;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: #2d5a29;
 }
 
 /* Benefits Section for Rebirthing */
@@ -6160,9 +6385,9 @@ footer {
 
 /* Hero Section */
 .goldenroutes-hero {
-    background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 50%, #F7DC6F 100%);
+    background: linear-gradient(135deg, #2c5f4f 0%, #4d7a4d 50%, #6b9b6b 100%);
     padding: 4rem 2rem;
-    color: #2C3E50;
+    color: white;
     min-height: 60vh;
     display: flex;
     align-items: center;
@@ -6177,7 +6402,7 @@ footer {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.15);
     z-index: 1;
 }
 
@@ -6204,24 +6429,21 @@ footer {
     font-size: 3.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(45deg, #B8860B, #DAA520);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    color: white;
 }
 
 .goldenroutes-subtitle {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: #2C3E50;
+    color: #e8f5e8;
     font-style: italic;
 }
 
 .goldenroutes-location {
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    color: #34495E;
+    color: #f0f8f0;
 }
 
 .goldenroutes-badges {
@@ -6231,18 +6453,18 @@ footer {
 }
 
 .goldenroutes-badges .badge.primary {
-    background: linear-gradient(45deg, #B8860B, #DAA520);
+    background: linear-gradient(45deg, #6b9b6b, #8fb38f);
     color: white;
 }
 
 .goldenroutes-badges .badge.secondary {
-    background: rgba(44, 62, 80, 0.1);
-    color: #2C3E50;
-    border: 1px solid rgba(44, 62, 80, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .goldenroutes-badges .badge.accent {
-    background: linear-gradient(45deg, #E67E22, #F39C12);
+    background: linear-gradient(45deg, #4d7a4d, #6b9b6b);
     color: white;
 }
 
@@ -6267,7 +6489,7 @@ footer {
     background: white;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #D4AF37;
+    border-left: 5px solid #6b9b6b;
 }
 
 .mission-grid {
@@ -6284,7 +6506,7 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-top: 4px solid #D4AF37;
+    border-top: 4px solid #6b9b6b;
 }
 
 .mission-card:hover {
@@ -6312,7 +6534,7 @@ footer {
 /* Centers Section */
 .centers-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #F7DC6F 0%, #F4D03F 100%);
+    background: linear-gradient(135deg, #e8f5e8 0%, #d4e7d4 100%);
     color: #2C3E50;
 }
 
@@ -6363,7 +6585,7 @@ footer {
     justify-content: space-around;
     margin: 1.5rem 0;
     padding: 1rem;
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(107, 155, 107, 0.15);
     border-radius: 10px;
 }
 
@@ -6375,7 +6597,7 @@ footer {
     display: block;
     font-size: 2rem;
     font-weight: bold;
-    color: #B8860B;
+    color: #2c5f4f;
 }
 
 .stat-label {
@@ -6394,7 +6616,7 @@ footer {
 
 .route-tag {
     display: inline-block;
-    background: #D4AF37;
+    background: #6b9b6b;
     color: white;
     padding: 0.3rem 0.8rem;
     margin: 0.2rem;
@@ -6406,7 +6628,12 @@ footer {
 /* Process Timeline Section */
 .goldenroutes-main .process-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
+    color: white;
+}
+
+.goldenroutes-main .process-section .section-header h2,
+.goldenroutes-main .process-section .section-header p {
     color: white;
 }
 
@@ -6430,18 +6657,18 @@ footer {
 
 .goldenroutes-main .process-timeline .timeline-icon {
     font-size: 3rem;
-    background: rgba(212, 175, 55, 0.2);
+    background: rgba(107, 155, 107, 0.2);
     width: 80px;
     height: 80px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid #D4AF37;
+    border: 3px solid #6b9b6b;
 }
 
 .goldenroutes-main .process-timeline .timeline-content h3 {
-    color: #F4D03F;
+    color: #b3d9b3;
     margin-bottom: 0.5rem;
     font-size: 1.4rem;
 }
@@ -6470,7 +6697,7 @@ footer {
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border-left: 5px solid #D4AF37;
+    border-left: 5px solid #6b9b6b;
 }
 
 .route-item:hover {
@@ -6500,12 +6727,12 @@ footer {
 }
 
 .route-status.active {
-    background: #27AE60;
+    background: #4d7a4d;
     color: white;
 }
 
 .route-status.planning {
-    background: #F39C12;
+    background: #8fb38f;
     color: white;
 }
 
@@ -6519,19 +6746,19 @@ footer {
 
 .origin {
     color: #2C3E50;
-    background: rgba(212, 175, 55, 0.2);
+    background: rgba(107, 155, 107, 0.2);
     padding: 0.5rem 1rem;
     border-radius: 8px;
 }
 
 .arrow {
-    color: #D4AF37;
+    color: #6b9b6b;
     font-size: 1.5rem;
 }
 
 .destination {
-    color: #2C3E50;
-    background: rgba(39, 174, 96, 0.2);
+    color: white;
+    background: #4d7a4d;
     padding: 0.5rem 1rem;
     border-radius: 8px;
 }
@@ -6559,8 +6786,8 @@ footer {
 /* Impact Section */
 .impact-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%);
-    color: #2C3E50;
+    background: linear-gradient(135deg, #6b9b6b 0%, #8fb38f 100%);
+    color: white;
 }
 
 .impact-stats {
@@ -6587,7 +6814,7 @@ footer {
 .impact-number {
     font-size: 3rem;
     font-weight: bold;
-    color: #B8860B;
+    color: #2c5f4f;
     margin-bottom: 0.5rem;
     display: block;
 }
@@ -6595,20 +6822,25 @@ footer {
 .impact-label {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #2C3E50;
+    color: #1f4539;
     margin-bottom: 1rem;
     display: block;
 }
 
 .impact-card p {
-    color: #5D6D7E;
+    color: #2C3E50;
     line-height: 1.6;
 }
 
 /* Testimonials Section for Golden Routes */
 .goldenroutes-main .testimonials-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
+    color: white;
+}
+
+.goldenroutes-main .testimonials-section .section-header h2,
+.goldenroutes-main .testimonials-section .section-header p {
     color: white;
 }
 
@@ -6637,6 +6869,7 @@ footer {
     line-height: 1.6;
     margin-bottom: 1.5rem;
     font-style: italic;
+    color: white;
 }
 
 .goldenroutes-main .testimonial-author {
@@ -6647,12 +6880,13 @@ footer {
 
 .goldenroutes-main .author-name {
     font-weight: bold;
-    color: #F4D03F;
+    color: #b3d9b3;
 }
 
 .goldenroutes-main .author-location {
     opacity: 0.8;
     font-size: 0.9rem;
+    color: white;
 }
 
 /* Involvement Section */
@@ -6675,7 +6909,7 @@ footer {
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border-top: 4px solid #D4AF37;
+    border-top: 4px solid #6b9b6b;
 }
 
 .option-card:hover {
@@ -6726,7 +6960,7 @@ footer {
 /* Vision Section */
 .vision-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #F7DC6F 0%, #F4D03F 100%);
+    background: linear-gradient(135deg, #e8f5e8 0%, #d4e7d4 100%);
     color: #2C3E50;
 }
 
@@ -6768,7 +7002,7 @@ footer {
 /* Contact Section for Golden Routes */
 .goldenroutes-main .contact-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
     color: white;
     text-align: center;
 }
@@ -6787,7 +7021,7 @@ footer {
 }
 
 .goldenroutes-main .contact-info h3 {
-    color: #F4D03F;
+    color: #b3d9b3;
     margin-bottom: 1rem;
     font-size: 1.5rem;
 }
@@ -6809,12 +7043,12 @@ footer {
 }
 
 .goldenroutes-main .btn-primary {
-    background: linear-gradient(45deg, #D4AF37, #F4D03F);
-    color: #2C3E50;
+    background: linear-gradient(45deg, #6b9b6b, #8fb38f);
+    color: white;
 }
 
 .goldenroutes-main .btn-primary:hover {
-    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 5px 15px rgba(107, 155, 107, 0.4);
 }
 
 /* Quote Section for Golden Routes */
@@ -6829,7 +7063,7 @@ footer {
     padding: 3rem;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #D4AF37;
+    border-left: 5px solid #6b9b6b;
     font-style: italic;
 }
 
@@ -6932,7 +7166,7 @@ footer {
 
 /* Hero Section */
 .onlinesadhana-hero {
-    background: linear-gradient(135deg, #6A1B9A 0%, #8E24AA 50%, #AB47BC 100%);
+    background: linear-gradient(135deg, #2c5f4f 0%, #4d7a4d 50%, #6b9b6b 100%);
     padding: 4rem 2rem;
     color: white;
     min-height: 60vh;
@@ -6976,11 +7210,6 @@ footer {
     font-size: 3.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    background: linear-gradient(45deg, #E1BEE7, #F3E5F5);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .onlinesadhana-subtitle {
@@ -7003,7 +7232,7 @@ footer {
 }
 
 .onlinesadhana-badges .badge.primary {
-    background: linear-gradient(45deg, #8E24AA, #AB47BC);
+    background: linear-gradient(45deg, #6b9b6b, #8fb38f);
     color: white;
 }
 
@@ -7014,15 +7243,16 @@ footer {
 }
 
 .onlinesadhana-badges .badge.accent {
-    background: linear-gradient(45deg, #E91E63, #F06292);
+    background: linear-gradient(45deg, #4d7a4d, #6b9b6b);
     color: white;
 }
 
 /* Sadhana Overview Section */
 .sadhana-overview {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);
 }
+
 
 .sadhana-overview .overview-content {
     max-width: 1200px;
@@ -7032,14 +7262,14 @@ footer {
 .sadhana-overview .intro-text {
     font-size: 1.3rem;
     line-height: 1.8;
-    color: #4A148C;
+    color: #1f4539;
     text-align: center;
     margin-bottom: 3rem;
     padding: 2rem;
     background: white;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #8E24AA;
+    border-left: 5px solid #6b9b6b;
 }
 
 .sadhana-grid {
@@ -7056,7 +7286,7 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-top: 4px solid #8E24AA;
+    border-top: 4px solid #6b9b6b;
 }
 
 .sadhana-card:hover {
@@ -7071,103 +7301,20 @@ footer {
 }
 
 .sadhana-card h3 {
-    color: #4A148C;
+    color: #2c5f4f;
     margin-bottom: 1rem;
     font-size: 1.4rem;
 }
 
 .sadhana-card p {
-    color: #6A1B9A;
+    color: #4d7a4d;
     line-height: 1.6;
-}
-
-/* Schedule Section */
-.schedule-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #4A148C 0%, #6A1B9A 100%);
-    color: white;
-}
-
-.schedule-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-}
-
-.schedule-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.schedule-card:hover {
-    transform: translateY(-5px);
-}
-
-.schedule-day {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #E1BEE7;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.schedule-time {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #F3E5F5;
-    margin-bottom: 1rem;
-}
-
-.schedule-card h3 {
-    color: white;
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
-}
-
-.schedule-details p {
-    margin-bottom: 1.5rem;
-    opacity: 0.9;
-    line-height: 1.6;
-}
-
-.practice-elements {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin: 1.5rem 0;
-}
-
-.element {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.5rem;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-.instructor-info {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.instructor {
-    font-style: italic;
-    color: #E1BEE7;
-    font-size: 0.9rem;
 }
 
 /* Benefits Section for Online Sadhana */
 .onlinesadhana-main .benefits-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+    background: linear-gradient(135deg, #e8f5e8 0%, #d4e7d4 100%);
 }
 
 .onlinesadhana-main .benefits-grid {
@@ -7184,7 +7331,7 @@ footer {
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border-left: 5px solid #8E24AA;
+    border-left: 5px solid #6b9b6b;
 }
 
 .onlinesadhana-main .benefit-card:hover {
@@ -7193,20 +7340,20 @@ footer {
 }
 
 .onlinesadhana-main .benefit-card h3 {
-    color: #4A148C;
+    color: #2c5f4f;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
 
 .onlinesadhana-main .benefit-card p {
-    color: #6A1B9A;
+    color: #4d7a4d;
     line-height: 1.6;
 }
 
 /* Join Steps Section */
 .join-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #f0f8f0 100%);
 }
 
 .join-steps {
@@ -7226,7 +7373,7 @@ footer {
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border-left: 5px solid #8E24AA;
+    border-left: 5px solid #6b9b6b;
 }
 
 .step-card:hover {
@@ -7236,32 +7383,37 @@ footer {
 .step-number {
     font-size: 3rem;
     font-weight: bold;
-    color: #8E24AA;
-    background: rgba(142, 36, 170, 0.1);
+    color: #6b9b6b;
+    background: rgba(107, 155, 107, 0.1);
     width: 80px;
     height: 80px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid #8E24AA;
+    border: 3px solid #6b9b6b;
 }
 
 .step-content h3 {
-    color: #4A148C;
+    color: #2c5f4f;
     margin-bottom: 0.5rem;
     font-size: 1.4rem;
 }
 
 .step-content p {
-    color: #6A1B9A;
+    color: #4d7a4d;
     line-height: 1.6;
 }
 
 /* Technology Section */
 .tech-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #4A148C 0%, #6A1B9A 100%);
+    background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
+    color: white;
+}
+
+.onlinesadhana-main .tech-section .section-header h2,
+.onlinesadhana-main .tech-section .section-header p {
     color: white;
 }
 
@@ -7293,7 +7445,7 @@ footer {
 }
 
 .tech-card h3 {
-    color: #E1BEE7;
+    color: #b3d9b3;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
@@ -7303,67 +7455,15 @@ footer {
     line-height: 1.6;
 }
 
-/* Monthly Themes Section */
-.themes-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
-}
-
-.themes-calendar {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.theme-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    border-top: 4px solid #8E24AA;
-}
-
-.theme-card:hover {
-    transform: translateY(-5px);
-}
-
-.theme-month {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #8E24AA;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
-}
-
-.theme-card h3 {
-    color: #4A148C;
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
-}
-
-.theme-card p {
-    color: #6A1B9A;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.theme-focus {
-    background: rgba(142, 36, 170, 0.1);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: #4A148C;
-    font-weight: bold;
-}
-
 /* Stories Section */
 .stories-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #4A148C 0%, #6A1B9A 100%);
+    background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
+    color: white;
+}
+
+.onlinesadhana-main .stories-section .section-header h2,
+.onlinesadhana-main .stories-section .section-header p {
     color: white;
 }
 
@@ -7402,7 +7502,7 @@ footer {
 
 .story-author .author-name {
     font-weight: bold;
-    color: #E1BEE7;
+    color: #b3d9b3;
 }
 
 .story-author .author-location {
@@ -7413,7 +7513,7 @@ footer {
 /* Tips Section */
 .tips-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);
 }
 
 .tips-grid {
@@ -7430,7 +7530,7 @@ footer {
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border-left: 5px solid #8E24AA;
+    border-left: 5px solid #6b9b6b;
 }
 
 .tip-card:hover {
@@ -7438,20 +7538,20 @@ footer {
 }
 
 .tip-card h3 {
-    color: #4A148C;
+    color: #2c5f4f;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
 
 .tip-card p {
-    color: #6A1B9A;
+    color: #4d7a4d;
     line-height: 1.6;
 }
 
 /* Contact Section for Online Sadhana */
 .onlinesadhana-main .contact-section {
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #4A148C 0%, #6A1B9A 100%);
+    background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
     color: white;
     text-align: center;
 }
@@ -7470,7 +7570,7 @@ footer {
 }
 
 .onlinesadhana-main .contact-info h3 {
-    color: #E1BEE7;
+    color: #b3d9b3;
     margin-bottom: 1rem;
     font-size: 1.5rem;
 }
@@ -7492,18 +7592,18 @@ footer {
 }
 
 .onlinesadhana-main .btn-primary {
-    background: linear-gradient(45deg, #8E24AA, #AB47BC);
+    background: linear-gradient(45deg, #6b9b6b, #8fb38f);
     color: white;
 }
 
 .onlinesadhana-main .btn-primary:hover {
-    box-shadow: 0 5px 15px rgba(142, 36, 170, 0.4);
+    box-shadow: 0 5px 15px rgba(107, 155, 107, 0.4);
 }
 
 /* Quote Section for Online Sadhana */
 .onlinesadhana-main .quote-section {
     padding: 3rem 2rem;
-    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);
     text-align: center;
 }
 
@@ -7512,19 +7612,19 @@ footer {
     padding: 3rem;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #8E24AA;
+    border-left: 5px solid #6b9b6b;
     font-style: italic;
 }
 
 .onlinesadhana-quote p {
     font-size: 1.5rem;
-    color: #4A148C;
+    color: #2c5f4f;
     margin-bottom: 1rem;
     line-height: 1.6;
 }
 
 .onlinesadhana-quote cite {
-    color: #6A1B9A;
+    color: #4d7a4d;
     font-size: 1.1rem;
 }
 
@@ -7539,14 +7639,14 @@ footer {
 
 .onlinesadhana-main .section-header h2 {
     font-size: 2.5rem;
-    color: #4A148C;
+    color: #2c5f4f;
     margin-bottom: 1rem;
     font-weight: bold;
 }
 
 .onlinesadhana-main .section-header p {
     font-size: 1.2rem;
-    color: #6A1B9A;
+    color: #4d7a4d;
     line-height: 1.6;
 }
 
@@ -9778,7 +9878,7 @@ footer {
     display: inline-block;
     background: #2c5f4f;
     color: #fff;
-    padding: 10px 14px;
+    padding: 10px 20px;
     border-radius: 6px;
     text-decoration: none;
     font-weight: 600;
@@ -9786,6 +9886,48 @@ footer {
 
 .btn-primary-inline:hover {
     background: #1f4539;
+}
+
+/* Button variant for actual button elements */
+.btn-dashboard {
+    display: inline-block;
+    background: #2c5f4f;
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.btn-dashboard:hover {
+    background: #1f4539;
+}
+
+/* Dashboard profile card styles */
+.profile-card h3 {
+    margin-top: 0;
+    color: #2c5f4f;
+}
+
+.dashboard-action-group {
+    margin-top: 16px;
+}
+
+.dashboard-welcome {
+    margin-top: 12px;
+}
+
+/* Stats sidebar header */
+.stats h3 {
+    margin-top: 0;
+    color: #2c5f4f;
+}
+
+.stats .btn-wrapper {
+    margin-top: 18px;
 }
 
 @media (max-width: 900px) {

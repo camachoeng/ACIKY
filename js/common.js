@@ -406,7 +406,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileLogoutBtn.addEventListener('click', async (e) => {
                     e.preventDefault();
                     try {
-                        await fetch('http://127.0.0.1:3000/api/auth/logout', {
+                        const logoutUrl = window.location.hostname === 'camachoeng.github.io'
+                            ? 'https://aciky-backend.herokuapp.com/api/auth/logout'
+                            : 'http://127.0.0.1:3000/api/auth/logout';
+                        await fetch(logoutUrl, {
                             method: 'POST',
                             credentials: 'include'
                         });
@@ -644,7 +647,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check authentication status and update header
         setTimeout(async () => {
             try {
-                const response = await fetch('http://127.0.0.1:3000/api/auth/check', {
+                const authUrl = window.location.hostname === 'camachoeng.github.io'
+                    ? 'https://aciky-backend.herokuapp.com/api/auth/check'
+                    : 'http://127.0.0.1:3000/api/auth/check';
+                await fetch(authUrl, {
                     credentials: 'include'
                 });
                 const data = await response.json();

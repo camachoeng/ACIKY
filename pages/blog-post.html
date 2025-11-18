@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Artículo | ACIKY</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../images/black.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Header will be inserted by common.js -->
+    <main>
+        <article class="blog-post-content" id="blogPostContent">
+            <div class="loading-message">Cargando artículo...</div>
+        </article>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script>
+        // Get slug from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+        
+        if (!slug) {
+            document.getElementById('blogPostContent').innerHTML = `
+                <div class="loading-message">
+                    <p>No se especificó el artículo.</p>
+                    <a href="blog.html" class="back-to-blog">← Volver al blog</a>
+                </div>
+            `;
+        } else {
+            // Fetch blog post from API
+            (async function() {
+                const baseUrl = window.location.hostname === 'camachoeng.github.io'
+                    ? 'https://aciky-backend.herokuapp.com/api'
+                    : 'http://127.0.0.1:3000/api';
+                const API_URL = `${baseUrl}/blog/${slug}`;
+                const contentDiv = document.getElementById('blogPostContent');
+                
+                try {
+                    const response = await fetch(API_URL, {
+                        credentials: 'include'
+                    });
+                    
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            throw new Error('Artículo no encontrado');
+                        }
+                        throw new Error('Error al cargar el artículo');
+                    }
+                    
+                    const result = await response.json();
+                    
+                    if (!result.success || !result.data) {
+                        throw new Error('Artículo no disponible');
+                    }
+                    
+                    const post = result.data;
+                    
+                    // Update page title
+                    document.getElementById('pageTitle').textContent = `${post.title} | ACIKY`;
+                    
+                    // Format date
+                    const date = new Date(post.published_at || post.created_at);
+                    const formattedDate = date.toLocaleDateString('es-ES', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                    
+                    // Parse tags if available
+                    const tags = post.tags ? post.tags.split(',').map(t => t.trim()) : [];
+                    
+                    // Build HTML
+                    let html = `
+                        <div class="blog-post-header">
+                            <h1>${post.title}</h1>
+                            <p class="blog-post-meta">
+                                ${formattedDate} | por ${post.author_name || 'ACIKY'}
+                                ${post.views ? ` | ${post.views} vistas` : ''}
+                            </p>
+                            ${post.category ? `<span class="blog-post-category">${post.category}</span>` : ''}
+                        </div>
+                    `;
+                    
+                    if (post.featured_image) {
+                        html += `<img src="../${post.featured_image}" alt="${post.title}" class="blog-post-image">`;
+                    }
+                    
+                    html += `<div class="blog-post-body">${post.content}</div>`;
+                    
+                    if (tags.length > 0) {
+                        html += '<div class="blog-post-tags"><strong>Tags:</strong> ';
+                        tags.forEach(tag => {
+                            html += `<span class="blog-tag">${tag}</span>`;
+                        });
+                        html += '</div>';
+                    }
+                    
+                    html += '<a href="blog.html" class="back-to-blog">← Volver al blog</a>';
+                    
+                    contentDiv.innerHTML = html;
+                    
+                } catch (error) {
+                    console.error('Error loading blog post:', error);
+                    contentDiv.innerHTML = `
+                        <div class="loading-message">
+                            <p>${error.message || 'Error al cargar el artículo'}</p>
+                            <a href="blog.html" class="back-to-blog">← Volver al blog</a>
+                        </div>
+                    `;
+                }
+            })();
+        }
+    </script>
+</body>
+</html>

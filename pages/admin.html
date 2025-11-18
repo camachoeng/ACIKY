@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | ACIKY</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../images/black.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Header will be inserted by common.js -->
+    <main>
+        <div class="admin-container">
+            <h1>Panel de Administración</h1>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="blog">Artículos de Blog</button>
+                <button class="admin-tab" data-tab="activities">Clases y Actividades</button>
+            </div>
+
+            <!-- Blog Posts Tab -->
+            <div id="blog-tab" class="tab-content active">
+                <div class="admin-header">
+                    <h2>Gestión de Artículos</h2>
+                    <button class="btn-primary" onclick="openBlogModal()">+ Nuevo Artículo</button>
+                </div>
+                <div id="blogList" class="loading">Cargando artículos...</div>
+            </div>
+
+            <!-- Activities Tab -->
+            <div id="activities-tab" class="tab-content">
+                <div class="admin-header">
+                    <h2>Gestión de Clases</h2>
+                    <button class="btn-primary" onclick="openActivityModal()">+ Nueva Clase</button>
+                </div>
+                <div id="activitiesList" class="loading">Cargando clases...</div>
+            </div>
+        </div>
+
+        <!-- Blog Post Modal -->
+        <div id="blogModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="blogModalTitle">Nuevo Artículo</h2>
+                    <span class="modal-close" onclick="closeBlogModal()">&times;</span>
+                </div>
+                <div class="error-message" id="blogError"></div>
+                <div class="success-message" id="blogSuccess"></div>
+                <form id="blogForm">
+                    <input type="hidden" id="blogId">
+                    <div class="form-group">
+                        <label for="blogTitle">Título *</label>
+                        <input type="text" id="blogTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="blogSlug">Slug (URL) *</label>
+                        <input type="text" id="blogSlug" required>
+                        <small>Ejemplo: mi-primer-articulo</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="blogExcerpt">Resumen</label>
+                        <textarea id="blogExcerpt" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="blogContent">Contenido (HTML) *</label>
+                        <textarea id="blogContent" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="blogCategory">Categoría</label>
+                        <select id="blogCategory">
+                            <option value="">Seleccionar...</option>
+                            <option value="Noticias">Noticias</option>
+                            <option value="Educación">Educación</option>
+                            <option value="Eventos">Eventos</option>
+                            <option value="Bienestar">Bienestar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="blogTags">Tags (separados por coma)</label>
+                        <input type="text" id="blogTags" placeholder="yoga,meditación,kundalini">
+                    </div>
+                    <div class="form-group">
+                        <label for="blogImage">Imagen destacada (ruta)</label>
+                        <input type="text" id="blogImage" placeholder="images/blog/articulo.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="blogPublished">
+                            Publicar artículo
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeBlogModal()">Cancelar</button>
+                        <button type="submit" class="btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Activity Modal -->
+        <div id="activityModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="activityModalTitle">Nueva Clase</h2>
+                    <span class="modal-close" onclick="closeActivityModal()">&times;</span>
+                </div>
+                <div class="error-message" id="activityError"></div>
+                <div class="success-message" id="activitySuccess"></div>
+                <form id="activityForm">
+                    <input type="hidden" id="activityId">
+                    <div class="form-group">
+                        <label for="activityName">Nombre de la clase *</label>
+                        <input type="text" id="activityName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="activityShortDesc">Descripción corta</label>
+                        <input type="text" id="activityShortDesc">
+                    </div>
+                    <div class="form-group">
+                        <label for="activityDescription">Descripción completa</label>
+                        <textarea id="activityDescription" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="activitySchedule">Horario *</label>
+                        <input type="text" id="activitySchedule" placeholder="Lunes a Viernes 6:00 AM - 7:30 AM" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="activityDuration">Duración (minutos)</label>
+                        <input type="number" id="activityDuration" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="activityLocation">Ubicación *</label>
+                        <input type="text" id="activityLocation" placeholder="Centro ACIKY La Habana" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="activityPrice">Precio</label>
+                        <input type="number" id="activityPrice" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="activityIcon">Icono emoji</label>
+                        <input type="text" id="activityIcon" placeholder="🧘">
+                    </div>
+                    <div class="form-group">
+                        <label for="activityLevel">Nivel de dificultad</label>
+                        <select id="activityLevel">
+                            <option value="all">Todos los niveles</option>
+                            <option value="beginner">Principiante</option>
+                            <option value="intermediate">Intermedio</option>
+                            <option value="advanced">Avanzado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="activityActive" checked>
+                            Clase activa
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="activityFeatured">
+                            Clase destacada
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeActivityModal()">Cancelar</button>
+                        <button type="submit" class="btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

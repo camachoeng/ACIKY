@@ -1,9 +1,9 @@
 // Authentication JavaScript for ACIKY Yoga Website
 // Connects to the backend API at http://127.0.0.1:3000
-// Version 3 - WITH DOMContentLoaded wrapper and null checks
-console.log('🔵 Auth.js loaded - VERSION 3');
 
-const API_URL = 'http://127.0.0.1:3000/api/auth';
+const API_URL = window.location.hostname === 'camachoeng.github.io'
+    ? 'https://aciky-backend.herokuapp.com/api/auth'
+    : 'http://127.0.0.1:3000/api/auth';
 
 // Helper function to show error messages
 function showError(message) {
@@ -93,7 +93,6 @@ if (loginForm) {
         submitBtn.textContent = 'Iniciando sesión...';
         
         try {
-            console.log('🔐 Attempting login...');
             const response = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: {
@@ -103,11 +102,7 @@ if (loginForm) {
                 body: JSON.stringify({ email, password })
             });
             
-            console.log('📡 Login response status:', response.status);
-            console.log('🍪 Response headers:', response.headers);
-            
             const data = await response.json();
-            console.log('📦 Login response data:', data);
             
             if (data.success) {
                 showSuccess('¡Inicio de sesión exitoso! Redirigiendo a tu panel...');
@@ -115,11 +110,8 @@ if (loginForm) {
                 // Store user info in localStorage
                 localStorage.setItem('user', JSON.stringify(data.user));
                 
-                console.log('✅ Login successful, redirecting in 1.5s...');
-                
                 // Redirect to dashboard after 1.5 seconds to ensure session cookie is set
                 setTimeout(() => {
-                    console.log('🔄 Redirecting to dashboard.html');
                     window.location.href = 'dashboard.html';
                 }, 1500);
             } else {
@@ -150,22 +142,10 @@ if (registerForm) {
         const confirmPasswordInput = document.getElementById('confirmPassword');
         const submitBtn = document.getElementById('submitBtn');
         
-        console.log('🔍 Form elements:', {
-            usernameInput,
-            emailInput,
-            passwordInput,
-            confirmPasswordInput,
-            submitBtn
-        });
-        
         // Verify all elements exist
-        if (!usernameInput || !emailInput || !passwordInput || !confirmPasswordInput) {
-            console.error('❌ Missing form elements!');
-            showError('Error: Formulario no válido. Por favor recarga la página.');
+        if (!usernameInput || !emailInput || !passwordInput || !confirmPasswordInput) {            showError('Error: Formulario no válido. Por favor recarga la página.');
             return;
         }
-        
-        console.log('✅ All form elements found');
         
         const username = usernameInput.value.trim();
         const email = emailInput.value.trim();
@@ -320,9 +300,6 @@ async function logout() {
 // Check authentication status and display user info
 const user = await checkAuth();
 
-if (user) {
-    // You can add user menu to the header here
-    console.log('Usuario autenticado:', user.username);
-}
+// You can add user menu to the header here if authenticated
 
 }); // End DOMContentLoaded
