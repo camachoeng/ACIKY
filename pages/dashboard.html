@@ -80,10 +80,17 @@
                         const logoutUrl = window.location.hostname === 'camachoeng.github.io'
                             ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth/logout'
                             : 'http://127.0.0.1:3000/api/auth/logout';
-                        await fetch(logoutUrl, {
+                        const response = await fetch(logoutUrl, {
                             method: 'POST',
                             credentials: 'include'
                         });
+                        
+                        if (response.ok) {
+                            console.log('Logout successful');
+                        }
+                        
+                        // Wait a bit to ensure cookie is cleared
+                        await new Promise(resolve => setTimeout(resolve, 100));
                     } catch (err) {
                         console.warn('Logout failed', err);
                     }
