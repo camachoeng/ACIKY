@@ -81,7 +81,7 @@
                             html += `
                                 <tr>
                                     <td data-label="Clase">
-                                        ${activity.icon || '🧘'} ${activity.name}
+                                        ${activity.icon && activity.icon !== '?' ? activity.icon + ' ' : ''}${activity.name}
                                         ${activity.featured ? '<span style="color: #d4af37; margin-left: 5px;">⭐</span>' : ''}
                                     </td>
                                     <td data-label="Horario">${activity.schedule || 'Por definir'}</td>
