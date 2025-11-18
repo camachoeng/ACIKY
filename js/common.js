@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     e.preventDefault();
                     try {
                         const logoutUrl = window.location.hostname === 'camachoeng.github.io'
-                            ? 'https://aciky-backend.herokuapp.com/api/auth/logout'
+                            ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth/logout'
                             : 'http://127.0.0.1:3000/api/auth/logout';
                         await fetch(logoutUrl, {
                             method: 'POST',
@@ -648,9 +648,9 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(async () => {
             try {
                 const authUrl = window.location.hostname === 'camachoeng.github.io'
-                    ? 'https://aciky-backend.herokuapp.com/api/auth/check'
+                    ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth/check'
                     : 'http://127.0.0.1:3000/api/auth/check';
-                await fetch(authUrl, {
+                const response = await fetch(authUrl, {
                     credentials: 'include'
                 });
                 const data = await response.json();
