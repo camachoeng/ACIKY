@@ -2,7 +2,7 @@
 // Connects to the backend API at http://127.0.0.1:3000
 
 const API_URL = window.location.hostname === 'camachoeng.github.io'
-    ? 'https://aciky-backend.herokuapp.com/api/auth'
+    ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth'
     : 'http://127.0.0.1:3000/api/auth';
 
 // Helper function to show error messages
