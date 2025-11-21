@@ -56,37 +56,37 @@ document.querySelectorAll('.admin-tab').forEach(tab => {
 
 // Load initial data
 loadBlogPosts();
-loadTeachers();
+loadInstructors();
 
-// ========== LOAD TEACHERS ==========
-let teachersCache = [];
+// ========== LOAD INSTRUCTORS ==========
+let instructorsCache = [];
 
-async function loadTeachers() {
+async function loadInstructors() {
     try {
-        const response = await fetch(`${API_BASE}/users/teachers`, {
+        const response = await fetch(`${API_BASE}/users/instructors`, {
             credentials: 'include'
         });
         const result = await response.json();
         
         if (result.success && result.data) {
-            teachersCache = result.data;
+            instructorsCache = result.data;
         }
     } catch (error) {
-        console.error('Error loading teachers:', error);
+        console.error('Error loading instructors:', error);
     }
 }
 
-function populateTeacherDropdown() {
-    const select = document.getElementById('activityTeacher');
+function populateInstructorDropdown() {
+    const select = document.getElementById('activityInstructor');
     if (!select) return;
     
     // Clear existing options except the first one
-    select.innerHTML = '<option value="">Selecciona un profesor...</option>';
+    select.innerHTML = '<option value="">Selecciona un instructor...</option>';
     
-    teachersCache.forEach(teacher => {
+    instructorsCache.forEach(instructor => {
         const option = document.createElement('option');
-        option.value = teacher.id;
-        option.textContent = `${teacher.username} (${teacher.role})`;
+        option.value = instructor.id;
+        option.textContent = instructor.username;
         select.appendChild(option);
     });
 }
@@ -361,8 +361,8 @@ async function loadActivities() {
 }
 
 function openActivityModal(activityId = null) {
-    // Populate teacher dropdown first
-    populateTeacherDropdown();
+    // Populate instructor dropdown first
+    populateInstructorDropdown();
     
     document.getElementById('activityModal').style.display = 'block';
     document.getElementById('activityModalTitle').textContent = activityId ? 'Editar Clase' : 'Nueva Clase';
@@ -403,7 +403,7 @@ async function editActivity(activityId) {
         document.getElementById('activitySchedule').value = activity.schedule || '';
         document.getElementById('activityDuration').value = activity.duration || '';
         document.getElementById('activityLocation').value = activity.location || '';
-        document.getElementById('activityTeacher').value = activity.teacher_id || activity.instructor_id || '';
+        document.getElementById('activityInstructor').value = activity.instructor_id || '';
         document.getElementById('activityPrice').value = activity.price || '';
         document.getElementById('activityIcon').value = activity.icon || '';
         document.getElementById('activityLevel').value = activity.difficulty_level || 'all';
@@ -466,7 +466,7 @@ document.getElementById('activityForm').addEventListener('submit', async functio
         schedule: schedule,
         duration: parseInt(document.getElementById('activityDuration').value) || null,
         location: location,
-        teacher_id: parseInt(document.getElementById('activityTeacher').value) || null,
+        instructor_id: parseInt(document.getElementById('activityInstructor').value) || null,
         price: parseFloat(document.getElementById('activityPrice').value) || null,
         icon: document.getElementById('activityIcon').value.trim(),
         difficulty_level: document.getElementById('activityLevel').value,
@@ -474,8 +474,8 @@ document.getElementById('activityForm').addEventListener('submit', async functio
         featured: document.getElementById('activityFeatured').checked
     };
     
-    if (!data.name || !data.schedule || !data.location) {
-        errorDiv.textContent = 'Por favor completa los campos requeridos (Nombre, Horario y Ubicación)';
+    if (!data.name || !data.schedule || !data.location || !data.instructor_id) {
+        errorDiv.textContent = 'Por favor completa los campos requeridos (Nombre, Horario, Ubicación e Instructor)';
         errorDiv.style.display = 'block';
         return;
     }
