@@ -303,7 +303,7 @@ async function loadActivities() {
             
             html += `
                 <tr>
-                    <td>${activity.icon || ''} ${activity.name}</td>
+                    <td>${activity.icon && activity.icon !== '?' ? activity.icon + ' ' : ''}${activity.name}</td>
                     <td>${activity.schedule || '-'}</td>
                     <td>${activity.location || '-'}</td>
                     <td>${activity.difficulty_level || 'all'}</td>
