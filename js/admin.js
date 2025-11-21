@@ -56,6 +56,40 @@ document.querySelectorAll('.admin-tab').forEach(tab => {
 
 // Load initial data
 loadBlogPosts();
+loadTeachers();
+
+// ========== LOAD TEACHERS ==========
+let teachersCache = [];
+
+async function loadTeachers() {
+    try {
+        const response = await fetch(`${API_BASE}/users/teachers`, {
+            credentials: 'include'
+        });
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+            teachersCache = result.data;
+        }
+    } catch (error) {
+        console.error('Error loading teachers:', error);
+    }
+}
+
+function populateTeacherDropdown() {
+    const select = document.getElementById('activityTeacher');
+    if (!select) return;
+    
+    // Clear existing options except the first one
+    select.innerHTML = '<option value="">Selecciona un profesor...</option>';
+    
+    teachersCache.forEach(teacher => {
+        const option = document.createElement('option');
+        option.value = teacher.id;
+        option.textContent = `${teacher.username} (${teacher.role})`;
+        select.appendChild(option);
+    });
+}
 
 // ========== BLOG POSTS CRUD ==========
 
@@ -327,6 +361,9 @@ async function loadActivities() {
 }
 
 function openActivityModal(activityId = null) {
+    // Populate teacher dropdown first
+    populateTeacherDropdown();
+    
     document.getElementById('activityModal').style.display = 'block';
     document.getElementById('activityModalTitle').textContent = activityId ? 'Editar Clase' : 'Nueva Clase';
     
@@ -366,6 +403,7 @@ async function editActivity(activityId) {
         document.getElementById('activitySchedule').value = activity.schedule || '';
         document.getElementById('activityDuration').value = activity.duration || '';
         document.getElementById('activityLocation').value = activity.location || '';
+        document.getElementById('activityTeacher').value = activity.teacher_id || activity.instructor_id || '';
         document.getElementById('activityPrice').value = activity.price || '';
         document.getElementById('activityIcon').value = activity.icon || '';
         document.getElementById('activityLevel').value = activity.difficulty_level || 'all';
@@ -428,12 +466,12 @@ document.getElementById('activityForm').addEventListener('submit', async functio
         schedule: schedule,
         duration: parseInt(document.getElementById('activityDuration').value) || null,
         location: location,
+        teacher_id: parseInt(document.getElementById('activityTeacher').value) || null,
         price: parseFloat(document.getElementById('activityPrice').value) || null,
         icon: document.getElementById('activityIcon').value.trim(),
         difficulty_level: document.getElementById('activityLevel').value,
         active: document.getElementById('activityActive').checked,
-        featured: document.getElementById('activityFeatured').checked,
-        instructor_id: null // Allow null, backend will handle it
+        featured: document.getElementById('activityFeatured').checked
     };
     
     if (!data.name || !data.schedule || !data.location) {
