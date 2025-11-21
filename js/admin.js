@@ -50,6 +50,8 @@ document.querySelectorAll('.admin-tab').forEach(tab => {
             setTimeout(() => loadBlogPosts(), 0);
         } else if (tabName === 'activities' && !document.getElementById('activitiesList').querySelector('table')) {
             setTimeout(() => loadActivities(), 0);
+        } else if (tabName === 'users' && !document.getElementById('usersList').querySelector('table')) {
+            setTimeout(() => loadUsers(), 0);
         }
     });
 });
@@ -516,6 +518,123 @@ document.getElementById('activityForm').addEventListener('submit', async functio
         errorDiv.style.display = 'block';
     }
 });
+
+// ========== USERS MANAGEMENT ==========
+
+async function loadUsers() {
+    const usersList = document.getElementById('usersList');
+    usersList.innerHTML = '<div class="loading">Cargando usuarios...</div>';
+    
+    try {
+        const response = await fetch(`${API_BASE}/users`, {
+            credentials: 'include'
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success || !result.data || result.data.length === 0) {
+            usersList.innerHTML = '<p style="text-align: center; padding: 40px;">No hay usuarios registrados.</p>';
+            return;
+        }
+        
+        let html = `
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Rol Actual</th>
+                        <th>Fecha de Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        result.data.forEach(user => {
+            const roleLabel = {
+                'user': 'Usuario',
+                'instructor': 'Instructor',
+                'admin': 'Administrador'
+            }[user.role] || user.role;
+            
+            const roleClass = {
+                'user': 'status-inactive',
+                'instructor': 'status-active',
+                'admin': 'status-featured'
+            }[user.role] || '';
+            
+            const date = new Date(user.created_at);
+            const formattedDate = date.toLocaleDateString('es-ES');
+            
+            // Don't show role change options for current user (prevent self-demotion)
+            const roleOptions = user.role === 'admin' 
+                ? `<span class="status-badge ${roleClass}">${roleLabel}</span>`
+                : `
+                    <select onchange="updateUserRole(${user.id}, this.value)" class="role-select">
+                        <option value="user" ${user.role === 'user' ? 'selected' : ''}>Usuario</option>
+                        <option value="instructor" ${user.role === 'instructor' ? 'selected' : ''}>Instructor</option>
+                    </select>
+                `;
+            
+            html += `
+                <tr>
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td>${roleOptions}</td>
+                    <td>${formattedDate}</td>
+                    <td>
+                        ${user.role !== 'admin' ? `<button class="btn-edit" onclick="toggleUserRole(${user.id}, '${user.role}')">Cambiar Rol</button>` : '-'}
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        usersList.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error loading users:', error);
+        usersList.innerHTML = '<p style="text-align: center; padding: 40px; color: red;">Error al cargar usuarios</p>';
+    }
+}
+
+async function toggleUserRole(userId, currentRole) {
+    const newRole = currentRole === 'instructor' ? 'user' : 'instructor';
+    const roleLabel = newRole === 'instructor' ? 'instructor' : 'usuario';
+    
+    if (!confirm(`¿Cambiar este usuario a ${roleLabel}?`)) {
+        return;
+    }
+    
+    await updateUserRole(userId, newRole);
+}
+
+async function updateUserRole(userId, newRole) {
+    try {
+        const response = await fetch(`${API_BASE}/users/${userId}/role`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ role: newRole })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('Rol actualizado exitosamente');
+            loadUsers();
+            loadInstructors(); // Refresh instructors cache
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error updating user role:', error);
+        alert('Error al actualizar el rol del usuario');
+    }
+}
 
 // Close modals when clicking outside
 window.onclick = function(event) {
