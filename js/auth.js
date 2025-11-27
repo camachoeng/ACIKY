@@ -107,8 +107,10 @@ if (loginForm) {
             if (data.success) {
                 showSuccess('¡Inicio de sesión exitoso! Redirigiendo a tu panel...');
                 
-                // Store user info in localStorage
+                // Store user info in localStorage (fallback for Safari mobile)
                 localStorage.setItem('user', JSON.stringify(data.user));
+                localStorage.setItem('authToken', 'session-' + Date.now()); // Simple token for auth check
+                localStorage.setItem('loginTime', Date.now().toString());
                 
                 // Redirect to dashboard after 1.5 seconds to ensure session cookie is set
                 setTimeout(() => {

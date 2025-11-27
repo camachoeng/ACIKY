@@ -37,6 +37,14 @@
             // Longer delay to ensure session cookie is fully set after redirect (especially for mobile browsers)
             await new Promise(resolve => setTimeout(resolve, 500));
             
+            // Check if we have a valid localStorage token (fallback for Safari mobile)
+            const authToken = localStorage.getItem('authToken');
+            const loginTime = localStorage.getItem('loginTime');
+            const user = localStorage.getItem('user');
+            
+            // Token expires after 24 hours
+            const tokenValid = authToken && loginTime && (Date.now() - parseInt(loginTime)) < (24 * 60 * 60 * 1000);
+            
             try {
                 console.log('Checking auth at:', API + '/check');
                 const resp = await fetch(API + '/check', { credentials: 'include' });
@@ -44,7 +52,17 @@
                 
                 if (!resp.ok) {
                     console.error('Auth check failed with status:', resp.status);
+                    
+                    // Fallback to localStorage if session cookie doesn't work (Safari mobile)
+                    if (tokenValid && user) {
+                        console.log('Using localStorage fallback auth');
+                        const userData = JSON.parse(user);
+                        displayUserProfile(userData);
+                        return;
+                    }
+                    
                     alert('Error de autenticación (status ' + resp.status + '). Intenta iniciar sesión nuevamente.');
+                    localStorage.clear();
                     window.location.href = 'login.html';
                     return;
                 }
@@ -53,13 +71,43 @@
                 console.log('Auth data:', data);
                 
                 if (!data.isAuthenticated) {
-                    console.warn('Not authenticated, redirecting to login');
+                    console.warn('Not authenticated, checking localStorage fallback');
+                    
+                    // Fallback to localStorage if session cookie doesn't work (Safari mobile)
+                    if (tokenValid && user) {
+                        console.log('Using localStorage fallback auth');
+                        const userData = JSON.parse(user);
+                        displayUserProfile(userData);
+                        return;
+                    }
+                    
                     alert('Sesión no válida. Por favor inicia sesión.');
+                    localStorage.clear();
                     window.location.href = 'login.html';
                     return;
                 }
 
-                const user = data.user || {};
+                const userData = data.user || {};
+                displayUserProfile(userData);
+
+            } catch (error) {
+                console.error('Dashboard auth error:', error);
+                
+                // Fallback to localStorage if fetch fails (Safari mobile)
+                if (tokenValid && user) {
+                    console.log('Using localStorage fallback auth due to error');
+                    const userData = JSON.parse(user);
+                    displayUserProfile(userData);
+                    return;
+                }
+                
+                alert('Error de conexión. Intenta iniciar sesión nuevamente.');
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        })();
+        
+        function displayUserProfile(user) {
                 
                 // Debug: log user role
                 console.log('User role:', user.role);
@@ -101,7 +149,7 @@
                     } catch (err) {
                         console.warn('Logout failed', err);
                     }
-                    localStorage.removeItem('user');
+                    localStorage.clear(); // Clear all auth data
                     window.location.href = 'login.html';
                 });
 
@@ -110,13 +158,7 @@
                 const classesCount = localStorage.getItem('registeredClassesCount') || '0';
                 document.getElementById('streak').textContent = streak;
                 document.getElementById('classesCount').textContent = classesCount;
-
-            } catch (err) {
-                console.error('Dashboard error', err);
-                // If fetch fails, redirect to login (or show message)
-                window.location.href = 'login.html';
-            }
-        })();
+        }
     </script>
 
     <script src="../js/auth.js"></script>
