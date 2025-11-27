@@ -40,10 +40,12 @@
             // Check if we have a valid localStorage token (fallback for Safari mobile)
             const authToken = localStorage.getItem('authToken');
             const loginTime = localStorage.getItem('loginTime');
-            const user = localStorage.getItem('user');
+            const storedUser = localStorage.getItem('user');
             
             // Token expires after 24 hours
-            const tokenValid = authToken && loginTime && (Date.now() - parseInt(loginTime)) < (24 * 60 * 60 * 1000);
+            const tokenValid = authToken && loginTime && storedUser && (Date.now() - parseInt(loginTime)) < (24 * 60 * 60 * 1000);
+            
+            console.log('Auth check - tokenValid:', tokenValid, 'authToken:', authToken, 'storedUser:', storedUser);
             
             try {
                 console.log('Checking auth at:', API + '/check');
@@ -54,9 +56,9 @@
                     console.error('Auth check failed with status:', resp.status);
                     
                     // Fallback to localStorage if session cookie doesn't work (Safari mobile)
-                    if (tokenValid && user) {
+                    if (tokenValid) {
                         console.log('Using localStorage fallback auth');
-                        const userData = JSON.parse(user);
+                        const userData = JSON.parse(storedUser);
                         displayUserProfile(userData);
                         return;
                     }
@@ -74,9 +76,9 @@
                     console.warn('Not authenticated, checking localStorage fallback');
                     
                     // Fallback to localStorage if session cookie doesn't work (Safari mobile)
-                    if (tokenValid && user) {
+                    if (tokenValid) {
                         console.log('Using localStorage fallback auth');
-                        const userData = JSON.parse(user);
+                        const userData = JSON.parse(storedUser);
                         displayUserProfile(userData);
                         return;
                     }
@@ -94,9 +96,9 @@
                 console.error('Dashboard auth error:', error);
                 
                 // Fallback to localStorage if fetch fails (Safari mobile)
-                if (tokenValid && user) {
+                if (tokenValid) {
                     console.log('Using localStorage fallback auth due to error');
-                    const userData = JSON.parse(user);
+                    const userData = JSON.parse(storedUser);
                     displayUserProfile(userData);
                     return;
                 }
