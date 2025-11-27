@@ -38,16 +38,23 @@
             await new Promise(resolve => setTimeout(resolve, 500));
             
             try {
+                console.log('Checking auth at:', API + '/check');
                 const resp = await fetch(API + '/check', { credentials: 'include' });
+                console.log('Auth response status:', resp.status);
                 
                 if (!resp.ok) {
+                    console.error('Auth check failed with status:', resp.status);
+                    alert('Error de autenticación (status ' + resp.status + '). Intenta iniciar sesión nuevamente.');
                     window.location.href = 'login.html';
                     return;
                 }
                 
                 const data = await resp.json();
+                console.log('Auth data:', data);
                 
                 if (!data.isAuthenticated) {
+                    console.warn('Not authenticated, redirecting to login');
+                    alert('Sesión no válida. Por favor inicia sesión.');
                     window.location.href = 'login.html';
                     return;
                 }
