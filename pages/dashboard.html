@@ -34,8 +34,8 @@
                 ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth'
                 : 'http://127.0.0.1:3000/api/auth';
             
-            // Small delay to ensure session cookie is fully set after redirect
-            await new Promise(resolve => setTimeout(resolve, 200));
+            // Longer delay to ensure session cookie is fully set after redirect (especially for mobile browsers)
+            await new Promise(resolve => setTimeout(resolve, 500));
             
             try {
                 const resp = await fetch(API + '/check', { credentials: 'include' });

@@ -74,7 +74,18 @@
                         
                         activities.forEach(activity => {
                             const duration = activity.duration ? `${activity.duration} min` : 'N/A';
-                            const level = activity.difficulty_level || 'todos';
+                            // Translate difficulty level to Spanish
+                            const difficultyLevels = {
+                                'all': 'Todos',
+                                'todos': 'Todos',
+                                'beginner': 'Principiante',
+                                'principiante': 'Principiante',
+                                'intermediate': 'Intermedio',
+                                'intermedio': 'Intermedio',
+                                'advanced': 'Avanzado',
+                                'avanzado': 'Avanzado'
+                            };
+                            const level = difficultyLevels[activity.difficulty_level] || activity.difficulty_level || 'Todos';
                             const price = activity.price ? `$${activity.price}` : 'Gratis';
                             const instructor = activity.instructor_name || 'Por confirmar';
                             

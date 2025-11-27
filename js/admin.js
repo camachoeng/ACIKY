@@ -337,12 +337,25 @@ async function loadActivities() {
                 '<span class="status-badge status-inactive">Inactiva</span>';
             const featured = activity.featured ? '⭐' : '-';
             
+            // Translate difficulty level
+            const difficultyLevels = {
+                'all': 'Todos',
+                'todos': 'Todos',
+                'beginner': 'Principiante',
+                'principiante': 'Principiante',
+                'intermediate': 'Intermedio',
+                'intermedio': 'Intermedio',
+                'advanced': 'Avanzado',
+                'avanzado': 'Avanzado'
+            };
+            const difficultyLabel = difficultyLevels[activity.difficulty_level] || activity.difficulty_level || 'Todos';
+            
             html += `
                 <tr>
                     <td>${activity.icon && activity.icon !== '?' ? activity.icon + ' ' : ''}${activity.name}</td>
                     <td>${activity.schedule || '-'}</td>
                     <td>${activity.location || '-'}</td>
-                    <td>${activity.difficulty_level || 'all'}</td>
+                    <td>${difficultyLabel}</td>
                     <td>${status}</td>
                     <td>${featured}</td>
                     <td>
@@ -408,7 +421,17 @@ async function editActivity(activityId) {
         document.getElementById('activityInstructor').value = activity.instructor_id || '';
         document.getElementById('activityPrice').value = activity.price || '';
         document.getElementById('activityIcon').value = activity.icon || '';
-        document.getElementById('activityLevel').value = activity.difficulty_level || 'all';
+        
+        // Map English difficulty to Spanish for the form
+        const difficultyMap = {
+            'all': 'todos',
+            'beginner': 'principiante',
+            'intermediate': 'intermedio',
+            'advanced': 'avanzado'
+        };
+        const difficulty = activity.difficulty_level || 'all';
+        document.getElementById('activityLevel').value = difficultyMap[difficulty] || difficulty;
+        
         document.getElementById('activityActive').checked = activity.active;
         document.getElementById('activityFeatured').checked = activity.featured;
         
@@ -461,6 +484,15 @@ document.getElementById('activityForm').addEventListener('submit', async functio
     const schedule = document.getElementById('activitySchedule').value.trim();
     const location = document.getElementById('activityLocation').value.trim();
     
+    // Map Spanish difficulty values to English for backend
+    const difficultyToEnglish = {
+        'todos': 'all',
+        'principiante': 'beginner',
+        'intermedio': 'intermediate',
+        'avanzado': 'advanced'
+    };
+    const difficultyValue = document.getElementById('activityLevel').value;
+    
     const data = {
         name: name,
         short_description: shortDesc,
@@ -471,7 +503,7 @@ document.getElementById('activityForm').addEventListener('submit', async functio
         instructor_id: parseInt(document.getElementById('activityInstructor').value) || null,
         price: parseFloat(document.getElementById('activityPrice').value) || null,
         icon: document.getElementById('activityIcon').value.trim(),
-        difficulty_level: document.getElementById('activityLevel').value,
+        difficulty_level: difficultyToEnglish[difficultyValue] || difficultyValue,
         active: document.getElementById('activityActive').checked,
         featured: document.getElementById('activityFeatured').checked
     };
@@ -637,14 +669,3 @@ async function updateUserRole(userId, newRole) {
 }
 
 // Close modals when clicking outside
-window.onclick = function(event) {
-    const blogModal = document.getElementById('blogModal');
-    const activityModal = document.getElementById('activityModal');
-    
-    if (event.target === blogModal) {
-        closeBlogModal();
-    }
-    if (event.target === activityModal) {
-        closeActivityModal();
-    }
-};
