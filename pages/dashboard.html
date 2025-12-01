@@ -32,20 +32,23 @@
         (async function(){
             const API = window.location.hostname === 'camachoeng.github.io'
                 ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth'
+                : window.location.hostname === '192.168.1.70'
+                ? 'http://192.168.1.70:3000/api/auth'
                 : 'http://127.0.0.1:3000/api/auth';
             
             // Longer delay to ensure session cookie is fully set after redirect (especially for mobile browsers)
             await new Promise(resolve => setTimeout(resolve, 500));
             
-            // Check if we have a valid localStorage token (fallback for Safari mobile)
-            const authToken = localStorage.getItem('authToken');
-            const loginTime = localStorage.getItem('loginTime');
-            const storedUser = localStorage.getItem('user');
+            // Check if we have a valid storage token (fallback for Safari mobile)
+            // Try both localStorage and sessionStorage
+            let authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+            let loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
+            let storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
             
             // Token expires after 24 hours
             const tokenValid = authToken && loginTime && storedUser && (Date.now() - parseInt(loginTime)) < (24 * 60 * 60 * 1000);
             
-            console.log('Auth check - tokenValid:', tokenValid, 'authToken:', authToken, 'storedUser:', storedUser);
+            console.log('Auth check - tokenValid:', tokenValid, 'authToken:', !!authToken, 'storedUser:', !!storedUser, 'loginTime:', loginTime);
             
             try {
                 console.log('Checking auth at:', API + '/check');

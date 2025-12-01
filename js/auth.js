@@ -3,6 +3,8 @@
 
 const API_URL = window.location.hostname === 'camachoeng.github.io'
     ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth'
+    : window.location.hostname === '192.168.1.70'
+    ? 'http://192.168.1.70:3000/api/auth'
     : 'http://127.0.0.1:3000/api/auth';
 
 // Helper function to show error messages
@@ -107,10 +109,25 @@ if (loginForm) {
             if (data.success) {
                 showSuccess('¡Inicio de sesión exitoso! Redirigiendo a tu panel...');
                 
-                // Store user info in localStorage (fallback for Safari mobile)
-                localStorage.setItem('user', JSON.stringify(data.user));
-                localStorage.setItem('authToken', 'session-' + Date.now()); // Simple token for auth check
-                localStorage.setItem('loginTime', Date.now().toString());
+                // Store user info in both localStorage AND sessionStorage (fallback for Safari mobile)
+                try {
+                    const userStr = JSON.stringify(data.user);
+                    const timestamp = Date.now().toString();
+                    
+                    // Try localStorage
+                    localStorage.setItem('user', userStr);
+                    localStorage.setItem('authToken', 'session-' + timestamp);
+                    localStorage.setItem('loginTime', timestamp);
+                    
+                    // Also use sessionStorage as backup
+                    sessionStorage.setItem('user', userStr);
+                    sessionStorage.setItem('authToken', 'session-' + timestamp);
+                    sessionStorage.setItem('loginTime', timestamp);
+                    
+                    console.log('Auth data saved to storage');
+                } catch (e) {
+                    console.error('Failed to save to storage:', e);
+                }
                 
                 // Redirect to dashboard after 1.5 seconds to ensure session cookie is set
                 setTimeout(() => {
