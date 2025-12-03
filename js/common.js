@@ -408,6 +408,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     try {
                         const logoutUrl = window.location.hostname === 'camachoeng.github.io'
                             ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth/logout'
+                            : window.location.hostname === '192.168.1.70'
+                            ? 'http://192.168.1.70:3000/api/auth/logout'
                             : 'http://127.0.0.1:3000/api/auth/logout';
                         await fetch(logoutUrl, {
                             method: 'POST',
@@ -416,13 +418,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     } catch (err) {
                         console.warn('Logout request failed', err);
                     }
-                    localStorage.removeItem('user');
+                    // Clear all auth data from storage
+                    localStorage.clear();
+                    sessionStorage.clear();
                     // Determine correct path to login
-                    const currentPath = window.pathname;
+                    const currentPath = window.location.pathname;
                     if (currentPath.includes('/pages/')) {
-                        window.location.href = 'login.html';
+                        window.location.replace('login.html');
                     } else {
-                        window.location.href = 'pages/login.html';
+                        window.location.replace('pages/login.html');
                     }
                 });
             }
@@ -647,8 +651,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check authentication status and update header
         setTimeout(async () => {
             try {
+                // Check if we have a valid storage token (fallback for Safari mobile)
+                const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+                const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
+                const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+                
+                // Token expires after 24 hours
+                const tokenValid = authToken && loginTime && storedUser && (Date.now() - parseInt(loginTime)) < (24 * 60 * 60 * 1000);
+                
                 const authUrl = window.location.hostname === 'camachoeng.github.io'
                     ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth/check'
+                    : window.location.hostname === '192.168.1.70'
+                    ? 'http://192.168.1.70:3000/api/auth/check'
                     : 'http://127.0.0.1:3000/api/auth/check';
                 const response = await fetch(authUrl, {
                     credentials: 'include'
@@ -672,14 +686,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('🔍 Mobile user menu items found:', mobileUserMenu.length);
                 console.log('🔍 Is authenticated:', data.isAuthenticated);
                 
-                if (data.isAuthenticated && data.user) {
+                // Check both session auth AND storage fallback
+                const isAuthenticated = data.isAuthenticated || tokenValid;
+                const user = data.user || (tokenValid ? JSON.parse(storedUser) : null);
+                
+                if (isAuthenticated && user) {
                     // User is logged in - hide desktop auth buttons, show user menu
                     console.log('✅ User is logged in, showing user menu');
                     if (authButtons) authButtons.style.display = 'none';
                     if (userMenu) {
                         userMenu.style.display = 'flex';
                         if (userDisplayName) {
-                            const username = data.user.username || data.user.name || '';
+                            const username = user.username || user.name || '';
                             userDisplayName.textContent = username ? `Bienvenido, ${username}` : '';
                         }
                     }
@@ -697,16 +715,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } catch (error) {
                 console.log('❌ Auth check error:', error);
-                // If backend is not running, show desktop auth buttons, hide user menu
+                
+                // Check storage fallback even if fetch fails
+                const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+                const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
+                const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+                const tokenValid = authToken && loginTime && storedUser && (Date.now() - parseInt(loginTime)) < (24 * 60 * 60 * 1000);
+                
                 const userMenu = document.getElementById('userMenu');
+                const userDisplayName = document.getElementById('userDisplayName');
                 const authButtons = document.getElementById('authButtons');
                 const mobileAuthButtons = document.querySelectorAll('.mobile-auth-buttons');
                 const mobileUserMenu = document.querySelectorAll('.mobile-user-menu');
                 
-                if (authButtons) authButtons.style.display = 'flex';
-                if (userMenu) userMenu.style.display = 'none';
-                mobileAuthButtons.forEach(el => el.style.setProperty('display', 'list-item', 'important'));
-                mobileUserMenu.forEach(el => el.style.setProperty('display', 'none', 'important'));
+                if (tokenValid && storedUser) {
+                    // Use storage fallback
+                    console.log('✅ Using storage fallback for auth display');
+                    const user = JSON.parse(storedUser);
+                    if (authButtons) authButtons.style.display = 'none';
+                    if (userMenu) {
+                        userMenu.style.display = 'flex';
+                        if (userDisplayName) {
+                            const username = user.username || user.name || '';
+                            userDisplayName.textContent = username ? `Bienvenido, ${username}` : '';
+                        }
+                    }
+                    mobileAuthButtons.forEach(el => el.style.setProperty('display', 'none', 'important'));
+                    mobileUserMenu.forEach(el => el.style.setProperty('display', 'list-item', 'important'));
+                } else {
+                    // Show auth buttons
+                    if (authButtons) authButtons.style.display = 'flex';
+                    if (userMenu) userMenu.style.display = 'none';
+                    mobileAuthButtons.forEach(el => el.style.setProperty('display', 'list-item', 'important'));
+                    mobileUserMenu.forEach(el => el.style.setProperty('display', 'none', 'important'));
+                }
             }
         }, 400);
 

@@ -9,27 +9,41 @@ const API_BASE = window.location.hostname === 'camachoeng.github.io'
 
 // Check admin authentication on page load
 (async function() {
+    // Check if we have a valid storage token (fallback for Safari mobile)
+    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
+    const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+    
+    // Token expires after 24 hours
+    const tokenValid = authToken && loginTime && storedUser && (Date.now() - parseInt(loginTime)) < (24 * 60 * 60 * 1000);
+    
+    let isAuthenticated = false;
+    
     try {
         const response = await fetch(`${API_BASE}/auth/check`, {
             credentials: 'include'
         });
         const data = await response.json();
         
-        if (!data.isAuthenticated) {
-            alert('Debes iniciar sesión para acceder al panel de administración');
-            window.location.href = 'login.html';
-            return;
-        }
-        
-        // Note: Backend doesn't return role in current implementation
-        // For now, any authenticated user can access admin
-        // You may want to add role checking in the future
+        isAuthenticated = data.isAuthenticated;
         
     } catch (error) {
         console.error('Auth check failed:', error);
-        alert('Error de autenticación');
-        window.location.href = 'login.html';
     }
+    
+    // User must be authenticated via session OR have valid storage token
+    if (!isAuthenticated && !tokenValid) {
+        alert('Debes iniciar sesión para acceder al panel de administración');
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    console.log('✅ Admin access granted:', { isAuthenticated, tokenValid });
+    
+    // Note: Backend doesn't return role in current implementation
+    // For now, any authenticated user can access admin
+    // You may want to add role checking in the future
+    
 })();
 
 // ========== TAB SWITCHING ==========

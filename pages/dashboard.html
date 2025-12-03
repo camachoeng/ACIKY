@@ -139,6 +139,8 @@
                     try {
                         const logoutUrl = window.location.hostname === 'camachoeng.github.io'
                             ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/auth/logout'
+                            : window.location.hostname === '192.168.1.70'
+                            ? 'http://192.168.1.70:3000/api/auth/logout'
                             : 'http://127.0.0.1:3000/api/auth/logout';
                         const response = await fetch(logoutUrl, {
                             method: 'POST',
@@ -154,8 +156,11 @@
                     } catch (err) {
                         console.warn('Logout failed', err);
                     }
-                    localStorage.clear(); // Clear all auth data
-                    window.location.href = 'login.html';
+                    // Clear all auth data from storage
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    // Force full page reload to login
+                    window.location.replace('login.html');
                 });
 
                 // Fill stats placeholders from localStorage or defaults
