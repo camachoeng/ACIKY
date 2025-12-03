@@ -114,6 +114,7 @@ async function loadBlogPosts() {
         }
         
         let html = `
+            <div class="table-wrapper">
             <table class="content-table">
                 <thead>
                     <tr>
@@ -151,7 +152,7 @@ async function loadBlogPosts() {
             `;
         });
         
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
         blogList.innerHTML = html;
         
     } catch (error) {
@@ -318,6 +319,7 @@ async function loadActivities() {
         }
         
         let html = `
+            <div class="table-wrapper">
             <table class="content-table">
                 <thead>
                     <tr>
@@ -368,7 +370,7 @@ async function loadActivities() {
             `;
         });
         
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
         activitiesList.innerHTML = html;
         
     } catch (error) {
@@ -572,6 +574,7 @@ async function loadUsers() {
         }
         
         let html = `
+            <div class="table-wrapper">
             <table class="content-table">
                 <thead>
                     <tr>
@@ -624,7 +627,7 @@ async function loadUsers() {
             `;
         });
         
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
         usersList.innerHTML = html;
         
     } catch (error) {
