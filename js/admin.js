@@ -14,7 +14,7 @@ const API_BASE = window.location.hostname === 'camachoeng.github.io'
     const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
     const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
     
-    // Token expires after 24 hours
+    // ALL three must exist and token must not be expired
     const tokenValid = authToken && loginTime && storedUser && (Date.now() - parseInt(loginTime)) < (24 * 60 * 60 * 1000);
     
     let isAuthenticated = false;
@@ -31,18 +31,22 @@ const API_BASE = window.location.hostname === 'camachoeng.github.io'
         console.error('Auth check failed:', error);
     }
     
-    // User must be authenticated via session OR have valid storage token
+    // User must be authenticated via session OR have valid storage token WITH user data
     if (!isAuthenticated && !tokenValid) {
-        alert('Debes iniciar sesión para acceder al panel de administración');
+        // Clear corrupted auth data
+        localStorage.clear();
+        sessionStorage.clear();
+        alert('Tu sesión ha expirado. Por favor inicia sesión nuevamente.');
         window.location.href = 'login.html';
         return;
     }
     
-    console.log('✅ Admin access granted:', { isAuthenticated, tokenValid });
-    
-    // Note: Backend doesn't return role in current implementation
-    // For now, any authenticated user can access admin
-    // You may want to add role checking in the future
+    console.log('✅ Admin access granted:', { 
+        isAuthenticated, 
+        tokenValid,
+        hasUser: !!storedUser,
+        hasLoginTime: !!loginTime
+    });
     
 })();
 
