@@ -356,6 +356,7 @@ async function loadActivities() {
                 <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Instructor</th>
                         <th>Horario</th>
                         <th>Ubicación</th>
                         <th>Nivel</th>
@@ -386,9 +387,14 @@ async function loadActivities() {
             };
             const difficultyLabel = difficultyLevels[activity.difficulty_level] || activity.difficulty_level || 'Todos';
             
+            // Find instructor name from cache
+            const instructor = instructorsCache.find(i => i.id === activity.instructor_id);
+            const instructorName = instructor ? instructor.username : (activity.instructor_id ? 'Instructor' : '-');
+            
             html += `
                 <tr>
                     <td>${activity.icon && activity.icon !== '?' ? activity.icon + ' ' : ''}${activity.name}</td>
+                    <td>${instructorName}</td>
                     <td>${activity.schedule || '-'}</td>
                     <td>${activity.location || '-'}</td>
                     <td>${difficultyLabel}</td>
