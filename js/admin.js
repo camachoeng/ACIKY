@@ -580,10 +580,21 @@ async function loadUsers() {
         const headers = { 'Content-Type': 'application/json' };
         const user = localStorage.getItem('user');
         const loginTime = localStorage.getItem('loginTime');
+        
+        console.log('Auth data:', { user: user ? JSON.parse(user) : null, loginTime });
+        
         if (user && loginTime) {
-            const userData = { ...JSON.parse(user), loginTime: parseInt(loginTime) };
+            const userObj = JSON.parse(user);
+            const userData = { 
+                id: userObj.id, 
+                email: userObj.email,
+                username: userObj.username,
+                role: userObj.role,
+                loginTime: parseInt(loginTime) 
+            };
             const token = btoa(JSON.stringify(userData));
             headers['Authorization'] = `Bearer ${token}`;
+            console.log('Sending auth token:', { userData, token: token.substring(0, 20) + '...' });
         }
         
         const response = await fetch(`${API_BASE}/users`, {
