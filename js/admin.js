@@ -582,10 +582,15 @@ async function loadUsers() {
     try {
         // Prepare headers with Authorization fallback for Safari mobile
         const headers = { 'Content-Type': 'application/json' };
-        const user = localStorage.getItem('user');
-        const loginTime = localStorage.getItem('loginTime');
+        const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+        const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
         
-        console.log('Auth data:', { user: user ? JSON.parse(user) : null, loginTime });
+        console.log('Auth data:', { 
+            user: user ? JSON.parse(user) : null, 
+            loginTime,
+            fromLocalStorage: !!localStorage.getItem('user'),
+            fromSessionStorage: !!sessionStorage.getItem('user')
+        });
         
         if (user && loginTime) {
             const userObj = JSON.parse(user);
