@@ -656,9 +656,8 @@ async function loadUsers() {
                     <tr>
                         <th>Usuario</th>
                         <th>Email</th>
-                        <th>Rol Actual</th>
+                        <th>Rol</th>
                         <th>Fecha de Registro</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -696,9 +695,6 @@ async function loadUsers() {
                     <td>${user.email}</td>
                     <td>${roleOptions}</td>
                     <td>${formattedDate}</td>
-                    <td>
-                        ${user.role !== 'admin' ? `<button class="btn-edit" onclick="toggleUserRole(${user.id}, '${user.role}')">Cambiar Rol</button>` : '-'}
-                    </td>
                 </tr>
             `;
         });
@@ -710,17 +706,6 @@ async function loadUsers() {
         console.error('Error loading users:', error);
         usersList.innerHTML = '<p style="text-align: center; padding: 40px; color: red;">Error al cargar usuarios</p>';
     }
-}
-
-async function toggleUserRole(userId, currentRole) {
-    const newRole = currentRole === 'instructor' ? 'user' : 'instructor';
-    const roleLabel = newRole === 'instructor' ? 'instructor' : 'usuario';
-    
-    if (!confirm(`¿Cambiar este usuario a ${roleLabel}?`)) {
-        return;
-    }
-    
-    await updateUserRole(userId, newRole);
 }
 
 async function updateUserRole(userId, newRole) {
