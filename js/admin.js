@@ -285,13 +285,27 @@ document.getElementById('blogForm').addEventListener('submit', async function(e)
         const url = postId ? `${API_BASE}/blog/${postId}` : `${API_BASE}/blog`;
         const method = postId ? 'PUT' : 'POST';
         
+        // Prepare headers with Authorization fallback for Safari mobile
+        const headers = { 'Content-Type': 'application/json' };
+        const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+        const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
         
+        if (user && loginTime) {
+            const userObj = JSON.parse(user);
+            const userData = { 
+                id: userObj.id, 
+                email: userObj.email,
+                username: userObj.username,
+                role: userObj.role,
+                loginTime: parseInt(loginTime) 
+            };
+            const token = btoa(JSON.stringify(userData));
+            headers['Authorization'] = `Bearer ${token}`;
+        }
         
         const response = await fetch(url, {
             method: method,
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             credentials: 'include',
             body: JSON.stringify(data)
         });
@@ -540,13 +554,27 @@ document.getElementById('activityForm').addEventListener('submit', async functio
         const url = activityId ? `${API_BASE}/activities/${activityId}` : `${API_BASE}/activities`;
         const method = activityId ? 'PUT' : 'POST';
         
-       
+        // Prepare headers with Authorization fallback for Safari mobile
+        const headers = { 'Content-Type': 'application/json' };
+        const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+        const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
+        
+        if (user && loginTime) {
+            const userObj = JSON.parse(user);
+            const userData = { 
+                id: userObj.id, 
+                email: userObj.email,
+                username: userObj.username,
+                role: userObj.role,
+                loginTime: parseInt(loginTime) 
+            };
+            const token = btoa(JSON.stringify(userData));
+            headers['Authorization'] = `Bearer ${token}`;
+        }
         
         const response = await fetch(url, {
             method: method,
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             credentials: 'include',
             body: JSON.stringify(data)
         });
