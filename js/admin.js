@@ -576,8 +576,19 @@ async function loadUsers() {
     usersList.innerHTML = '<div class="loading">Cargando usuarios...</div>';
     
     try {
+        // Prepare headers with Authorization fallback for Safari mobile
+        const headers = { 'Content-Type': 'application/json' };
+        const user = localStorage.getItem('user');
+        const loginTime = localStorage.getItem('loginTime');
+        if (user && loginTime) {
+            const userData = { ...JSON.parse(user), loginTime: parseInt(loginTime) };
+            const token = btoa(JSON.stringify(userData));
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
         const response = await fetch(`${API_BASE}/users`, {
-            credentials: 'include'
+            credentials: 'include',
+            headers: headers
         });
         
         console.log('Users fetch response status:', response.status);
