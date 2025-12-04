@@ -962,6 +962,41 @@ nav ul {
     }
 }
 /* --- End mobile stacked card layout --- */
+
+/* Booking button styles */
+.btn-book {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b9b6b, #4d7a4d);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(107, 155, 107, 0.2);
+    white-space: nowrap;
+}
+
+.btn-book:hover {
+    background: linear-gradient(135deg, #4d7a4d, #3d6a3d);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(107, 155, 107, 0.3);
+}
+
+.btn-book:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+    .btn-book {
+        padding: 10px 20px;
+        font-size: 1em;
+        width: 100%;
+        text-align: center;
+    }
+}
+
 html, body {
     max-width: 100vw;
     overflow-x: hidden;

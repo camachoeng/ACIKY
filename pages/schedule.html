@@ -72,6 +72,7 @@
                                             <th>Duración</th>
                                             <th>Nivel</th>
                                             <th>Precio</th>
+                                            <th>Reservar</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -93,6 +94,14 @@
                             const level = difficultyLevels[activity.difficulty_level] || activity.difficulty_level || 'Todos';
                             const price = activity.price ? `$${activity.price}` : 'Gratis';
                             const instructor = activity.instructor_name || 'Por confirmar';
+                            const instructorEmail = activity.instructor_email || '';
+                            
+                            // Create email subject and body
+                            const emailSubject = encodeURIComponent(`Reserva: ${activity.name}`);
+                            const emailBody = encodeURIComponent(`Hola ${instructor},\n\nMe gustaría reservar una clase de ${activity.name}.\n\nHorario: ${activity.schedule || 'Por definir'}\nUbicación: ${location}\n\nGracias,`);
+                            const mailtoLink = instructorEmail 
+                                ? `mailto:${instructorEmail}?subject=${emailSubject}&body=${emailBody}`
+                                : '#';
                             
                             html += `
                                 <tr>
@@ -105,6 +114,12 @@
                                     <td data-label="Duración">${duration}</td>
                                     <td data-label="Nivel">${level}</td>
                                     <td data-label="Precio">${price}</td>
+                                    <td data-label="Reservar">
+                                        ${instructorEmail 
+                                            ? `<a href="${mailtoLink}" class="btn-book">Reservar</a>`
+                                            : `<span style="color: #999; font-size: 0.9em;">No disponible</span>`
+                                        }
+                                    </td>
                                 </tr>
                             `;
                         });
