@@ -580,9 +580,12 @@ async function loadUsers() {
             credentials: 'include'
         });
         
+        console.log('Users fetch response status:', response.status);
         const result = await response.json();
+        console.log('Users fetch result:', result);
         
         if (!result.success || !result.data || result.data.length === 0) {
+            console.log('No users or fetch failed:', { success: result.success, dataLength: result.data?.length });
             usersList.innerHTML = '<p style="text-align: center; padding: 40px;">No hay usuarios registrados.</p>';
             return;
         }

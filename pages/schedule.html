@@ -27,16 +27,21 @@
         (async function() {
             const API_URL = window.location.hostname === 'camachoeng.github.io'
                 ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/activities'
+                : window.location.hostname === '192.168.1.70'
+                ? 'http://192.168.1.70:3000/api/activities'
                 : 'http://127.0.0.1:3000/api/activities';
             const scheduleContainer = document.getElementById('scheduleContainer');
             
             try {
+                console.log('Fetching activities from:', API_URL);
                 const response = await fetch(`${API_URL}?active=true&limit=50`, {
                     credentials: 'include'
                 });
                 
+                console.log('Response status:', response.status);
+                
                 if (!response.ok) {
-                    throw new Error('Failed to fetch activities');
+                    throw new Error(`Failed to fetch activities: ${response.status}`);
                 }
                 
                 const result = await response.json();
@@ -117,9 +122,11 @@
                 }
             } catch (error) {
                 console.error('Error loading schedule:', error);
+                console.error('Error details:', error.message);
                 scheduleContainer.innerHTML = `
                     <p style="text-align: center; padding: 40px 0;">
-                        Error al cargar el horario. Por favor intenta más tarde.
+                        Error al cargar el horario. Por favor intenta más tarde.<br>
+                        <small style="color: #999;">${error.message || 'Error desconocido'}</small>
                     </p>
                 `;
             }
