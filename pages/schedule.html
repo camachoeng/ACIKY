@@ -17,12 +17,75 @@
             </div>
         </section>
     </main>
+    
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeBookingModal()">&times;</span>
+            <h2 id="bookingModalTitle">Reservar Clase</h2>
+            <form id="bookingForm">
+                <input type="hidden" id="bookingActivityName">
+                <input type="hidden" id="bookingActivitySchedule">
+                <input type="hidden" id="bookingLocation">
+                <input type="hidden" id="bookingInstructorEmail">
+                <input type="hidden" id="bookingInstructorName">
+                
+                <div class="form-group">
+                    <label>Clase: <span id="displayActivityName" style="font-weight: normal;"></span></label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userName">Tu Nombre *</label>
+                    <input type="text" id="userName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userEmail">Tu Email *</label>
+                    <input type="email" id="userEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userPhone">Teléfono (opcional)</label>
+                    <input type="tel" id="userPhone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userMessage">Mensaje (opcional)</label>
+                    <textarea id="userMessage" rows="4" placeholder="Comparte cualquier pregunta o información adicional..."></textarea>
+                </div>
+                
+                <div id="bookingError" class="error-message" style="display: none;"></div>
+                <div id="bookingSuccess" class="success-message" style="display: none;"></div>
+                
+                <button type="submit" class="btn-submit">Enviar Solicitud</button>
+            </form>
+        </div>
+    </div>
+    
     <!-- Footer will be inserted by common.js -->
     <script src="../js/common.js"></script>
     <script>
         insertYogiQuote("El tiempo no espera a nadie. Haz que cada día cuente y vive con conciencia.", "Yogi Bhajan");
     </script>
     <script>
+        // Booking modal functions (must be global for onclick handlers)
+        function openBookingModal(activityName, schedule, location, instructorEmail, instructorName) {
+            document.getElementById('bookingModal').style.display = 'block';
+            document.getElementById('bookingActivityName').value = activityName;
+            document.getElementById('bookingActivitySchedule').value = schedule;
+            document.getElementById('bookingLocation').value = location;
+            document.getElementById('bookingInstructorEmail').value = instructorEmail;
+            document.getElementById('bookingInstructorName').value = instructorName;
+            document.getElementById('displayActivityName').textContent = activityName;
+            document.getElementById('bookingError').style.display = 'none';
+            document.getElementById('bookingSuccess').style.display = 'none';
+        }
+        
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            document.getElementById('bookingForm').reset();
+        }
+        
         // Fetch and display activities from API
         (async function() {
             const API_URL = window.location.hostname === 'camachoeng.github.io'
@@ -96,13 +159,6 @@
                             const instructor = activity.instructor_name || 'Por confirmar';
                             const instructorEmail = activity.instructor_email || '';
                             
-                            // Create email subject and body
-                            const emailSubject = encodeURIComponent(`Reserva: ${activity.name}`);
-                            const emailBody = encodeURIComponent(`Hola ${instructor},\n\nMe gustaría reservar una clase de ${activity.name}.\n\nHorario: ${activity.schedule || 'Por definir'}\nUbicación: ${location}\n\nGracias,`);
-                            const mailtoLink = instructorEmail 
-                                ? `mailto:${instructorEmail}?subject=${emailSubject}&body=${emailBody}`
-                                : '#';
-                            
                             html += `
                                 <tr>
                                     <td data-label="Clase">
@@ -116,7 +172,7 @@
                                     <td data-label="Precio">${price}</td>
                                     <td data-label="Reservar">
                                         ${instructorEmail 
-                                            ? `<a href="${mailtoLink}" class="btn-book">Reservar</a>`
+                                            ? `<button class="btn-book" onclick="openBookingModal('${activity.name.replace(/'/g, "\\'")}', '${activity.schedule || 'Por definir'}', '${location}', '${instructorEmail}', '${instructor}')">Reservar</button>`
                                             : `<span style="color: #999; font-size: 0.9em;">No disponible</span>`
                                         }
                                     </td>
@@ -146,6 +202,67 @@
                 `;
             }
         })();
+        
+        // Handle booking form submission
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const API_URL = window.location.hostname === 'camachoeng.github.io'
+                ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api/booking'
+                : window.location.hostname === '192.168.1.70'
+                ? 'http://192.168.1.70:3000/api/booking'
+                : 'http://127.0.0.1:3000/api/booking';
+            
+            const errorDiv = document.getElementById('bookingError');
+            const successDiv = document.getElementById('bookingSuccess');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        activityName: document.getElementById('bookingActivityName').value,
+                        activitySchedule: document.getElementById('bookingActivitySchedule').value,
+                        location: document.getElementById('bookingLocation').value,
+                        instructorEmail: document.getElementById('bookingInstructorEmail').value,
+                        instructorName: document.getElementById('bookingInstructorName').value,
+                        userName: document.getElementById('userName').value,
+                        userEmail: document.getElementById('userEmail').value,
+                        userPhone: document.getElementById('userPhone').value,
+                        message: document.getElementById('userMessage').value
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    successDiv.textContent = '¡Solicitud enviada! El instructor te contactará pronto.';
+                    successDiv.style.display = 'block';
+                    document.getElementById('bookingForm').reset();
+                    setTimeout(() => {
+                        closeBookingModal();
+                    }, 3000);
+                } else {
+                    errorDiv.textContent = result.message || 'Error al enviar la solicitud';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Booking error:', error);
+                errorDiv.textContent = 'Error de conexión. Por favor intenta más tarde.';
+                errorDiv.style.display = 'block';
+            } finally {
+                // Always re-enable the button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Solicitud';
+            }
+        });
     </script>
 </body>
 </html>
