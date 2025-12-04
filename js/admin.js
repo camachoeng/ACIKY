@@ -697,11 +697,27 @@ async function toggleUserRole(userId, currentRole) {
 
 async function updateUserRole(userId, newRole) {
     try {
+        // Prepare headers with Authorization fallback for Safari mobile
+        const headers = { 'Content-Type': 'application/json' };
+        const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+        const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
+        
+        if (user && loginTime) {
+            const userObj = JSON.parse(user);
+            const userData = { 
+                id: userObj.id, 
+                email: userObj.email,
+                username: userObj.username,
+                role: userObj.role,
+                loginTime: parseInt(loginTime) 
+            };
+            const token = btoa(JSON.stringify(userData));
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
         const response = await fetch(`${API_BASE}/users/${userId}/role`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             credentials: 'include',
             body: JSON.stringify({ role: newRole })
         });
