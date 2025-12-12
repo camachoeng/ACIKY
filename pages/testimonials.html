@@ -19,83 +19,84 @@
 
         <!-- Testimonials Grid -->
         <section class="testimonials-content">
-            <div class="testimonials-grid">
-                <article class="testimonial-card featured">
-                    <div class="testimonial-icon">
-                        <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
-                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
-                        </svg>
-                    </div>
-                    <blockquote class="testimonial-text">
-                        "Gracias a todos los profesores que nos entregan su tiempo y dedicación, salvan y apuestan por lo mejor del ser humano, Sat Nam"
-                    </blockquote>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">V</div>
-                        <cite class="author-name">Victoria O. A.</cite>
-                    </div>
-                </article>
-
-                <article class="testimonial-card">
-                    <div class="testimonial-icon">
-                        <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
-                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
-                        </svg>
-                    </div>
-                    <blockquote class="testimonial-text">
-                        "Cada nueva experiencia es tan maravillosa como la anterior, feliz y agradecida de la clase hoy, gracias, gracias, gracias"
-                    </blockquote>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">I</div>
-                        <cite class="author-name">Irasema F. P.</cite>
-                    </div>
-                </article>
-
-                <article class="testimonial-card">
-                    <div class="testimonial-icon">
-                        <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
-                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
-                        </svg>
-                    </div>
-                    <blockquote class="testimonial-text">
-                        "Maravillosa clase muchachas sin palabras. Nos encantó la verdad"
-                    </blockquote>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">Y</div>
-                        <cite class="author-name">Yoamis</cite>
-                    </div>
-                </article>
+            <div class="testimonials-grid" id="testimonialsGrid">
+                <!-- Testimonials will be loaded dynamically -->
             </div>
         </section>
 
-        <!-- Call to Action -->
-        <section class="testimonials-cta">
-            <div class="cta-content">
-                <h2>¿Quieres compartir tu experiencia?</h2>
-                <p>Tu testimonio puede inspirar a otros a comenzar su camino en el yoga. Comparte tu historia con nuestra comunidad.</p>
-                <div class="cta-actions">
-                    <a href="contact.html" class="btn-primary">Compartir Testimonio</a>
-                    <a href="schedule.html" class="btn-secondary">Ver Clases</a>
-                </div>
+        <!-- Testimonial Submission Form -->
+        <section class="testimonial-form-section" id="submitTestimonial">
+            <div class="form-container">
+                <h2>Comparte tu Experiencia</h2>
+                <p>Tu testimonio puede inspirar a otros a comenzar su camino en el yoga</p>
+                
+                <form id="testimonialForm" class="testimonial-form">
+                    <div id="formMessage" class="form-message"></div>
+                    
+                    <div class="form-group">
+                        <label for="authorName" class="form-label">Nombre *</label>
+                        <input type="text" id="authorName" class="form-input" required placeholder="Tu nombre completo">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location" class="form-label">Ubicación (opcional)</label>
+                        <input type="text" id="location" class="form-input" placeholder="Ciudad, País">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="content" class="form-label">Tu Testimonio *</label>
+                        <textarea id="content" class="form-textarea" required rows="5" placeholder="Comparte tu experiencia con el Kundalini Yoga..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rating" class="form-label">Calificación *</label>
+                        <div class="rating-input">
+                            <input type="radio" name="rating" id="rating5" value="5" required>
+                            <label for="rating5">⭐⭐⭐⭐⭐</label>
+                            
+                            <input type="radio" name="rating" id="rating4" value="4">
+                            <label for="rating4">⭐⭐⭐⭐</label>
+                            
+                            <input type="radio" name="rating" id="rating3" value="3">
+                            <label for="rating3">⭐⭐⭐</label>
+                            
+                            <input type="radio" name="rating" id="rating2" value="2">
+                            <label for="rating2">⭐⭐</label>
+                            
+                            <input type="radio" name="rating" id="rating1" value="1">
+                            <label for="rating1">⭐</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activityId" class="form-label">Clase Relacionada (opcional)</label>
+                        <select id="activityId" class="form-input">
+                            <option value="">Selecciona una clase</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Enviar Testimonio</button>
+                </form>
             </div>
         </section>
 
         <!-- Community Stats -->
         <section class="community-stats">
-            <div class="stats-grid">
+            <div class="stats-grid" id="communityStats">
                 <div class="stat-item">
-                    <div class="stat-number">50+</div>
+                    <div class="stat-number">-</div>
                     <div class="stat-label">Estudiantes Activos</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">15+</div>
+                    <div class="stat-number">-</div>
                     <div class="stat-label">Instructores Certificados</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">3</div>
+                    <div class="stat-number">-</div>
                     <div class="stat-label">Espacios de Práctica</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">100+</div>
+                    <div class="stat-number">-</div>
                     <div class="stat-label">Clases Realizadas</div>
                 </div>
             </div>
@@ -105,6 +106,201 @@
     <script src="../js/common.js"></script>
     <script>
         insertYogiQuote("La felicidad es tu derecho de nacimiento. No la busques, simplemente elige ser feliz.", "Yogi Bhajan");
+
+        // API Base URL
+        const API_BASE = window.location.hostname === 'camachoeng.github.io' 
+            ? 'https://aciky-backend.herokuapp.com/api'
+            : 'http://127.0.0.1:3000/api';
+
+        // Load testimonials from database
+        async function loadTestimonials() {
+            try {
+                const response = await fetch(`${API_BASE}/testimonials/approved`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    displayTestimonials(result.data);
+                } else {
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Error loading testimonials:', error);
+                showEmptyState();
+            }
+        }
+
+        function displayTestimonials(testimonials) {
+            const grid = document.getElementById('testimonialsGrid');
+            
+            if (testimonials.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            grid.innerHTML = testimonials.map(testimonial => {
+                const avatar = testimonial.author_name.charAt(0).toUpperCase();
+                const featuredClass = testimonial.featured ? ' featured' : '';
+                
+                return `
+                    <article class="testimonial-card${featuredClass}">
+                        <div class="testimonial-icon">
+                            <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+                                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
+                            </svg>
+                        </div>
+                        <blockquote class="testimonial-text">
+                            "${escapeHtml(testimonial.content)}"
+                        </blockquote>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">${avatar}</div>
+                            <cite class="author-name">${escapeHtml(testimonial.author_name)}${testimonial.location ? `, ${escapeHtml(testimonial.location)}` : ''}</cite>
+                        </div>
+                        ${testimonial.activity_name ? `<div class="testimonial-activity">${escapeHtml(testimonial.activity_name)}</div>` : ''}
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function showEmptyState() {
+            const grid = document.getElementById('testimonialsGrid');
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <p>Aún no hay testimonios disponibles. ¡Sé el primero en compartir tu experiencia!</p>
+                </div>
+            `;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load activities for dropdown
+        async function loadActivities() {
+            try {
+                const response = await fetch(`${API_BASE}/activities`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    const select = document.getElementById('activityId');
+                    result.data.forEach(activity => {
+                        const option = document.createElement('option');
+                        option.value = activity.id;
+                        option.textContent = activity.name;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading activities:', error);
+            }
+        }
+
+        // Handle testimonial form submission
+        document.getElementById('testimonialForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formMessage = document.getElementById('formMessage');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Get form data
+            const authorName = document.getElementById('authorName').value.trim();
+            const location = document.getElementById('location').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const rating = document.querySelector('input[name="rating"]:checked')?.value;
+            const activityId = document.getElementById('activityId').value;
+            
+            // Validation
+            if (!authorName || !content || !rating) {
+                formMessage.className = 'form-message error';
+                formMessage.textContent = 'Por favor completa todos los campos requeridos';
+                return;
+            }
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/testimonials`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        author_name: authorName,
+                        location: location || null,
+                        content: content,
+                        rating: parseInt(rating),
+                        activity_id: activityId || null
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    formMessage.className = 'form-message success';
+                    formMessage.textContent = '¡Gracias por compartir tu experiencia! Tu testimonio será revisado antes de publicarse.';
+                    
+                    // Reset form
+                    document.getElementById('testimonialForm').reset();
+                    
+                    // Scroll to message
+                    formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    formMessage.className = 'form-message error';
+                    formMessage.textContent = result.message || 'Error al enviar el testimonio';
+                }
+            } catch (error) {
+                console.error('Error submitting testimonial:', error);
+                formMessage.className = 'form-message error';
+                formMessage.textContent = 'Error de conexión. Por favor intenta nuevamente.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Testimonio';
+            }
+        });
+
+        // Load community stats
+        async function loadCommunityStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats/community`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    const stats = result.data;
+                    const statsGrid = document.getElementById('communityStats');
+                    
+                    statsGrid.innerHTML = `
+                        <div class="stat-item">
+                            <div class="stat-number">${stats.students}+</div>
+                            <div class="stat-label">Estudiantes Activos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${stats.instructors}+</div>
+                            <div class="stat-label">Instructores Certificados</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${stats.spaces}</div>
+                            <div class="stat-label">Espacios de Práctica</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${stats.classes}+</div>
+                            <div class="stat-label">Clases Realizadas</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading community stats:', error);
+            }
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTestimonials();
+            loadActivities();
+            loadCommunityStats();
+        });
     </script>
 </body>
 </html>

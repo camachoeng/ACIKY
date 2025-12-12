@@ -129,7 +129,7 @@
                 const profileState = document.getElementById('profileState');
                 
                 // Show admin link only for admin users
-                const adminLink = (user.role === 'admin' || user.role === 'instructor') 
+                const adminLink = (user.role === 'admin') 
                     ? `<div class="dashboard-action-group"><a href="admin.html" class="btn-primary-inline">📊 Panel de Administración</a></div>` 
                     : '';
                 

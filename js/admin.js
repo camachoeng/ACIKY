@@ -7,6 +7,14 @@ const API_BASE = window.location.hostname === 'camachoeng.github.io'
     ? 'http://192.168.1.70:3000/api'
     : 'http://127.0.0.1:3000/api';
 
+// Helper function to escape HTML
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 // Check admin authentication on page load
 (async function() {
     // Check if we have a valid storage token (fallback for Safari mobile)
@@ -18,6 +26,7 @@ const API_BASE = window.location.hostname === 'camachoeng.github.io'
     const tokenValid = authToken && loginTime && storedUser && (Date.now() - parseInt(loginTime)) < (24 * 60 * 60 * 1000);
     
     let isAuthenticated = false;
+    let userRole = null;
     
     try {
         const response = await fetch(`${API_BASE}/auth/check`, {
@@ -26,6 +35,7 @@ const API_BASE = window.location.hostname === 'camachoeng.github.io'
         const data = await response.json();
         
         isAuthenticated = data.isAuthenticated;
+        userRole = data.user?.role;
         
     } catch (error) {
         console.error('Auth check failed:', error);
@@ -41,11 +51,33 @@ const API_BASE = window.location.hostname === 'camachoeng.github.io'
         return;
     }
     
+    // Check if user is admin - instructors are not allowed
+    if (isAuthenticated && userRole !== 'admin') {
+        alert('Acceso denegado. Solo los administradores pueden acceder a este panel.');
+        window.location.href = 'dashboard.html';
+        return;
+    }
+    
+    // For token-based auth, also check stored role
+    if (tokenValid && storedUser) {
+        try {
+            const user = JSON.parse(storedUser);
+            if (user.role !== 'admin') {
+                alert('Acceso denegado. Solo los administradores pueden acceder a este panel.');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+        } catch (error) {
+            console.error('Error parsing stored user:', error);
+        }
+    }
+    
     console.log('✅ Admin access granted:', { 
         isAuthenticated, 
         tokenValid,
         hasUser: !!storedUser,
-        hasLoginTime: !!loginTime
+        hasLoginTime: !!loginTime,
+        role: userRole
     });
     
 })();
