@@ -1731,24 +1731,6 @@ header h1 {
     padding: 0 5px;
 }
 
-.btn-dashboard {
-    padding: 8px 16px;
-    border-radius: 5px;
-    background: white;
-    color: #2c5f4f;
-    border: 2px solid white;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s;
-    font-size: 14px;
-    display: inline-block;
-}
-
-.btn-dashboard:hover {
-    background: #2c5f4f;
-    color: white;
-}
-
 .btn-logout {
     padding: 8px 16px;
     border-radius: 5px;
@@ -9913,10 +9895,11 @@ footer {
     display: inline-block;
     background: #2c5f4f;
     color: #fff;
-    padding: 10px 20px;
+    padding: 14px 20px;
     border-radius: 6px;
     text-decoration: none;
     font-weight: 600;
+    font-size: 1em;
 }
 
 .btn-primary-inline:hover {
@@ -9949,6 +9932,9 @@ footer {
 
 .dashboard-action-group {
     margin-top: 16px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .dashboard-welcome {
@@ -10007,14 +9993,6 @@ footer {
 
 #profileEdit .password-input {
     margin-bottom: 10px;
-}
-
-#profileEdit .edit-actions {
-    margin-top: 20px;
-}
-
-#profileEdit .btn-save {
-    margin-right: 10px;
 }
 
 /* Stats sidebar header */
