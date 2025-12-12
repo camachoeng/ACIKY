@@ -9955,6 +9955,68 @@ footer {
     margin-top: 12px;
 }
 
+/* Profile edit form styles */
+#profileEdit {
+    display: none;
+}
+
+#profileEdit .edit-message {
+    display: none;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+#profileEdit .edit-message.success {
+    background-color: #efe;
+    color: #060;
+}
+
+#profileEdit .edit-message.error {
+    background-color: #fee;
+    color: #c00;
+}
+
+#profileEdit .form-group {
+    margin-bottom: 15px;
+}
+
+#profileEdit .form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#profileEdit .form-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#profileEdit .password-section {
+    margin-bottom: 15px;
+}
+
+#profileEdit .password-note {
+    margin-bottom: 10px;
+    color: #666;
+    font-style: italic;
+}
+
+#profileEdit .password-input {
+    margin-bottom: 10px;
+}
+
+#profileEdit .edit-actions {
+    margin-top: 20px;
+}
+
+#profileEdit .btn-save {
+    margin-right: 10px;
+}
+
 /* Stats sidebar header */
 .stats h3 {
     margin-top: 0;

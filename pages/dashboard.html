@@ -133,36 +133,40 @@
                         <p class="dashboard-welcome">Bienvenido a tu panel. Aquí podrás ver tus clases, recursos exclusivos y tu progreso.</p>
                         ${adminLink}
                         <div class="dashboard-action-group">
-                            <button id="editProfileBtn" class="btn-primary-inline" style="margin-right: 10px;">✏️ Editar Perfil</button>
+                            <button id="editProfileBtn" class="btn-primary-inline btn-save">✏️ Editar Perfil</button>
                             <button id="dashboardLogoutBtn" class="btn-dashboard">Cerrar sesión</button>
                         </div>
                     </div>
                     
-                    <div id="profileEdit" style="display: none;">
+                    <div id="profileEdit">
                         <form id="editProfileForm">
-                            <div id="editMessage" style="display: none; padding: 10px; margin-bottom: 15px; border-radius: 5px;"></div>
+                            <div id="editMessage" class="edit-message"></div>
                             
-                            <div style="margin-bottom: 15px;">
-                                <label for="editUsername" style="display: block; margin-bottom: 5px;"><strong>Usuario:</strong></label>
-                                <input type="text" id="editUsername" value="${user.username || ''}" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            <div class="form-group">
+                                <label for="editUsername" class="form-label">Usuario:</label>
+                                <input type="text" id="editUsername" class="form-input" value="${user.username || ''}" required>
                             </div>
                             
-                            <div style="margin-bottom: 15px;">
-                                <label for="editEmail" style="display: block; margin-bottom: 5px;"><strong>Correo:</strong></label>
-                                <input type="email" id="editEmail" value="${user.email || ''}" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            <div class="form-group">
+                                <label for="editEmail" class="form-label">Correo:</label>
+                                <input type="email" id="editEmail" class="form-input" value="${user.email || ''}" required>
                             </div>
                             
-                            <div style="margin-bottom: 15px;">
-                                <p style="margin-bottom: 10px; color: #666;"><em>Dejar en blanco si no deseas cambiar la contraseña</em></p>
-                                <label for="currentPassword" style="display: block; margin-bottom: 5px;"><strong>Contraseña Actual:</strong></label>
-                                <input type="password" id="currentPassword" placeholder="Solo si cambias contraseña" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px;">
+                            <div class="password-section">
+                                <p class="password-note">Dejar en blanco si no deseas cambiar la contraseña</p>
+                                <div class="form-group password-input">
+                                    <label for="currentPassword" class="form-label">Contraseña Actual:</label>
+                                    <input type="password" id="currentPassword" class="form-input" placeholder="Solo si cambias contraseña">
+                                </div>
                                 
-                                <label for="newPassword" style="display: block; margin-bottom: 5px;"><strong>Nueva Contraseña:</strong></label>
-                                <input type="password" id="newPassword" placeholder="Mínimo 6 caracteres" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                                <div class="form-group">
+                                    <label for="newPassword" class="form-label">Nueva Contraseña:</label>
+                                    <input type="password" id="newPassword" class="form-input" placeholder="Mínimo 6 caracteres">
+                                </div>
                             </div>
                             
-                            <div class="dashboard-action-group">
-                                <button type="submit" id="saveProfileBtn" class="btn-primary-inline" style="margin-right: 10px;">💾 Guardar Cambios</button>
+                            <div class="dashboard-action-group edit-actions">
+                                <button type="submit" id="saveProfileBtn" class="btn-primary-inline btn-save">💾 Guardar Cambios</button>
                                 <button type="button" id="cancelEditBtn" class="btn-dashboard">Cancelar</button>
                             </div>
                         </form>
@@ -182,7 +186,9 @@
                 document.getElementById('cancelEditBtn').addEventListener('click', () => {
                     document.getElementById('profileView').style.display = 'block';
                     document.getElementById('profileEdit').style.display = 'none';
-                    document.getElementById('editMessage').style.display = 'none';
+                    const messageDiv = document.getElementById('editMessage');
+                    messageDiv.style.display = 'none';
+                    messageDiv.classList.remove('success', 'error');
                 });
 
                 // Add form submit event listener
@@ -200,24 +206,24 @@
                     if (!username || !email) {
                         messageDiv.textContent = 'Usuario y correo son obligatorios';
                         messageDiv.style.display = 'block';
-                        messageDiv.style.backgroundColor = '#fee';
-                        messageDiv.style.color = '#c00';
+                        messageDiv.classList.remove('success');
+                        messageDiv.classList.add('error');
                         return;
                     }
                     
                     if (newPassword && newPassword.length < 6) {
                         messageDiv.textContent = 'La nueva contraseña debe tener al menos 6 caracteres';
                         messageDiv.style.display = 'block';
-                        messageDiv.style.backgroundColor = '#fee';
-                        messageDiv.style.color = '#c00';
+                        messageDiv.classList.remove('success');
+                        messageDiv.classList.add('error');
                         return;
                     }
                     
                     if (newPassword && !currentPassword) {
                         messageDiv.textContent = 'Debes ingresar tu contraseña actual para cambiarla';
                         messageDiv.style.display = 'block';
-                        messageDiv.style.backgroundColor = '#fee';
-                        messageDiv.style.color = '#c00';
+                        messageDiv.classList.remove('success');
+                        messageDiv.classList.add('error');
                         return;
                     }
                     
@@ -248,8 +254,8 @@
                         if (data.success) {
                             messageDiv.textContent = '✓ Perfil actualizado correctamente';
                             messageDiv.style.display = 'block';
-                            messageDiv.style.backgroundColor = '#efe';
-                            messageDiv.style.color = '#060';
+                            messageDiv.classList.remove('error');
+                            messageDiv.classList.add('success');
                             
                             // Update displayed data
                             document.getElementById('displayUsername').textContent = username;
@@ -269,21 +275,22 @@
                                 document.getElementById('profileView').style.display = 'block';
                                 document.getElementById('profileEdit').style.display = 'none';
                                 messageDiv.style.display = 'none';
+                                messageDiv.classList.remove('success', 'error');
                                 document.getElementById('currentPassword').value = '';
                                 document.getElementById('newPassword').value = '';
                             }, 1500);
                         } else {
                             messageDiv.textContent = '✗ ' + (data.message || 'Error al actualizar');
                             messageDiv.style.display = 'block';
-                            messageDiv.style.backgroundColor = '#fee';
-                            messageDiv.style.color = '#c00';
+                            messageDiv.classList.remove('success');
+                            messageDiv.classList.add('error');
                         }
                     } catch (error) {
                         console.error('Update profile error:', error);
                         messageDiv.textContent = '✗ Error de conexión';
                         messageDiv.style.display = 'block';
-                        messageDiv.style.backgroundColor = '#fee';
-                        messageDiv.style.color = '#c00';
+                        messageDiv.classList.remove('success');
+                        messageDiv.classList.add('error');
                     } finally {
                         saveBtn.disabled = false;
                         saveBtn.textContent = '💾 Guardar Cambios';
