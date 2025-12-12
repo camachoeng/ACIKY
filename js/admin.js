@@ -780,9 +780,12 @@ async function loadTestimonials(status = 'all') {
             let testimonials = data.data;
             
             // Filter testimonials based on status
-            if (status !== 'all') {
-                testimonials = testimonials.filter(t => t.status === status);
+            if (status === 'pending') {
+                testimonials = testimonials.filter(t => t.approved === 0);
+            } else if (status === 'approved') {
+                testimonials = testimonials.filter(t => t.approved === 1);
             }
+            // 'all' shows everything
             
             if (testimonials.length === 0) {
                 container.innerHTML = '<p class="no-data">No hay testimonios con este estado.</p>';
@@ -795,26 +798,31 @@ async function loadTestimonials(status = 'all') {
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Email</th>
+                                <th>Ubicación</th>
                                 <th>Mensaje</th>
                                 <th>Calificación</th>
+                                <th>Actividad</th>
                                 <th>Estado</th>
+                                <th>Destacado</th>
                                 <th>Fecha</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             ${testimonials.map(t => `
-                                <tr data-status="${t.status}">
-                                    <td>${escapeHtml(t.user_name)}</td>
-                                    <td>${escapeHtml(t.email)}</td>
-                                    <td class="testimonial-message">${escapeHtml(t.message.substring(0, 100))}${t.message.length > 100 ? '...' : ''}</td>
+                                <tr data-approved="${t.approved}">
+                                    <td>${escapeHtml(t.author_name)}</td>
+                                    <td>${t.location ? escapeHtml(t.location) : '-'}</td>
+                                    <td class="testimonial-message">${escapeHtml(t.content.substring(0, 100))}${t.content.length > 100 ? '...' : ''}</td>
                                     <td>${'⭐'.repeat(t.rating)}</td>
-                                    <td><span class="status-badge status-${t.status}">${getStatusText(t.status)}</span></td>
+                                    <td>${t.activity_name ? escapeHtml(t.activity_name) : '-'}</td>
+                                    <td><span class="status-badge status-${t.approved ? 'approved' : 'pending'}">${t.approved ? 'Aprobado' : 'Pendiente'}</span></td>
+                                    <td>${t.featured ? '⭐ Sí' : '-'}</td>
                                     <td>${new Date(t.created_at).toLocaleDateString('es-ES')}</td>
                                     <td class="action-buttons">
-                                        ${t.status !== 'approved' ? `<button class="btn-edit" onclick="updateTestimonialStatus(${t.id}, 'approved')">Aprobar</button>` : ''}
-                                        ${t.status !== 'rejected' ? `<button class="btn-delete" onclick="updateTestimonialStatus(${t.id}, 'rejected')">Rechazar</button>` : ''}
+                                        ${!t.approved ? `<button class="btn-edit" onclick="updateTestimonialStatus(${t.id}, 1)">Aprobar</button>` : ''}
+                                        ${t.approved ? `<button class="btn-delete" onclick="updateTestimonialStatus(${t.id}, 0)">Rechazar</button>` : ''}
+                                        <button class="btn-edit" onclick="toggleFeatured(${t.id})">${t.featured ? 'Quitar Destacado' : 'Destacar'}</button>
                                         <button class="btn-delete" onclick="deleteTestimonial(${t.id})">Eliminar</button>
                                     </td>
                                 </tr>
@@ -834,19 +842,9 @@ async function loadTestimonials(status = 'all') {
     }
 }
 
-// Get status text in Spanish
-function getStatusText(status) {
-    const statusMap = {
-        'pending': 'Pendiente',
-        'approved': 'Aprobado',
-        'rejected': 'Rechazado'
-    };
-    return statusMap[status] || status;
-}
-
 // Update testimonial status
-async function updateTestimonialStatus(id, status) {
-    if (!confirm(`¿Estás seguro de que deseas ${status === 'approved' ? 'aprobar' : 'rechazar'} este testimonio?`)) {
+async function updateTestimonialStatus(id, approved) {
+    if (!confirm(`¿Estás seguro de que deseas ${approved ? 'aprobar' : 'rechazar'} este testimonio?`)) {
         return;
     }
     
@@ -855,7 +853,7 @@ async function updateTestimonialStatus(id, status) {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({ status })
+            body: JSON.stringify({ approved })
         });
         
         const result = await response.json();
@@ -867,6 +865,27 @@ async function updateTestimonialStatus(id, status) {
         }
     } catch (error) {
         console.error('Error updating testimonial:', error);
+        alert('Error al actualizar el testimonio');
+    }
+}
+
+// Toggle featured status
+async function toggleFeatured(id) {
+    try {
+        const response = await fetch(`${API_BASE}/testimonials/${id}/featured`, {
+            method: 'PUT',
+            credentials: 'include'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            loadTestimonials(currentFilter);
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error toggling featured:', error);
         alert('Error al actualizar el testimonio');
     }
 }
