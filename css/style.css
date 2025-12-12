@@ -40,6 +40,63 @@
     align-items: center;
     margin-bottom: 30px;
 }
+
+/* Testimonials filter buttons */
+.testimonial-filters {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 2px solid #2c5f4f;
+    background: white;
+    color: #2c5f4f;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s;
+}
+
+.filter-btn:hover {
+    background: #f0f8f5;
+}
+
+.filter-btn.active {
+    background: #2c5f4f;
+    color: white;
+}
+
+/* Testimonial message truncation */
+.testimonial-message {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Status badges */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
 .btn-primary {
     background: #2c5f4f;
     color: white;

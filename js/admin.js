@@ -70,6 +70,8 @@ document.querySelectorAll('.admin-tab').forEach(tab => {
             setTimeout(() => loadBlogPosts(), 0);
         } else if (tabName === 'activities' && !document.getElementById('activitiesList').querySelector('table')) {
             setTimeout(() => loadActivities(), 0);
+        } else if (tabName === 'testimonials' && !document.getElementById('testimonialsList').querySelector('table')) {
+            setTimeout(() => loadTestimonials('all'), 0);
         } else if (tabName === 'users' && !document.getElementById('usersList').querySelector('table')) {
             setTimeout(() => loadUsers(), 0);
         }
@@ -756,4 +758,156 @@ async function updateUserRole(userId, newRole) {
     }
 }
 
+// ============================================
+// TESTIMONIALS MANAGEMENT
+// ============================================
+
+let currentFilter = 'all';
+
+// Load testimonials
+async function loadTestimonials(status = 'all') {
+    currentFilter = status;
+    const container = document.getElementById('testimonialsList');
+    container.innerHTML = '<p class="loading">Cargando testimonios...</p>';
+    
+    try {
+        const response = await fetch(`${API_BASE}/testimonials/all`, {
+            credentials: 'include'
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            let testimonials = data.data;
+            
+            // Filter testimonials based on status
+            if (status !== 'all') {
+                testimonials = testimonials.filter(t => t.status === status);
+            }
+            
+            if (testimonials.length === 0) {
+                container.innerHTML = '<p class="no-data">No hay testimonios con este estado.</p>';
+                return;
+            }
+            
+            const table = `
+                <div class="table-wrapper">
+                    <table class="content-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Mensaje</th>
+                                <th>Calificación</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${testimonials.map(t => `
+                                <tr data-status="${t.status}">
+                                    <td>${escapeHtml(t.user_name)}</td>
+                                    <td>${escapeHtml(t.email)}</td>
+                                    <td class="testimonial-message">${escapeHtml(t.message.substring(0, 100))}${t.message.length > 100 ? '...' : ''}</td>
+                                    <td>${'⭐'.repeat(t.rating)}</td>
+                                    <td><span class="status-badge status-${t.status}">${getStatusText(t.status)}</span></td>
+                                    <td>${new Date(t.created_at).toLocaleDateString('es-ES')}</td>
+                                    <td class="action-buttons">
+                                        ${t.status !== 'approved' ? `<button class="btn-edit" onclick="updateTestimonialStatus(${t.id}, 'approved')">Aprobar</button>` : ''}
+                                        ${t.status !== 'rejected' ? `<button class="btn-delete" onclick="updateTestimonialStatus(${t.id}, 'rejected')">Rechazar</button>` : ''}
+                                        <button class="btn-delete" onclick="deleteTestimonial(${t.id})">Eliminar</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = table;
+        } else {
+            container.innerHTML = '<p class="error">Error al cargar testimonios</p>';
+        }
+    } catch (error) {
+        console.error('Error loading testimonials:', error);
+        container.innerHTML = '<p class="error">Error de conexión</p>';
+    }
+}
+
+// Get status text in Spanish
+function getStatusText(status) {
+    const statusMap = {
+        'pending': 'Pendiente',
+        'approved': 'Aprobado',
+        'rejected': 'Rechazado'
+    };
+    return statusMap[status] || status;
+}
+
+// Update testimonial status
+async function updateTestimonialStatus(id, status) {
+    if (!confirm(`¿Estás seguro de que deseas ${status === 'approved' ? 'aprobar' : 'rechazar'} este testimonio?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/testimonials/${id}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ status })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            loadTestimonials(currentFilter);
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error updating testimonial:', error);
+        alert('Error al actualizar el testimonio');
+    }
+}
+
+// Delete testimonial
+async function deleteTestimonial(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este testimonio permanentemente?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/testimonials/${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            loadTestimonials(currentFilter);
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error deleting testimonial:', error);
+        alert('Error al eliminar el testimonio');
+    }
+}
+
+// Initialize filter buttons
+document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const status = btn.getAttribute('data-status');
+            loadTestimonials(status);
+        });
+    });
+});
+
 // Close modals when clicking outside
+

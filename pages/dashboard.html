@@ -117,6 +117,14 @@
                 // Debug: log user role
                 console.log('User role:', user.role);
                 
+                // Translate role to Spanish
+                const roleNames = {
+                    'admin': 'Administrador',
+                    'instructor': 'Instructor',
+                    'user': 'Usuario'
+                };
+                const roleDisplay = roleNames[user.role] || 'Usuario';
+                
                 // Populate profile card
                 const profileState = document.getElementById('profileState');
                 
@@ -129,7 +137,7 @@
                     <div id="profileView">
                         <p class="profile-field"><strong>Usuario:</strong> <span id="displayUsername">${user.username || user.name || 'N/A'}</span></p>
                         <p class="profile-field"><strong>Correo:</strong> <span id="displayEmail">${user.email || 'N/A'}</span></p>
-                        <p class="profile-field"><strong>Rol:</strong> ${user.role || 'user'}</p>
+                        <p class="profile-field"><strong>Rol:</strong> ${roleDisplay}</p>
                         <p class="dashboard-welcome">Bienvenido a tu panel. Aquí podrás ver tus clases, recursos exclusivos y tu progreso.</p>
                         ${adminLink}
                         <div class="dashboard-action-group">
