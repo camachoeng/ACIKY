@@ -174,21 +174,59 @@
 
     <script src="../js/common.js"></script>
     <script>
-        // Enhanced contact form submission
-        document.querySelector('.contact-form')?.addEventListener('submit', function(e) {
+        // API Base URL
+        const API_BASE = window.location.hostname === 'camachoeng.github.io' 
+            ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api'
+            : 'http://127.0.0.1:3000/api';
+
+        // Contact form submission
+        document.querySelector('.contact-form')?.addEventListener('submit', async function(e) {
             e.preventDefault();
             const submitBtn = this.querySelector('.form-submit');
             const originalText = submitBtn.textContent;
             
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value.trim()
+            };
+
+            // Validate required fields
+            if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+                alert('Por favor, completa todos los campos requeridos.');
+                return;
+            }
+
             submitBtn.textContent = 'Enviando...';
             submitBtn.disabled = true;
             
-            setTimeout(() => {
-                alert('¡Gracias por contactarnos! Hemos recibido tu mensaje y te responderemos lo antes posible. Sat Nam 🙏');
-                this.reset();
+            try {
+                const response = await fetch(`${API_BASE}/contact`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('¡Gracias por contactarnos! Hemos recibido tu mensaje y te responderemos lo antes posible. Sat Nam 🙏');
+                    this.reset();
+                } else {
+                    alert(result.message || 'Hubo un error al enviar tu mensaje. Por favor, intenta nuevamente.');
+                }
+            } catch (error) {
+                console.error('Error sending contact message:', error);
+                alert('Error de conexión. Por favor, verifica tu conexión a internet e intenta nuevamente.');
+            } finally {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            }, 1500);
+            }
         });
     </script>
     <script>
