@@ -34,6 +34,7 @@ function escapeHtml(text) {
         });
         const data = await response.json();
         
+        console.log('🔍 Auth check response:', data);
         isAuthenticated = data.isAuthenticated;
         userRole = data.user?.role;
         
@@ -104,6 +105,8 @@ document.querySelectorAll('.admin-tab').forEach(tab => {
             setTimeout(() => loadActivities(), 0);
         } else if (tabName === 'testimonials' && !document.getElementById('testimonialsList').querySelector('table')) {
             setTimeout(() => loadTestimonials('all'), 0);
+        } else if (tabName === 'gallery' && !document.getElementById('galleryList').querySelector('table')) {
+            setTimeout(() => loadGalleryImages(), 0);
         } else if (tabName === 'users' && !document.getElementById('usersList').querySelector('table')) {
             setTimeout(() => loadUsers(), 0);
         }
@@ -958,7 +961,231 @@ document.addEventListener('DOMContentLoaded', () => {
             loadTestimonials(status);
         });
     });
+
+    // Gallery category filter
+    const categoryFilter = document.getElementById('galleryCategoryFilter');
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', () => {
+            loadGalleryImages(categoryFilter.value);
+        });
+    }
 });
+
+// ========== GALLERY MANAGEMENT ==========
+
+// Load gallery images
+async function loadGalleryImages(category = '') {
+    const container = document.getElementById('galleryList');
+    container.innerHTML = '<p class="loading">Cargando imágenes...</p>';
+    
+    try {
+        const url = category 
+            ? `${API_BASE}/gallery/all?category=${category}`
+            : `${API_BASE}/gallery/all`;
+            
+        const response = await fetch(url, {
+            credentials: 'include'
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            const images = data.data;
+            
+            if (images.length === 0) {
+                container.innerHTML = '<p class="no-data">No hay imágenes en esta categoría.</p>';
+                return;
+            }
+            
+            const table = `
+                <div class="table-wrapper">
+                    <table class="content-table">
+                        <thead>
+                            <tr>
+                                <th>Vista previa</th>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Categoría</th>
+                                <th>Orden</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${images.map(img => `
+                                <tr>
+                                    <td><img src="${img.thumbnail_url || img.image_url}" alt="${escapeHtml(img.alt_text || img.title)}" style="width:80px;height:60px;object-fit:cover;border-radius:4px;"></td>
+                                    <td>${escapeHtml(img.title)}</td>
+                                    <td>${img.description ? escapeHtml(img.description.substring(0, 50)) + (img.description.length > 50 ? '...' : '') : '-'}</td>
+                                    <td><span class="badge">${img.category}</span></td>
+                                    <td>${img.display_order}</td>
+                                    <td><span class="status-badge status-${img.visible ? 'approved' : 'pending'}">${img.visible ? 'Visible' : 'Oculto'}</span></td>
+                                    <td>${new Date(img.created_at).toLocaleDateString('es-ES')}</td>
+                                    <td class="action-buttons">
+                                        <button class="btn-edit" onclick="editGalleryImage(${img.id})">Editar</button>
+                                        <button class="btn-delete" onclick="deleteGalleryImage(${img.id})">Eliminar</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = table;
+        } else {
+            console.error('API error:', data.message);
+            container.innerHTML = `<p class="error">Error al cargar imágenes: ${data.message || 'Error desconocido'}</p>`;
+        }
+    } catch (error) {
+        console.error('Error loading gallery images:', error);
+        container.innerHTML = `<p class="error">Error de conexión: ${error.message}</p>`;
+    }
+}
+
+// Open gallery modal
+function openGalleryModal(imageId = null) {
+    const modal = document.getElementById('galleryModal');
+    const form = document.getElementById('galleryForm');
+    const title = document.getElementById('galleryModalTitle');
+    
+    form.reset();
+    document.getElementById('galleryId').value = '';
+    document.getElementById('galleryVisible').checked = true;
+    
+    if (imageId) {
+        title.textContent = 'Editar Imagen';
+        loadGalleryImageData(imageId);
+    } else {
+        title.textContent = 'Nueva Imagen';
+    }
+    
+    modal.style.display = 'block';
+}
+
+// Close gallery modal
+function closeGalleryModal() {
+    document.getElementById('galleryModal').style.display = 'none';
+}
+
+// Load gallery image data for editing
+async function loadGalleryImageData(imageId) {
+    try {
+        const category = document.getElementById('galleryCategoryFilter').value;
+        const url = category 
+            ? `${API_BASE}/gallery/all?category=${category}`
+            : `${API_BASE}/gallery/all`;
+            
+        const response = await fetch(url, {
+            credentials: 'include'
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            const image = data.data.find(img => img.id === imageId);
+            if (image) {
+                document.getElementById('galleryId').value = image.id;
+                document.getElementById('galleryTitle').value = image.title;
+                document.getElementById('galleryDescription').value = image.description || '';
+                document.getElementById('galleryImageUrl').value = image.image_url;
+                document.getElementById('galleryThumbnailUrl').value = image.thumbnail_url || '';
+                document.getElementById('galleryCategory').value = image.category;
+                document.getElementById('galleryAltText').value = image.alt_text || '';
+                document.getElementById('galleryDisplayOrder').value = image.display_order;
+                document.getElementById('galleryVisible').checked = image.visible === 1;
+            }
+        }
+    } catch (error) {
+        console.error('Error loading gallery image:', error);
+        alert('Error al cargar los datos de la imagen');
+    }
+}
+
+// Edit gallery image
+function editGalleryImage(imageId) {
+    openGalleryModal(imageId);
+}
+
+// Save gallery image
+document.getElementById('galleryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const imageId = document.getElementById('galleryId').value;
+    const title = document.getElementById('galleryTitle').value;
+    const description = document.getElementById('galleryDescription').value;
+    const image_url = document.getElementById('galleryImageUrl').value;
+    const thumbnail_url = document.getElementById('galleryThumbnailUrl').value;
+    const category = document.getElementById('galleryCategory').value;
+    const alt_text = document.getElementById('galleryAltText').value;
+    const display_order = parseInt(document.getElementById('galleryDisplayOrder').value) || 0;
+    const visible = document.getElementById('galleryVisible').checked ? 1 : 0;
+    
+    const imageData = {
+        title,
+        description,
+        image_url,
+        thumbnail_url: thumbnail_url || image_url,
+        category,
+        alt_text: alt_text || title,
+        display_order,
+        visible
+    };
+    
+    try {
+        const url = imageId 
+            ? `${API_BASE}/gallery/${imageId}`
+            : `${API_BASE}/gallery`;
+        const method = imageId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(imageData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert(imageId ? 'Imagen actualizada exitosamente' : 'Imagen creada exitosamente');
+            closeGalleryModal();
+            const currentCategory = document.getElementById('galleryCategoryFilter').value;
+            loadGalleryImages(currentCategory);
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error saving gallery image:', error);
+        alert('Error al guardar la imagen');
+    }
+});
+
+// Delete gallery image
+async function deleteGalleryImage(imageId) {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta imagen?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/gallery/${imageId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('Imagen eliminada exitosamente');
+            const currentCategory = document.getElementById('galleryCategoryFilter').value;
+            loadGalleryImages(currentCategory);
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error deleting gallery image:', error);
+        alert('Error al eliminar la imagen');
+    }
+}
 
 // Close modals when clicking outside
 

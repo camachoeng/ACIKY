@@ -17,6 +17,7 @@
                 <button class="admin-tab active" data-tab="blog">Artículos de Blog</button>
                 <button class="admin-tab" data-tab="activities">Clases y Actividades</button>
                 <button class="admin-tab" data-tab="testimonials">Testimonios</button>
+                <button class="admin-tab" data-tab="gallery">Galería</button>
                 <button class="admin-tab" data-tab="users">Usuarios</button>
             </div>
 
@@ -49,6 +50,22 @@
                     </div>
                 </div>
                 <div id="testimonialsList" class="loading">Cargando testimonios...</div>
+            </div>
+
+            <!-- Gallery Tab -->
+            <div id="gallery-tab" class="tab-content">
+                <div class="admin-header">
+                    <h2>Gestión de Galería</h2>
+                    <div class="admin-actions">
+                        <select id="galleryCategoryFilter" class="filter-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="posturas">Posturas Básicas</option>
+                            <option value="mudras">Mudras Básicos</option>
+                        </select>
+                        <button class="btn-primary" onclick="openGalleryModal()">+ Nueva Imagen</button>
+                    </div>
+                </div>
+                <div id="galleryList" class="loading">Cargando imágenes...</div>
             </div>
         </div>
 
@@ -184,6 +201,60 @@
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" onclick="closeActivityModal()">Cancelar</button>
+                        <button type="submit" class="btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Gallery Modal -->
+        <div id="galleryModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="galleryModalTitle">Nueva Imagen</h2>
+                    <span class="modal-close" onclick="closeGalleryModal()">&times;</span>
+                </div>
+                <form id="galleryForm">
+                    <input type="hidden" id="galleryId">
+                    <div class="form-group">
+                        <label for="galleryTitle">Título *</label>
+                        <input type="text" id="galleryTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="galleryDescription">Descripción</label>
+                        <textarea id="galleryDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="galleryImageUrl">URL de Imagen *</label>
+                        <input type="url" id="galleryImageUrl" placeholder="https://ejemplo.com/imagen.jpg" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="galleryThumbnailUrl">URL de Miniatura</label>
+                        <input type="url" id="galleryThumbnailUrl" placeholder="Opcional, si no se usa la imagen principal">
+                    </div>
+                    <div class="form-group">
+                        <label for="galleryCategory">Categoría *</label>
+                        <select id="galleryCategory" required>
+                            <option value="posturas">Posturas Básicas</option>
+                            <option value="mudras">Mudras Básicos</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="galleryAltText">Texto alternativo</label>
+                        <input type="text" id="galleryAltText" placeholder="Descripción para accesibilidad">
+                    </div>
+                    <div class="form-group">
+                        <label for="galleryDisplayOrder">Orden de visualización</label>
+                        <input type="number" id="galleryDisplayOrder" value="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="galleryVisible" checked>
+                            Visible en el sitio
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeGalleryModal()">Cancelar</button>
                         <button type="submit" class="btn-primary">Guardar</button>
                     </div>
                 </form>
