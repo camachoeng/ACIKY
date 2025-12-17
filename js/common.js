@@ -674,17 +674,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 const data = await response.json();
                 
-                console.log('🔍 Auth check response:', data);
-                
                 const userMenu = document.getElementById('userMenu');
                 const userDisplayName = document.getElementById('userDisplayName');
                 const authButtons = document.getElementById('authButtons');
                 const mobileAuthButtons = document.querySelectorAll('.mobile-auth-buttons');
                 const mobileUserMenu = document.querySelectorAll('.mobile-user-menu');
-                
-                console.log('🔍 Mobile auth buttons found:', mobileAuthButtons.length);
-                console.log('🔍 Mobile user menu items found:', mobileUserMenu.length);
-                console.log('🔍 Is authenticated:', data.isAuthenticated);
                 
                 // Check both session auth AND storage fallback
                 const isAuthenticated = data.isAuthenticated || tokenValid;
@@ -692,7 +686,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (isAuthenticated && user) {
                     // User is logged in - hide desktop auth buttons, show user menu
-                    console.log('✅ User is logged in, showing user menu');
                     if (authButtons) authButtons.style.display = 'none';
                     if (userMenu) {
                         userMenu.style.display = 'flex';
@@ -706,7 +699,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     mobileUserMenu.forEach(el => el.style.setProperty('display', 'list-item', 'important'));
                 } else {
                     // User is not logged in - show desktop auth buttons, hide user menu
-                    console.log('❌ User is not logged in, showing auth buttons');
                     if (authButtons) authButtons.style.display = 'flex';
                     if (userMenu) userMenu.style.display = 'none';
                     // Mobile menu - show auth buttons, hide user menu items
@@ -714,7 +706,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     mobileUserMenu.forEach(el => el.style.setProperty('display', 'none', 'important'));
                 }
             } catch (error) {
-                console.log('❌ Auth check error:', error);
+                console.error('Auth check failed:', error);
                 
                 // Check storage fallback even if fetch fails
                 const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
@@ -730,7 +722,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (tokenValid && storedUser) {
                     // Use storage fallback
-                    console.log('✅ Using storage fallback for auth display');
                     const user = JSON.parse(storedUser);
                     if (authButtons) authButtons.style.display = 'none';
                     if (userMenu) {

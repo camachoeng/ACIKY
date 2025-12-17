@@ -34,7 +34,6 @@ function escapeHtml(text) {
         });
         const data = await response.json();
         
-        console.log('🔍 Auth check response:', data);
         isAuthenticated = data.isAuthenticated;
         userRole = data.user?.role;
         
@@ -72,14 +71,6 @@ function escapeHtml(text) {
             console.error('Error parsing stored user:', error);
         }
     }
-    
-    console.log('✅ Admin access granted:', { 
-        isAuthenticated, 
-        tokenValid,
-        hasUser: !!storedUser,
-        hasLoginTime: !!loginTime,
-        role: userRole
-    });
     
 })();
 
@@ -656,13 +647,6 @@ async function loadUsers() {
         const user = localStorage.getItem('user') || sessionStorage.getItem('user');
         const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
         
-        console.log('Auth data:', { 
-            user: user ? JSON.parse(user) : null, 
-            loginTime,
-            fromLocalStorage: !!localStorage.getItem('user'),
-            fromSessionStorage: !!sessionStorage.getItem('user')
-        });
-        
         if (user && loginTime) {
             const userObj = JSON.parse(user);
             const userData = { 
@@ -674,7 +658,6 @@ async function loadUsers() {
             };
             const token = btoa(JSON.stringify(userData));
             headers['Authorization'] = `Bearer ${token}`;
-            console.log('Sending auth token:', { userData, token: token.substring(0, 20) + '...' });
         }
         
         const response = await fetch(`${API_BASE}/users`, {
@@ -682,12 +665,9 @@ async function loadUsers() {
             headers: headers
         });
         
-        console.log('Users fetch response status:', response.status);
         const result = await response.json();
-        console.log('Users fetch result:', result);
         
         if (!result.success || !result.data || result.data.length === 0) {
-            console.log('No users or fetch failed:', { success: result.success, dataLength: result.data?.length });
             usersList.innerHTML = '<p style="text-align: center; padding: 40px;">No hay usuarios registrados.</p>';
             return;
         }

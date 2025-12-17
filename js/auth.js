@@ -123,8 +123,6 @@ if (loginForm) {
                     sessionStorage.setItem('user', userStr);
                     sessionStorage.setItem('authToken', 'session-' + timestamp);
                     sessionStorage.setItem('loginTime', timestamp);
-                    
-                    console.log('Auth data saved to storage');
                 } catch (e) {
                     console.error('Failed to save to storage:', e);
                 }
