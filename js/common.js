@@ -74,11 +74,11 @@ document.addEventListener('DOMContentLoaded', function() {
             homeLink = prefix;
             imagePath = prefix + 'images/';
             // For auth buttons: if we're in pages/ directory, don't add prefix
-            // If we're deeper (like pages/cards/), use the prefix
+            // If we're deeper (like pages/cards/), use the prefix + pages/
             if (dirDepth === 1) {
                 pagePrefix = '';  // We're in pages/, link to same directory
             } else {
-                pagePrefix = prefix;  // We're deeper, use ../
+                pagePrefix = prefix + 'pages/';  // We're deeper, use ../../pages/
             }
         }
         
@@ -374,9 +374,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span class="hamburger-line"></span>
                 </button>
                 <ul>
-                    <li><a href="${navPrefix}schedule.html">Clases</a></li>
                     <li class="has-submenu desktop-only">
-                        <a>Galería</a>
+                        <a href="#">Actividades</a>
+                        <ul class="submenu">
+                            <li><a href="${navPrefix}schedule.html">Clases</a></li>
+                            <li><a href="${navPrefix}cards/goldenroutes.html">Rutas Doradas</a></li>
+                        </ul>
+                    </li>
+                    <li class="mobile-only"><a href="${navPrefix}schedule.html">Clases</a></li>
+                    <li class="mobile-only"><a href="${navPrefix}cards/goldenroutes.html">Rutas Doradas</a></li>
+                    <li class="has-submenu desktop-only">
+                        <a href="#">Galería</a>
                         <ul class="submenu">
                             <li><a href="${navPrefix}gallery.html">Posturas</a></li>
                         </ul>
@@ -454,10 +462,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Close menu when clicking outside
                 document.addEventListener('click', (e) => {
+                    // Close mobile menu when clicking outside
                     if (!e.target.closest('nav') && navMenu.classList.contains('active')) {
                         mobileMenuToggle.classList.remove('active');
                         navMenu.classList.remove('active');
                         document.body.style.overflow = '';
+                    }
+                    
+                    // Close desktop submenus when clicking outside
+                    if (!e.target.closest('.has-submenu')) {
+                        const openSubmenus = document.querySelectorAll('.has-submenu.open');
+                        openSubmenus.forEach(menu => {
+                            menu.classList.remove('open');
+                        });
                     }
                 });
                 

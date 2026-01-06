@@ -182,132 +182,9 @@
                 <h2>Rutas Doradas Activas</h2>
                 <p>Conoce las conexiones que estamos creando a través de Cuba</p>
             </div>
-            <div class="routes-map">
-                <div class="route-item">
-                    <div class="route-header">
-                        <h3>Ruta Nueva Gerona</h3>
-                        <span class="route-status active">Activa</span>
-                    </div>
-                    <div class="route-path">
-                        <span class="origin">La Habana</span>
-                        <span class="arrow">→</span>
-                        <span class="destination">Isla de la Juventud - Nueva Gerona</span>
-                    </div>
-                    <p>Llevando yoga a la Isla de la Juventud, tierra de historia, naturaleza exuberante y espíritu renovador.</p>
-                    <div class="route-stats">
-                        <span class="stat">📅 Anual</span>
-                        <span class="stat">👥 150+ participantes</span>
-                        <span class="stat">🏛️ 3 espacios establecidos</span>
-                    </div>
-                </div>
-
-                <div class="route-item">
-                    <div class="route-header">
-                        <h3>Ruta Varadero</h3>
-                        <span class="route-status active">Activa</span>
-                    </div>
-                    <div class="route-path">
-                        <span class="origin">La Habana</span>
-                        <span class="arrow">→</span>
-                        <span class="destination">Varadero</span>
-                    </div>
-                    <p>Llevando yoga a Varadero, un paraíso de playas y relax.</p>
-                    <div class="route-stats">
-                        <span class="stat">📅 Anual</span>
-                        <span class="stat">👥 50+ participantes</span>
-                        <span class="stat">🏛️ 1 espacio establecido</span>
-                    </div>
-                </div>
-
-                <div class="route-item">
-                    <div class="route-header">
-                        <h3>Ruta Holguín</h3>
-                        <span class="route-status active">Activa</span>
-                    </div>
-                    <div class="route-path">
-                        <span class="origin">La Habana</span>
-                        <span class="arrow">→</span>
-                        <span class="destination">Holguín</span>
-                    </div>
-                    <p>Llevando la práctica a Holguín, donde la naturaleza y la cultura se entrelazan en un abrazo transformador.</p>
-                    <div class="route-stats">
-                        <span class="stat">📅 Anual</span>
-                        <span class="stat">👥 60+ participantes</span>
-                        <span class="stat">🏛️ 4 espacios establecidos</span>
-                    </div>
-                </div>
-
-                <div class="route-item">
-                    <div class="route-header">
-                        <h3>Ruta Las Tunas</h3>
-                        <span class="route-status active">Activa</span>
-                    </div>
-                    <div class="route-path">
-                        <span class="origin">La Habana</span>
-                        <span class="arrow">→</span>
-                        <span class="destination">Las Tunas - Manatí</span>
-                    </div>
-                    <p>Llevando la práctica a Las Tunas y Manatí, donde la tradición campesina y el espíritu de comunidad abren caminos para el crecimiento interior.</p>
-                    <div class="route-stats">
-                        <span class="stat">📅 Anual</span>
-                        <span class="stat">👥 100+ participantes</span>
-                        <span class="stat">🏛️ 3 espacios establecidos</span>
-                    </div>
-                </div>
-
-                <div class="route-item">
-                    <div class="route-header">
-                        <h3>Ruta Camagüeyana</h3>
-                        <span class="route-status active">Activa</span>
-                    </div>
-                    <div class="route-path">
-                        <span class="origin">La Habana</span>
-                        <span class="arrow">→</span>
-                        <span class="destination">Camagüey</span>
-                    </div>
-                    <p>Expandiendo hacia la región ganadera, llevando paz interior a tierras de abundancia.</p>
-                    <div class="route-stats">
-                        <span class="stat">📅 Anual</span>
-                        <span class="stat">👥 30+ participantes</span>
-                        <span class="stat">🏛️ 1 espacio establecido</span>
-                    </div>
-                </div>
-
-                <div class="route-item">
-                    <div class="route-header">
-                        <h3>Ruta Baracoa</h3>
-                        <span class="route-status active">Activa</span>
-                    </div>
-                    <div class="route-path">
-                        <span class="origin">La Habana</span>
-                        <span class="arrow">→</span>
-                        <span class="destination">Guantánamo - Baracoa</span>
-                    </div>
-                    <p>Llegando al oriente cubano, donde la música y la espiritualidad se encuentran naturalmente.</p>
-                    <div class="route-stats">
-                        <span class="stat">📅 Anual</span>
-                        <span class="stat">👥 150+ participantes</span>
-                        <span class="stat">🏛️ 3 espacios establecidos</span>
-                    </div>
-                </div>
-
-                <div class="route-item">
-                    <div class="route-header">
-                        <h3>Ruta Contramaestre</h3>
-                        <span class="route-status planning">En Planificación</span>
-                    </div>
-                    <div class="route-path">
-                        <span class="origin">La Habana</span>
-                        <span class="arrow">→</span>
-                        <span class="destination">Santiago - Contramaestre</span>
-                    </div>
-                    <p>Próxima ruta hacia provincias con gran potencial espiritual y comunidades receptivas.</p>
-                    <div class="route-stats">
-                        <span class="stat">📅 Marzo 2026</span>
-                        <span class="stat">👥 Estimado 40+</span>
-                        <span class="stat">🏛️ 2 espacios proyectados</span>
-                    </div>
-                </div>
+            <div class="routes-map" id="routes-container">
+                <!-- Routes will be loaded dynamically -->
+                <div class="loading-message">Cargando rutas...</div>
             </div>
         </section>
 
@@ -319,12 +196,12 @@
             </div>
             <div class="impact-stats">
                 <div class="impact-card">
-                    <div class="impact-number">7</div>
+                    <div class="impact-number">0</div>
                     <div class="impact-label">Provincias Alcanzadas</div>
-                    <p>De las 15 provincias de Cuba, hemos llegado a 7 con nuestras enseñanzas</p>
+                    <p>De las 15 provincias de Cuba, hemos llegado a varias con nuestras enseñanzas</p>
                 </div>
                 <div class="impact-card">
-                    <div class="impact-number">540+</div>
+                    <div class="impact-number">0+</div>
                     <div class="impact-label">Personas Impactadas</div>
                     <p>Cubanos que han experimentado el Kundalini Yoga a través de las rutas</p>
                 </div>
@@ -493,7 +370,9 @@
         </section>
     </main>
 
+    <script src="../../js/config.js"></script>
     <script src="../../js/common.js"></script>
+    <script src="../../js/goldenroutes.js"></script>
     <script>
         insertYogiQuote("El yoga no conoce fronteras. En cada ruta dorada, sembramos semillas de transformación que florecerán en jardines de conciencia.", "Espíritu de las Rutas Doradas");
     </script>

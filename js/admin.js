@@ -94,6 +94,8 @@ document.querySelectorAll('.admin-tab').forEach(tab => {
             setTimeout(() => loadBlogPosts(), 0);
         } else if (tabName === 'activities' && !document.getElementById('activitiesList').querySelector('table')) {
             setTimeout(() => loadActivities(), 0);
+        } else if (tabName === 'routes' && !document.getElementById('routesList').querySelector('table')) {
+            setTimeout(() => loadRoutes(), 0);
         } else if (tabName === 'testimonials' && !document.getElementById('testimonialsList').querySelector('table')) {
             setTimeout(() => loadTestimonials('all'), 0);
         } else if (tabName === 'gallery' && !document.getElementById('galleryList').querySelector('table')) {
@@ -1164,6 +1166,214 @@ async function deleteGalleryImage(imageId) {
     } catch (error) {
         console.error('Error deleting gallery image:', error);
         alert('Error al eliminar la imagen');
+    }
+}
+
+// ========== ROUTES MANAGEMENT ==========
+
+// Load all routes
+async function loadRoutes() {
+    const routesList = document.getElementById('routesList');
+    routesList.innerHTML = '<div class="loading">Cargando rutas...</div>';
+    
+    try {
+        const response = await fetch(`${API_BASE}/routes`, {
+            credentials: 'include'
+        });
+        const result = await response.json();
+        
+        if (result.success && result.data.length > 0) {
+            const routes = result.data;
+            
+            let html = `
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th>Estado</th>
+                            <th>Participantes</th>
+                            <th>Espacios</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            routes.forEach(route => {
+                const statusLabels = {
+                    'active': '<span class="status-badge active">Activa</span>',
+                    'planning': '<span class="status-badge planning">En Planificación</span>',
+                    'inactive': '<span class="status-badge inactive">Inactiva</span>'
+                };
+                
+                html += `
+                    <tr>
+                        <td><strong>${escapeHtml(route.name)}</strong></td>
+                        <td>${escapeHtml(route.origin)}</td>
+                        <td>${escapeHtml(route.destination)}</td>
+                        <td>${statusLabels[route.status] || route.status}</td>
+                        <td>${route.participants_count || 0}</td>
+                        <td>${route.spaces_established || 0}</td>
+                        <td class="actions">
+                            <button class="btn-edit" onclick="editRoute(${route.id})">✏️ Editar</button>
+                            <button class="btn-delete" onclick="deleteRoute(${route.id})">🗑️ Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            routesList.innerHTML = html;
+        } else {
+            routesList.innerHTML = '<p class="no-data">No hay rutas registradas.</p>';
+        }
+    } catch (error) {
+        console.error('Error loading routes:', error);
+        routesList.innerHTML = '<p class="error">Error al cargar las rutas.</p>';
+    }
+}
+
+// Open route modal
+function openRouteModal(routeId = null) {
+    const modal = document.getElementById('routeModal');
+    const modalTitle = document.getElementById('routeModalTitle');
+    const form = document.getElementById('routeForm');
+    
+    // Reset form
+    form.reset();
+    document.getElementById('routeId').value = '';
+    document.getElementById('routeError').textContent = '';
+    document.getElementById('routeSuccess').textContent = '';
+    
+    if (routeId) {
+        modalTitle.textContent = 'Editar Ruta';
+        // Form will be populated by editRoute function
+    } else {
+        modalTitle.textContent = 'Nueva Ruta';
+    }
+    
+    modal.style.display = 'block';
+}
+
+// Close route modal
+function closeRouteModal() {
+    document.getElementById('routeModal').style.display = 'none';
+}
+
+// Edit route
+async function editRoute(routeId) {
+    try {
+        const response = await fetch(`${API_BASE}/routes/${routeId}`, {
+            credentials: 'include'
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+            const route = result.data;
+            
+            document.getElementById('routeId').value = route.id;
+            document.getElementById('routeName').value = route.name;
+            document.getElementById('routeOrigin').value = route.origin;
+            document.getElementById('routeDestination').value = route.destination;
+            document.getElementById('routeDescription').value = route.description || '';
+            document.getElementById('routeFrequency').value = route.frequency || '';
+            document.getElementById('routeStatus').value = route.status;
+            document.getElementById('routeParticipants').value = route.participants_count || 0;
+            document.getElementById('routeSpaces').value = route.spaces_established || 0;
+            document.getElementById('routeImageUrl').value = route.image_url || '';
+            
+            openRouteModal(route.id);
+        }
+    } catch (error) {
+        console.error('Error loading route:', error);
+        alert('Error al cargar la ruta');
+    }
+}
+
+// Handle route form submission
+document.getElementById('routeForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const routeId = document.getElementById('routeId').value;
+    const name = document.getElementById('routeName').value.trim();
+    const origin = document.getElementById('routeOrigin').value.trim();
+    const destination = document.getElementById('routeDestination').value.trim();
+    const description = document.getElementById('routeDescription').value.trim();
+    const frequency = document.getElementById('routeFrequency').value.trim();
+    const status = document.getElementById('routeStatus').value;
+    const participants_count = parseInt(document.getElementById('routeParticipants').value) || 0;
+    const spaces_established = parseInt(document.getElementById('routeSpaces').value) || 0;
+    const image_url = document.getElementById('routeImageUrl').value.trim();
+    
+    const routeData = {
+        name,
+        origin,
+        destination,
+        description,
+        frequency,
+        status,
+        participants_count,
+        spaces_established,
+        image_url
+    };
+    
+    try {
+        const url = routeId 
+            ? `${API_BASE}/routes/${routeId}`
+            : `${API_BASE}/routes`;
+        const method = routeId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(routeData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert(routeId ? 'Ruta actualizada exitosamente' : 'Ruta creada exitosamente');
+            closeRouteModal();
+            loadRoutes();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error saving route:', error);
+        alert('Error al guardar la ruta');
+    }
+});
+
+// Delete route
+async function deleteRoute(routeId) {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta ruta?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/routes/${routeId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('Ruta eliminada exitosamente');
+            loadRoutes();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error deleting route:', error);
+        alert('Error al eliminar la ruta');
     }
 }
 

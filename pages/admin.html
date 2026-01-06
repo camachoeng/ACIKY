@@ -16,6 +16,7 @@
             <div class="admin-tabs">
                 <button class="admin-tab active" data-tab="blog">Artículos de Blog</button>
                 <button class="admin-tab" data-tab="activities">Clases y Actividades</button>
+                <button class="admin-tab" data-tab="routes">Rutas Doradas</button>
                 <button class="admin-tab" data-tab="testimonials">Testimonios</button>
                 <button class="admin-tab" data-tab="gallery">Galería</button>
                 <button class="admin-tab" data-tab="users">Usuarios</button>
@@ -37,6 +38,15 @@
                     <button class="btn-primary" onclick="openActivityModal()">+ Nueva Clase</button>
                 </div>
                 <div id="activitiesList" class="loading">Cargando clases...</div>
+            </div>
+
+            <!-- Routes Tab -->
+            <div id="routes-tab" class="tab-content">
+                <div class="admin-header">
+                    <h2>Gestión de Rutas Doradas</h2>
+                    <button class="btn-primary" onclick="openRouteModal()">+ Nueva Ruta</button>
+                </div>
+                <div id="routesList" class="loading">Cargando rutas...</div>
             </div>
 
             <!-- Testimonials Tab -->
@@ -255,6 +265,65 @@
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" onclick="closeGalleryModal()">Cancelar</button>
+                        <button type="submit" class="btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Route Modal -->
+        <div id="routeModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="routeModalTitle">Nueva Ruta</h2>
+                    <span class="modal-close" onclick="closeRouteModal()">&times;</span>
+                </div>
+                <div class="error-message" id="routeError"></div>
+                <div class="success-message" id="routeSuccess"></div>
+                <form id="routeForm">
+                    <input type="hidden" id="routeId">
+                    <div class="form-group">
+                        <label for="routeName">Nombre de la Ruta *</label>
+                        <input type="text" id="routeName" required placeholder="Ej: Ruta Nueva Gerona">
+                    </div>
+                    <div class="form-group">
+                        <label for="routeOrigin">Origen *</label>
+                        <input type="text" id="routeOrigin" required placeholder="Ej: La Habana">
+                    </div>
+                    <div class="form-group">
+                        <label for="routeDestination">Destino *</label>
+                        <input type="text" id="routeDestination" required placeholder="Ej: Isla de la Juventud - Nueva Gerona">
+                    </div>
+                    <div class="form-group">
+                        <label for="routeDescription">Descripción *</label>
+                        <textarea id="routeDescription" rows="4" required placeholder="Describe la ruta y su impacto..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="routeFrequency">Frecuencia</label>
+                        <input type="text" id="routeFrequency" placeholder="Ej: Anual, Mensual, Trimestral">
+                    </div>
+                    <div class="form-group">
+                        <label for="routeStatus">Estado *</label>
+                        <select id="routeStatus" required>
+                            <option value="active">Activa</option>
+                            <option value="planning">En Planificación</option>
+                            <option value="inactive">Inactiva</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="routeParticipants">Número de Participantes</label>
+                        <input type="number" id="routeParticipants" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="routeSpaces">Espacios Establecidos</label>
+                        <input type="number" id="routeSpaces" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="routeImageUrl">URL de Imagen</label>
+                        <input type="url" id="routeImageUrl" placeholder="https://ejemplo.com/imagen.jpg">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeRouteModal()">Cancelar</button>
                         <button type="submit" class="btn-primary">Guardar</button>
                     </div>
                 </form>
