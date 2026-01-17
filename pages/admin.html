@@ -19,6 +19,7 @@
                 <button class="admin-tab" data-tab="routes">Rutas Doradas</button>
                 <button class="admin-tab" data-tab="testimonials">Testimonios</button>
                 <button class="admin-tab" data-tab="gallery">Galería</button>
+                <button class="admin-tab" data-tab="spaces">Espacios</button>
                 <button class="admin-tab" data-tab="users">Usuarios</button>
             </div>
 
@@ -76,6 +77,15 @@
                     </div>
                 </div>
                 <div id="galleryList" class="loading">Cargando imágenes...</div>
+            </div>
+
+            <!-- Spaces Tab -->
+            <div id="spaces-tab" class="tab-content">
+                <div class="admin-header">
+                    <h2>Gestión de Espacios</h2>
+                    <button class="btn-primary" onclick="openSpaceModal()">+ Nuevo Espacio</button>
+                </div>
+                <div id="spacesList" class="loading">Cargando espacios...</div>
             </div>
         </div>
 
@@ -330,11 +340,112 @@
             </div>
         </div>
 
+        <!-- Space Modal -->
+        <div id="spaceModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="spaceModalTitle">Nuevo Espacio</h2>
+                    <span class="modal-close" onclick="closeSpaceModal()">&times;</span>
+                </div>
+                <div class="error-message" id="spaceError"></div>
+                <div class="success-message" id="spaceSuccess"></div>
+                <form id="spaceForm">
+                    <input type="hidden" id="spaceId">
+                    <div class="form-group">
+                        <label for="spaceName">Nombre *</label>
+                        <input type="text" id="spaceName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="spaceImage">Imagen (ruta)</label>
+                        <input type="text" id="spaceImage" placeholder="../../images/spaces/ejemplo.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label for="spaceAddress">Dirección</label>
+                        <textarea id="spaceAddress" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="spacePhone">Teléfono</label>
+                        <input type="text" id="spacePhone" placeholder="+53 5XXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="spaceEmail">Email</label>
+                        <input type="email" id="spaceEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="spaceLocation">Ubicación (Google Maps URL)</label>
+                        <input type="url" id="spaceLocation" placeholder="https://maps.app.goo.gl/...">
+                    </div>
+                    <div class="form-group">
+                        <label for="spaceInstructors">Instructores</label>
+                        <select id="spaceInstructors" multiple size="5">
+                            <option value="">Cargando instructores...</option>
+                        </select>
+                        <small>Mantén presionado Ctrl (Cmd en Mac) para seleccionar múltiples instructores</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="spaceDisciplines">Disciplinas (una por línea)</label>
+                        <textarea id="spaceDisciplines" rows="4" placeholder="Kundalini Yoga&#10;Meditación&#10;Sonoterapia"></textarea>
+                        <small>Escribe cada disciplina en una línea nueva</small>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="spaceActive" checked>
+                            Espacio activo
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeSpaceModal()">Cancelar</button>
+                        <button type="submit" class="btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- User Modal -->
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="userModalTitle">Nuevo Usuario</h2>
+                    <span class="modal-close" onclick="closeUserModal()">&times;</span>
+                </div>
+                <div class="error-message" id="userError"></div>
+                <div class="success-message" id="userSuccess"></div>
+                <form id="userForm">
+                    <input type="hidden" id="userId">
+                    <div class="form-group">
+                        <label for="userUsername">Nombre de Usuario *</label>
+                        <input type="text" id="userUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Email *</label>
+                        <input type="email" id="userEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userPassword">Contraseña <span id="passwordLabel">*</span></label>
+                        <input type="password" id="userPassword">
+                        <small id="passwordHint">Mínimo 6 caracteres</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="userRole">Rol *</label>
+                        <select id="userRole" required>
+                            <option value="user">Usuario</option>
+                            <option value="instructor">Instructor</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeUserModal()">Cancelar</button>
+                        <button type="submit" class="btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Users Tab -->
         <div id="users-tab" class="tab-content">
             <div class="admin-header">
                 <h2>Gestión de Usuarios</h2>
-                <p style="color: #666; font-size: 0.9rem;">Asigna el rol de instructor a usuarios registrados</p>
+                <button class="btn-primary" onclick="openUserModal()">+ Nuevo Usuario</button>
             </div>
             <div id="usersList" class="loading">Cargando usuarios...</div>
         </div>

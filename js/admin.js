@@ -100,6 +100,8 @@ document.querySelectorAll('.admin-tab').forEach(tab => {
             setTimeout(() => loadTestimonials('all'), 0);
         } else if (tabName === 'gallery' && !document.getElementById('galleryList').querySelector('table')) {
             setTimeout(() => loadGalleryImages(), 0);
+        } else if (tabName === 'spaces' && !document.getElementById('spacesList').querySelector('table')) {
+            setTimeout(() => loadSpaces(), 0);
         } else if (tabName === 'users' && !document.getElementById('usersList').querySelector('table')) {
             setTimeout(() => loadUsers(), 0);
         }
@@ -683,6 +685,7 @@ async function loadUsers() {
                         <th>Email</th>
                         <th>Rol</th>
                         <th>Fecha de Registro</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -704,22 +707,16 @@ async function loadUsers() {
             const date = new Date(user.created_at);
             const formattedDate = date.toLocaleDateString('es-ES');
             
-            // Don't show role change options for current user (prevent self-demotion)
-            const roleOptions = user.role === 'admin' 
-                ? `<span class="status-badge ${roleClass}">${roleLabel}</span>`
-                : `
-                    <select onchange="updateUserRole(${user.id}, this.value)" class="role-select">
-                        <option value="user" ${user.role === 'user' ? 'selected' : ''}>Usuario</option>
-                        <option value="instructor" ${user.role === 'instructor' ? 'selected' : ''}>Instructor</option>
-                    </select>
-                `;
-            
             html += `
                 <tr>
                     <td>${user.username}</td>
                     <td>${user.email}</td>
-                    <td>${roleOptions}</td>
+                    <td><span class="status-badge ${roleClass}">${roleLabel}</span></td>
                     <td>${formattedDate}</td>
+                    <td>
+                        <button class="btn-edit" onclick="editUser(${user.id})">Editar</button>
+                        <button class="btn-delete" onclick="deleteUser(${user.id}, '${user.username.replace(/'/g, "\\'")}')">Eliminar</button>
+                    </td>
                 </tr>
             `;
         });
@@ -733,47 +730,159 @@ async function loadUsers() {
     }
 }
 
-async function updateUserRole(userId, newRole) {
+function openUserModal(userId = null) {
+    document.getElementById('userModal').style.display = 'block';
+    document.getElementById('userModalTitle').textContent = userId ? 'Editar Usuario' : 'Nuevo Usuario';
+    
+    if (!userId) {
+        document.getElementById('userForm').reset();
+        document.getElementById('userId').value = '';
+        document.getElementById('userPassword').required = true;
+        document.getElementById('passwordLabel').textContent = '*';
+        document.getElementById('passwordHint').textContent = 'Mínimo 6 caracteres';
+    } else {
+        document.getElementById('userPassword').required = false;
+        document.getElementById('passwordLabel').textContent = '(opcional)';
+        document.getElementById('passwordHint').textContent = 'Dejar en blanco para mantener la contraseña actual';
+    }
+    
+    document.getElementById('userError').style.display = 'none';
+    document.getElementById('userSuccess').style.display = 'none';
+}
+
+function closeUserModal() {
+    document.getElementById('userModal').style.display = 'none';
+}
+
+async function editUser(userId) {
     try {
-        // Prepare headers with Authorization fallback for Safari mobile
-        const headers = { 'Content-Type': 'application/json' };
-        const user = localStorage.getItem('user') || sessionStorage.getItem('user');
-        const loginTime = localStorage.getItem('loginTime') || sessionStorage.getItem('loginTime');
+        const response = await fetch(`${API_BASE}/users/${userId}`, {
+            credentials: 'include'
+        });
+        const result = await response.json();
+        const user = result.data;
         
-        if (user && loginTime) {
-            const userObj = JSON.parse(user);
-            const userData = { 
-                id: userObj.id, 
-                email: userObj.email,
-                username: userObj.username,
-                role: userObj.role,
-                loginTime: parseInt(loginTime) 
-            };
-            const token = btoa(JSON.stringify(userData));
-            headers['Authorization'] = `Bearer ${token}`;
+        if (!user) {
+            alert('Usuario no encontrado');
+            return;
         }
         
-        const response = await fetch(`${API_BASE}/users/${userId}/role`, {
-            method: 'PUT',
-            headers: headers,
-            credentials: 'include',
-            body: JSON.stringify({ role: newRole })
+        document.getElementById('userId').value = user.id;
+        document.getElementById('userUsername').value = user.username;
+        document.getElementById('userEmail').value = user.email;
+        document.getElementById('userPassword').value = '';
+        document.getElementById('userRole').value = user.role;
+        
+        openUserModal(userId);
+    } catch (error) {
+        console.error('Error loading user:', error);
+        alert('Error al cargar el usuario');
+    }
+}
+
+async function deleteUser(userId, username) {
+    if (!confirm(`¿Estás seguro de eliminar al usuario "${username}"?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/users/${userId}`, {
+            method: 'DELETE',
+            credentials: 'include'
         });
         
         const result = await response.json();
         
         if (result.success) {
-            alert('Rol actualizado exitosamente');
+            alert('Usuario eliminado exitosamente');
             loadUsers();
             loadInstructors(); // Refresh instructors cache
         } else {
             alert('Error: ' + result.message);
         }
     } catch (error) {
-        console.error('Error updating user role:', error);
-        alert('Error al actualizar el rol del usuario');
+        console.error('Error deleting user:', error);
+        alert('Error al eliminar el usuario');
     }
 }
+
+document.getElementById('userForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const userId = document.getElementById('userId').value;
+    const errorDiv = document.getElementById('userError');
+    const successDiv = document.getElementById('userSuccess');
+    
+    errorDiv.style.display = 'none';
+    successDiv.style.display = 'none';
+    
+    const username = document.getElementById('userUsername').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+    const password = document.getElementById('userPassword').value.trim();
+    const role = document.getElementById('userRole').value;
+    
+    if (!username || !email || !role) {
+        errorDiv.textContent = 'Por favor completa todos los campos requeridos';
+        errorDiv.style.display = 'block';
+        return;
+    }
+    
+    if (!userId && (!password || password.length < 6)) {
+        errorDiv.textContent = 'La contraseña debe tener al menos 6 caracteres';
+        errorDiv.style.display = 'block';
+        return;
+    }
+    
+    const data = {
+        username,
+        email,
+        role
+    };
+    
+    // Only include password if it's provided
+    if (password) {
+        if (password.length < 6) {
+            errorDiv.textContent = 'La contraseña debe tener al menos 6 caracteres';
+            errorDiv.style.display = 'block';
+            return;
+        }
+        data.password = password;
+    }
+    
+    try {
+        const url = userId ? `${API_BASE}/users/${userId}` : `${API_BASE}/users`;
+        const method = userId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            successDiv.textContent = userId ? 'Usuario actualizado exitosamente' : 'Usuario creado exitosamente';
+            successDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                closeUserModal();
+                loadUsers();
+                loadInstructors(); // Refresh instructors cache
+            }, 1500);
+        } else {
+            errorDiv.textContent = 'Error: ' + result.message;
+            errorDiv.style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Error saving user:', error);
+        errorDiv.textContent = 'Error al guardar el usuario';
+        errorDiv.style.display = 'block';
+    }
+});
 
 // ============================================
 // TESTIMONIALS MANAGEMENT
@@ -1186,7 +1295,8 @@ async function loadRoutes() {
             const routes = result.data;
             
             let html = `
-                <table class="admin-table">
+                <div class="table-wrapper">
+                <table class="content-table">
                     <thead>
                         <tr>
                             <th>Nombre</th>
@@ -1203,9 +1313,9 @@ async function loadRoutes() {
             
             routes.forEach(route => {
                 const statusLabels = {
-                    'active': '<span class="status-badge active">Activa</span>',
-                    'planning': '<span class="status-badge planning">En Planificación</span>',
-                    'inactive': '<span class="status-badge inactive">Inactiva</span>'
+                    'active': '<span class="status-badge status-active">Activa</span>',
+                    'planning': '<span class="status-badge status-inactive">En Planificación</span>',
+                    'inactive': '<span class="status-badge status-inactive">Inactiva</span>'
                 };
                 
                 html += `
@@ -1216,18 +1326,15 @@ async function loadRoutes() {
                         <td>${statusLabels[route.status] || route.status}</td>
                         <td>${route.participants_count || 0}</td>
                         <td>${route.spaces_established || 0}</td>
-                        <td class="actions">
-                            <button class="btn-edit" onclick="editRoute(${route.id})">✏️ Editar</button>
-                            <button class="btn-delete" onclick="deleteRoute(${route.id})">🗑️ Eliminar</button>
+                        <td>
+                            <button class="btn-edit" onclick="editRoute(${route.id})">Editar</button>
+                            <button class="btn-delete" onclick="deleteRoute(${route.id})">Eliminar</button>
                         </td>
                     </tr>
                 `;
             });
             
-            html += `
-                    </tbody>
-                </table>
-            `;
+            html += '</tbody></table></div>';
             
             routesList.innerHTML = html;
         } else {
@@ -1376,6 +1483,268 @@ async function deleteRoute(routeId) {
         alert('Error al eliminar la ruta');
     }
 }
+
+// ========== SPACES MANAGEMENT ==========
+
+async function loadSpaces() {
+    const spacesList = document.getElementById('spacesList');
+    spacesList.innerHTML = '<div class="loading">Cargando espacios...</div>';
+    
+    try {
+        const response = await fetch(`${API_BASE}/spaces?active=false&limit=100`, {
+            credentials: 'include'
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success || !result.data || result.data.length === 0) {
+            spacesList.innerHTML = '<p style="text-align: center; padding: 40px;">No hay espacios. Crea tu primer espacio.</p>';
+            return;
+        }
+        
+        let html = `
+            <div class="table-wrapper">
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>Contacto</th>
+                        <th>Instructores</th>
+                        <th>Disciplinas</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        result.data.forEach(space => {
+            const status = space.active ? 
+                '<span class="status-badge status-active">Activo</span>' : 
+                '<span class="status-badge status-inactive">Inactivo</span>';
+            
+            const instructorNames = space.instructors && space.instructors.length > 0
+                ? space.instructors.map(i => i.username).join(', ')
+                : '-';
+            
+            const disciplinesList = space.disciplines && space.disciplines.length > 0
+                ? space.disciplines.slice(0, 2).join(', ') + (space.disciplines.length > 2 ? '...' : '')
+                : '-';
+            
+            const contact = [];
+            if (space.phone) contact.push(`📱 ${space.phone}`);
+            if (space.email) contact.push(`✉️ ${space.email}`);
+            const contactInfo = contact.length > 0 ? contact.join('<br>') : '-';
+            
+            html += `
+                <tr>
+                    <td>${space.name}</td>
+                    <td>${space.address || '-'}</td>
+                    <td>${contactInfo}</td>
+                    <td>${instructorNames}</td>
+                    <td title="${space.disciplines ? space.disciplines.join(', ') : ''}">${disciplinesList}</td>
+                    <td>${status}</td>
+                    <td>
+                        <button class="btn-edit" onclick="editSpace(${space.id})">Editar</button>
+                        <button class="btn-delete" onclick="deleteSpace(${space.id}, '${space.name.replace(/'/g, "\\'")}')">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table></div>';
+        spacesList.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error loading spaces:', error);
+        spacesList.innerHTML = '<p style="text-align: center; padding: 40px; color: red;">Error al cargar espacios</p>';
+    }
+}
+
+function openSpaceModal(spaceId = null) {
+    // Populate instructor dropdown first
+    populateSpaceInstructorDropdown();
+    
+    document.getElementById('spaceModal').style.display = 'block';
+    document.getElementById('spaceModalTitle').textContent = spaceId ? 'Editar Espacio' : 'Nuevo Espacio';
+    
+    if (!spaceId) {
+        document.getElementById('spaceForm').reset();
+        document.getElementById('spaceId').value = '';
+        document.getElementById('spaceActive').checked = true;
+    }
+    
+    document.getElementById('spaceError').style.display = 'none';
+    document.getElementById('spaceSuccess').style.display = 'none';
+}
+
+function closeSpaceModal() {
+    document.getElementById('spaceModal').style.display = 'none';
+}
+
+function populateSpaceInstructorDropdown() {
+    const select = document.getElementById('spaceInstructors');
+    if (!select) return;
+    
+    select.innerHTML = '';
+    
+    if (instructorsCache.length === 0) {
+        select.innerHTML = '<option value="">No hay instructores disponibles</option>';
+        return;
+    }
+    
+    instructorsCache.forEach(instructor => {
+        const option = document.createElement('option');
+        option.value = instructor.id;
+        option.textContent = instructor.username;
+        select.appendChild(option);
+    });
+}
+
+async function editSpace(spaceId) {
+    try {
+        const response = await fetch(`${API_BASE}/spaces/${spaceId}`, {
+            credentials: 'include'
+        });
+        const result = await response.json();
+        const space = result.data;
+        
+        if (!space) {
+            alert('Espacio no encontrado');
+            return;
+        }
+        
+        document.getElementById('spaceId').value = space.id;
+        document.getElementById('spaceName').value = space.name;
+        document.getElementById('spaceImage').value = space.image || '';
+        document.getElementById('spaceAddress').value = space.address || '';
+        document.getElementById('spacePhone').value = space.phone || '';
+        document.getElementById('spaceEmail').value = space.email || '';
+        document.getElementById('spaceLocation').value = space.location || '';
+        document.getElementById('spaceActive').checked = space.active;
+        
+        // Set disciplines
+        if (space.disciplines && space.disciplines.length > 0) {
+            document.getElementById('spaceDisciplines').value = space.disciplines.join('\n');
+        } else {
+            document.getElementById('spaceDisciplines').value = '';
+        }
+        
+        // Set selected instructors
+        const instructorSelect = document.getElementById('spaceInstructors');
+        if (space.instructors && space.instructors.length > 0) {
+            const instructorIds = space.instructors.map(i => i.id.toString());
+            Array.from(instructorSelect.options).forEach(option => {
+                option.selected = instructorIds.includes(option.value);
+            });
+        }
+        
+        openSpaceModal(spaceId);
+    } catch (error) {
+        console.error('Error loading space:', error);
+        alert('Error al cargar el espacio');
+    }
+}
+
+async function deleteSpace(spaceId, name) {
+    if (!confirm(`¿Estás seguro de eliminar el espacio "${name}"?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/spaces/${spaceId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('Espacio eliminado exitosamente');
+            loadSpaces();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error deleting space:', error);
+        alert('Error al eliminar el espacio');
+    }
+}
+
+document.getElementById('spaceForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const spaceId = document.getElementById('spaceId').value;
+    const errorDiv = document.getElementById('spaceError');
+    const successDiv = document.getElementById('spaceSuccess');
+    
+    errorDiv.style.display = 'none';
+    successDiv.style.display = 'none';
+    
+    const name = document.getElementById('spaceName').value.trim();
+    
+    if (!name) {
+        errorDiv.textContent = 'El nombre del espacio es requerido';
+        errorDiv.style.display = 'block';
+        return;
+    }
+    
+    // Get selected instructors
+    const instructorSelect = document.getElementById('spaceInstructors');
+    const selectedInstructors = Array.from(instructorSelect.selectedOptions).map(opt => parseInt(opt.value));
+    
+    // Get disciplines as array (one per line)
+    const disciplinesText = document.getElementById('spaceDisciplines').value.trim();
+    const disciplines = disciplinesText
+        ? disciplinesText.split('\n').map(d => d.trim()).filter(d => d.length > 0)
+        : [];
+    
+    const data = {
+        name: name,
+        image: document.getElementById('spaceImage').value.trim() || null,
+        address: document.getElementById('spaceAddress').value.trim() || null,
+        phone: document.getElementById('spacePhone').value.trim() || null,
+        email: document.getElementById('spaceEmail').value.trim() || null,
+        location: document.getElementById('spaceLocation').value.trim() || null,
+        active: document.getElementById('spaceActive').checked,
+        instructor_ids: selectedInstructors,
+        disciplines: disciplines
+    };
+    
+    try {
+        const url = spaceId ? `${API_BASE}/spaces/${spaceId}` : `${API_BASE}/spaces`;
+        const method = spaceId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            successDiv.textContent = spaceId ? 'Espacio actualizado exitosamente' : 'Espacio creado exitosamente';
+            successDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                closeSpaceModal();
+                loadSpaces();
+            }, 1500);
+        } else {
+            errorDiv.textContent = 'Error: ' + result.message;
+            errorDiv.style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Error saving space:', error);
+        errorDiv.textContent = 'Error al guardar el espacio';
+        errorDiv.style.display = 'block';
+    }
+});
 
 // Close modals when clicking outside
 
