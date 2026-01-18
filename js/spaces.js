@@ -1,5 +1,9 @@
 // Spaces page functionality
-const API_URL = 'http://127.0.0.1:3000/api';
+const API_URL = window.location.hostname === 'camachoeng.github.io'
+    ? 'https://aciky-backend-298cb7d6b0a8.herokuapp.com/api'
+    : window.location.hostname === '192.168.1.70'
+    ? 'http://192.168.1.70:3000/api'
+    : 'http://127.0.0.1:3000/api';
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadSpaces();
