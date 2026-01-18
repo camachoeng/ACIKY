@@ -379,10 +379,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         <ul class="submenu">
                             <li><a href="${navPrefix}schedule.html">Clases</a></li>
                             <li><a href="${navPrefix}cards/goldenroutes.html">Rutas Doradas</a></li>
+                            <li><a href="${navPrefix}cards/spaces.html">Espacios</a></li>
                         </ul>
                     </li>
                     <li class="mobile-only"><a href="${navPrefix}schedule.html">Clases</a></li>
                     <li class="mobile-only"><a href="${navPrefix}cards/goldenroutes.html">Rutas Doradas</a></li>
+                    <li class="mobile-only"><a href="${navPrefix}cards/spaces.html">Espacios</a></li>
                     <li class="has-submenu desktop-only">
                         <a href="#">Galería</a>
                         <ul class="submenu">
