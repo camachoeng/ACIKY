@@ -2495,6 +2495,7 @@ footer {
     font-weight: bold;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    color: rgb(243, 200, 9)
 }
 
 .spaces-title {
@@ -2838,6 +2839,22 @@ footer {
         max-width: 300px;
     }
 }
+
+@media (max-width: 768px) {
+    .standard-hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .standard-subtitle {
+        font-size: 1.2rem;
+    }
+}
+
 /* --- End Spaces Page Styles --- */
 
 /* --- Modern Homepage Styles --- */
@@ -3431,14 +3448,6 @@ footer {
     width: 100%;
     margin: 0 auto;
     padding: 0 2rem;
-}
-
-.hero-section .hero-text h1 {
-    font-size: 2.5rem;
-    color: #6b9b6b;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    line-height: 1.2;
 }
 
 .description-card {
@@ -6132,7 +6141,7 @@ footer {
     font-weight: bold;
 }
 
-.hero-img {
+.hero-container .hero-img {
     width: 100%;
     height: 400px;
     object-fit: cover;
@@ -6444,7 +6453,7 @@ footer {
     padding: 0 2rem;
 }
 
-.hero-section .hero-text h1 {
+.hero-section .hero-content .hero-text h1 {
     font-size: 3.5rem;
     font-weight: 700;
     color: #2c5530;
