@@ -549,7 +549,7 @@
     width: 180px;
     min-width: 180px;
     max-width: 200px;
-    background: #fff;
+    background: linear-gradient(135deg, #f8fffe, #f0f8f4);
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     padding: 1.5rem 1rem 1rem;
@@ -687,7 +687,7 @@
     display: block;
     padding: 1em 1.5em;
     border-radius: 2px;
-    color: #b3d9b3;
+    color: #4d7a4d;
     background: linear-gradient(to bottom,  
         rgba(245, 250, 245, 0.8) 50%, 
         rgba(255, 255, 255, 0.85) 100%);
@@ -1691,22 +1691,22 @@ p {
 
 /* Button variations for specific contexts */
 .cta-actions .btn-secondary,
-.rebirthing-main .hero-section .btn-secondary,
-.goldenroutes-main .hero-section .btn-secondary,
-.onlinesadhana-main .hero-section .btn-secondary,
-.festival-main .hero-section .btn-secondary,
-.retreats-main .hero-section .btn-secondary {
+.hero-section .btn-secondary,
+.hero-section .btn-secondary,
+.hero-section .btn-secondary,
+.hero-section .btn-secondary,
+.hero-section .btn-secondary {
     background: transparent;
     color: #fff;
     border-color: #fff;
 }
 
 .cta-actions .btn-secondary:hover,
-.rebirthing-main .hero-section .btn-secondary:hover,
-.goldenroutes-main .hero-section .btn-secondary:hover,
-.onlinesadhana-main .hero-section .btn-secondary:hover,
-.festival-main .hero-section .btn-secondary:hover,
-.retreats-main .hero-section .btn-secondary:hover {
+.hero-section .btn-secondary:hover,
+.hero-section .btn-secondary:hover,
+.hero-section .btn-secondary:hover,
+.hero-section .btn-secondary:hover,
+.hero-section .btn-secondary:hover {
     background: #fff;
     color: #6b9b6b;
 }
@@ -2434,8 +2434,90 @@ footer {
 /* --- End Quiz Question and Button Styles --- */
 
 /* --- Spaces Page Styles --- */
-.spaces-main {
+/* ===== UNIFIED PAGE MAIN CLASS ===== */
+/* Base page-main class - replaces all individual -main classes */
+.page-main {
+    min-height: 100vh;
+}
+
+/* Modifier for pages with top padding */
+.page-main--padded {
     padding-top: 2rem;
+}
+
+/* Modifier for pages without top padding (full-width hero sections) */
+.page-main--no-padding {
+    padding-top: 0;
+}
+
+/* Legacy class names - kept for backward compatibility */
+.standard-main-padding {
+    padding-top: 2rem;
+}
+
+/* Standard Hero with Light Pulse - Used by spaces, festival, adipuja */
+.standard-hero-light {
+    height: 60vh;
+    background: linear-gradient(135deg, #2c5f4f 0%, #4d7a4d 50%, #6b9b6b 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    color: white;
+}
+
+.standard-hero-light::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: light-pulse 4s ease-in-out infinite;
+}
+
+/* Standard Hero Content Layout - Used by multiple pages */
+.standard-hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-section-img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+}
+
+.spaces-title {
+    position: relative;
+    color: white;
+    font-size: 3rem;
+    z-index: 1;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Standard Subtitle - Used by multiple pages */
+.standard-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+.spaces-highlight {
+    color: #f0f8f0;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 .community-space-section {
@@ -2724,10 +2806,6 @@ footer {
 }
 
 @media (max-width: 900px) {
-    .spaces-main {
-        padding-top: 1rem;
-    }
-    
     .community-space-section {
         padding: 1.5rem;
         margin-bottom: 2rem;
@@ -2765,7 +2843,7 @@ footer {
 
 /* --- Modern Homepage Styles --- */
 /* Hero Section */
-.hero-section {
+.promo-slider-section {
     background: linear-gradient(135deg, #f8fffe, #f0f8f4);
     padding: 4rem 0;
     margin-top: 2rem;
@@ -2897,76 +2975,7 @@ footer {
     width: 100%;
 }
 
-/* Enhanced Activity Cards - Card Layout */
-.activity-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 180px;
-    min-width: 180px;
-    max-width: 200px;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    padding: 1.5rem 1rem 1rem;
-    transition: all 0.3s ease;
-    flex: 0 0 auto;
-    scroll-snap-align: center;
-    border: 1px solid rgba(168, 213, 163, 0.1);
-}
-
-.activity-card:hover {
-    box-shadow: 0 8px 30px rgba(168, 213, 163, 0.15);
-    transform: translateY(-8px);
-}
-
-.activity-link {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.activity-img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin-bottom: 1rem;
-
-    background: #f9f9f6;
-    transition: all 0.3s ease;
-}
-
-.activity-card:hover .activity-img {
-    box-shadow: 0 8px 25px rgba(168, 213, 163, 0.2);
-
-    transform: scale(1.05);
-}
-
-.activity-info {
-    text-align: center;
-    width: 100%;
-}
-
-.activity-title {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #6b9b6b;
-    margin-bottom: 0.5rem;
-    line-height: 1.2;
-}
-
-.activity-description {
-    font-size: 0.9rem;
-    color: #666;
-    line-height: 1.4;
-    margin: 0;
-}
+/* Activity cards are defined globally above - no duplication needed */
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
@@ -3211,11 +3220,7 @@ footer {
 }
 
 /* Contact Section */
-.contact-section {
-    padding: 4rem 0;
-    background: #fff;
-}
-
+/* Contact Form Styles */
 .contact-container {
     max-width: 600px;
     margin: 0 auto;
@@ -3414,19 +3419,16 @@ footer {
 /* --- End Modern Homepage Styles --- */
 
 /* --- Modern About Page Styles --- */
-.about-main {
-    padding-top: 2rem;
-}
-
 /* About Hero Section */
-.about-hero {
+/* Standard Light Hero - Used by about, courses listing page */
+.standard-light-hero {
     background: linear-gradient(135deg, #f8fffe, #f0f8f4);
     padding: 4rem 0;
     border-radius: 30px;
     margin-bottom: 3rem;
 }
 
-.about-hero-content {
+.hero-section-content {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 3rem;
@@ -3448,7 +3450,7 @@ footer {
     box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 }
 
-.about-hero .hero-text h1 {
+.hero-section .hero-text h1 {
     font-size: 2.5rem;
     color: #6b9b6b;
     margin-bottom: 0.5rem;
@@ -3755,7 +3757,7 @@ footer {
 
 /* Responsive Design for About Page */
 @media (max-width: 900px) {
-    .about-hero-content {
+    .hero-section-content {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 2rem;
@@ -3829,10 +3831,6 @@ footer {
 /* --- End Modern About Page Styles --- */
 
 /* --- Modern Testimonials Page Styles --- */
-.testimonials-main {
-    padding-top: 2rem;
-}
-
 /* Testimonials Header */
 .testimonials-header {
     background: linear-gradient(135deg, #f8fffe, #f0f8f4);
@@ -3986,7 +3984,7 @@ footer {
     padding: 0 2rem;
 }
 
-.stat-item {
+.testimonials-stat-item {
     text-align: center;
     padding: 2rem;
     background: #fff;
@@ -3995,11 +3993,11 @@ footer {
     transition: transform 0.3s;
 }
 
-.stat-item:hover {
+.testimonials-stat-item:hover {
     transform: translateY(-5px);
 }
 
-.stat-number {
+.testimonials-stat-number {
     font-size: 3rem;
     font-weight: bold;
     color: #6b9b6b;
@@ -4010,7 +4008,7 @@ footer {
     background-clip: text;
 }
 
-.stat-label {
+.testimonials-stat-label {
     font-size: 1.1rem;
     color: #666;
     font-weight: 500;
@@ -4061,18 +4059,12 @@ footer {
         grid-template-columns: 1fr;
     }
     
-    .stat-number {
+    .testimonials-stat-number {
         font-size: 2.5rem;
     }
 }
 
 /* Contact Page Styles */
-.contact-main {
-    padding: 0;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9f5e6 100%);
-}
-
 .contact-header {
     background: linear-gradient(135deg, #6b9b6b, #b3d9b3);
     color: white;
@@ -4226,6 +4218,13 @@ footer {
     padding: 2rem;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     border: 1px solid rgba(168, 213, 163, 0.1);
+}
+
+.contact-card p {
+    color: #6b9b6b;
+    line-height: 1.6;
+    margin: 0.5rem 0;
+    text-align: center;
 }
 
 .main-contact h3 {
@@ -4628,13 +4627,8 @@ footer {
 }
 
 /* Course Page Styles */
-.course-main {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #f8fcf8 0%, #e8f5e8 100%);
-}
-
 /* Course Hero Section */
-.course-hero {
+.hero-section {
     padding: 6rem 0 4rem;
     background: linear-gradient(135deg, #6b9b6b, #b3d9b3);
     position: relative;
@@ -4642,7 +4636,7 @@ footer {
     width: 100%;
 }
 
-.course-hero-content {
+.hero-section-content {
     width: 100%;
     margin: 0 auto;
     display: grid;
@@ -4656,7 +4650,7 @@ footer {
     position: relative;
 }
 
-.course-hero-img {
+.hero-section-img {
     width: 100%;
     height: 400px;
     object-fit: cover;
@@ -4664,11 +4658,11 @@ footer {
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
-.course-hero .hero-text {
+.hero-section .hero-text {
     color: white;
 }
 
-.course-hero .hero-text h1 {
+.hero-section .hero-text h1 {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -4683,15 +4677,17 @@ footer {
     opacity: 0.9;
 }
 
-.course-location {
+/* Consolidated hero/course location class */
+.hero-location {
     font-size: 1.2rem;
     margin-bottom: 2rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    opacity: 0.9;
 }
 
-.course-badges {
+.hero-badges {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
@@ -5116,26 +5112,15 @@ footer {
     opacity: 0.95;
 }
 
-.contact-info {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.2);
-}
 
-.contact-info p {
-    color: white;
-    font-size: 1rem;
-    opacity: 0.9;
-    line-height: 1.6;
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .course-hero {
+    .hero-section {
         padding: 4rem 0 3rem;
     }
     
-    .course-hero-content {
+    .hero-section-content {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 2rem;
@@ -5151,12 +5136,12 @@ footer {
         font-size: 1.2rem;
     }
     
-    .course-location {
+    .hero-location {
         font-size: 1rem;
         justify-content: center;
     }
     
-    .course-badges {
+    .hero-badges {
         justify-content: center;
         gap: 0.5rem;
     }
@@ -5166,7 +5151,7 @@ footer {
         font-size: 0.8rem;
     }
     
-    .course-hero-img {
+    .hero-section-img {
         height: 250px;
     }
     
@@ -5349,7 +5334,7 @@ footer {
 
 /* Additional mobile improvements for very small screens */
 @media (max-width: 480px) {
-    .course-hero {
+    .hero-section {
         padding: 3rem 0 2rem;
     }
     
@@ -5361,7 +5346,7 @@ footer {
         font-size: 1rem;
     }
     
-    .course-badges {
+    .hero-badges {
         flex-direction: column;
         align-items: center;
     }
@@ -5372,7 +5357,7 @@ footer {
         text-align: center;
     }
     
-    .course-hero-img {
+    .hero-section-img {
         height: 200px;
     }
     
@@ -5410,7 +5395,7 @@ footer {
 
 /* Tablet specific improvements */
 @media (min-width: 769px) and (max-width: 1024px) {
-    .course-hero-content {
+    .hero-section-content {
         gap: 2rem;
         padding: 0 1.5rem;
     }
@@ -5456,14 +5441,16 @@ footer {
    WAHEGURU FESTIVAL PAGE STYLES
 ============================================= */
 
-.waheguru-main {
+/* Legacy class name - kept for backward compatibility */
+.standard-main-no-padding {
     padding-top: 0;
     font-family: 'Arial', sans-serif;
 }
 
 /* Hero Section */
-.waheguru-hero {
-    background: linear-gradient(135deg, #8B4513 0%, #CD853F 50%, #DEB887 100%);
+/* Standard Hero with Overlay - Used by waheguru, rebirthing, goldenroutes, onlinesadhana */
+.standard-hero-overlay {
+    background: linear-gradient(135deg, #2c5f4f 0%, #4d7a4d 50%, #6b9b6b 100%);
     padding: 4rem 2rem;
     color: white;
     min-height: 60vh;
@@ -5473,29 +5460,17 @@ footer {
     overflow: hidden;
 }
 
-.waheguru-hero::before {
+.standard-hero-overlay::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
     z-index: 1;
 }
 
-.waheguru-hero-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-}
-
-.waheguru-hero-img {
+.hero-section-img {
     width: 100%;
     height: auto;
     border-radius: 15px;
@@ -5514,20 +5489,7 @@ footer {
     background-clip: text;
 }
 
-.waheguru-subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    opacity: 0.9;
-    font-style: italic;
-}
-
-.waheguru-location {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.8;
-}
-
-.waheguru-badges {
+.hero-badges {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
@@ -5669,7 +5631,7 @@ footer {
     line-height: 1.6;
 }
 
-/* Benefits Section */
+/* Consolidated Benefits Section */
 .benefits-section {
     padding: 4rem 2rem;
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
@@ -5685,26 +5647,32 @@ footer {
 
 .benefit-card {
     background: white;
-    padding: 2rem;
+    padding: 2.5rem 1.5rem;
     border-radius: 15px;
+    text-align: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    border-left: 5px solid #FFD700;
+    transition: all 0.3s ease;
+    border-left: 5px solid #6b9b6b;
 }
 
 .benefit-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.benefit-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
 }
 
 .benefit-card h3 {
-    color: #8B4513;
+    color: #2d5a29;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
 
 .benefit-card p {
-    color: #6c757d;
+    color: #4d7a4d;
     line-height: 1.6;
 }
 
@@ -5792,63 +5760,15 @@ footer {
 }
 
 /* Contact Section */
-.contact-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
-    color: white;
-    text-align: center;
-}
-
-.contact-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.contact-info {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-}
-
-.contact-info h3 {
-    color: #FFD700;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.contact-details {
-    margin: 1.5rem 0;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
-.contact-icon {
-    font-size: 1.5rem;
-}
-
-.cta-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.festival-main .btn-primary {
+/* Festival Page Button Styles */
+.festival-contact .btn-primary {
     background: linear-gradient(45deg, #FFD700, #FFA500);
     color: #8B4513;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.festival-main .btn-primary:hover {
+.festival-contact .btn-primary:hover {
     box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
 }
 
@@ -5885,31 +5805,10 @@ footer {
     font-size: 1.1rem;
 }
 
-/* Section Headers for Waheguru Page */
-.waheguru-main .section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.waheguru-main .section-header h2 {
-    font-size: 2.5rem;
-    color: #8B4513;
-    margin-bottom: 1rem;
-    font-weight: bold;
-}
-
-.waheguru-main .section-header p {
-    font-size: 1.2rem;
-    color: #6c757d;
-    line-height: 1.6;
-}
 
 /* Responsive Design for Waheguru Page */
 @media (max-width: 768px) {
-    .waheguru-hero-content {
+    .hero-section.standard-hero-overlay .standard-hero-content {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 2rem;
@@ -5919,7 +5818,7 @@ footer {
         font-size: 2.5rem;
     }
     
-    .waheguru-subtitle {
+    .hero-section.standard-hero-overlay .standard-subtitle {
         font-size: 1.3rem;
     }
     
@@ -5955,46 +5854,8 @@ footer {
    REBIRTHING PAGE STYLES
 ============================================= */
 
-.rebirthing-main {
-    padding-top: 0;
-    font-family: 'Arial', sans-serif;
-}
-
 /* Hero Section */
-.rebirthing-hero {
-    background: linear-gradient(135deg, #6b9b6b 0%, #5a8f5a 50%, #4d7a4d 100%);
-    padding: 4rem 2rem;
-    color: white;
-    min-height: 60vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.rebirthing-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-}
-
-.rebirthing-hero-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-}
-
-.rebirthing-hero-img {
+.hero-section-img {
     width: 100%;
     height: auto;
     border-radius: 15px;
@@ -6002,43 +5863,30 @@ footer {
     object-fit: cover;
 }
 
-.rebirthing-hero .hero-text h1 {
+.hero-section.standard-hero-overlay .hero-text h1 {
     font-size: 3.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
 }
 
-.rebirthing-subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    opacity: 0.9;
-    font-style: italic;
-}
-
-.rebirthing-location {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.8;
-}
-
-.rebirthing-badges {
+.hero-badges {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
 }
 
-.rebirthing-badges .badge.primary {
+.hero-badges .badge.primary {
     background: linear-gradient(45deg, #b3d9b3, #7cb342);
     color: #2d5a29;
 }
 
-.rebirthing-badges .badge.secondary {
+.hero-badges .badge.secondary {
     background: rgba(255, 255, 255, 0.2);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.rebirthing-badges .badge.accent {
+.hero-badges .badge.accent {
     background: linear-gradient(45deg, #90c695, #a8d5a8);
     color: #2d5a29;
 }
@@ -6154,45 +6002,6 @@ footer {
     line-height: 1.6;
 }
 
-/* Benefits Section for Rebirthing */
-.rebirthing-main .benefits-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
-}
-
-.rebirthing-main .benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.rebirthing-main .benefit-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    border-left: 5px solid #6b9b6b;
-}
-
-.rebirthing-main .benefit-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.rebirthing-main .benefit-card h3 {
-    color: #2d5a29;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-}
-
-.rebirthing-main .benefit-card p {
-    color: #4d7a4d;
-    line-height: 1.6;
-}
-
 /* Events Section */
 .events-section {
     padding: 4rem 2rem;
@@ -6271,28 +6080,6 @@ footer {
     color: #718096;
 }
 
-/* Testimonials Section */
-.testimonials-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #6b9b6b 0%, #5a8f5a 100%);
-    color: white;
-}
-
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.testimonial-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
-}
 
 .testimonial-card:hover {
     transform: translateY(-5px);
@@ -6316,6 +6103,7 @@ footer {
     color: #b3d9b3;
 }
 
+/* Consolidated author location class */
 .author-location {
     opacity: 0.8;
     font-size: 0.9rem;
@@ -6366,60 +6154,8 @@ footer {
     line-height: 1.6;
 }
 
-/* Contact Section for Rebirthing */
-.rebirthing-main .contact-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #6b9b6b 0%, #5a8f5a 100%);
-    color: white;
-    text-align: center;
-}
-
-.rebirthing-main .contact-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.rebirthing-main .contact-info {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-}
-
-.rebirthing-main .contact-info h3 {
-    color: #b3d9b3;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.rebirthing-main .contact-details {
-    margin: 1.5rem 0;
-}
-
-.rebirthing-main .contact-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
-.rebirthing-main .contact-icon {
-    font-size: 1.5rem;
-}
-
-.rebirthing-main .btn-primary {
-    background: linear-gradient(45deg, #b3d9b3, #7cb342);
-    color: #2d5a29;
-}
-
-.rebirthing-main .btn-primary:hover {
-    box-shadow: 0 5px 15px rgba(107, 155, 107, 0.4);
-}
-
 /* Quote Section for Rebirthing */
-.rebirthing-main .quote-section {
+.quote-section {
     padding: 3rem 2rem;
     background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
     text-align: center;
@@ -6446,46 +6182,25 @@ footer {
     font-size: 1.1rem;
 }
 
-/* Section Headers for Rebirthing Page */
-.rebirthing-main .section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
 
-.rebirthing-main .section-header h2 {
-    font-size: 2.5rem;
-    color: #2d5a29;
-    margin-bottom: 1rem;
-    font-weight: bold;
-}
-
-.rebirthing-main .section-header p {
-    font-size: 1.2rem;
-    color: #4d7a4d;
-    line-height: 1.6;
-}
-
-.rebirthing-main .process-section .section-header h2,
-.rebirthing-main .process-section .section-header p {
+.process-section .section-header h2,
+.process-section .section-header p {
     color: white;
 }
 
 /* Responsive Design for Rebirthing Page */
 @media (max-width: 768px) {
-    .rebirthing-hero-content {
+    .hero-section.standard-hero-overlay .standard-hero-content {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 2rem;
     }
     
-    .rebirthing-hero .hero-text h1 {
+    .hero-section.standard-hero-overlay .hero-text h1 {
         font-size: 2.5rem;
     }
     
-    .rebirthing-subtitle {
+    .hero-section.standard-hero-overlay .standard-subtitle {
         font-size: 1.3rem;
     }
     
@@ -6512,13 +6227,13 @@ footer {
         grid-template-columns: 1fr;
     }
     
-    .rebirthing-main .cta-buttons {
+    .cta-buttons {
         flex-direction: column;
         align-items: center;
     }
     
-    .rebirthing-main .btn-primary,
-    .rebirthing-main .btn-secondary {
+    .btn-primary,
+    .btn-secondary {
         width: 100%;
         max-width: 300px;
     }
@@ -6528,46 +6243,8 @@ footer {
    GOLDEN ROUTES PAGE STYLES
 ============================================= */
 
-.goldenroutes-main {
-    padding-top: 0;
-    font-family: 'Arial', sans-serif;
-}
-
 /* Hero Section */
-.goldenroutes-hero {
-    background: linear-gradient(135deg, #2c5f4f 0%, #4d7a4d 50%, #6b9b6b 100%);
-    padding: 4rem 2rem;
-    color: white;
-    min-height: 60vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.goldenroutes-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.15);
-    z-index: 1;
-}
-
-.goldenroutes-hero-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-}
-
-.goldenroutes-hero-img {
+.hero-section-img {
     width: 100%;
     height: auto;
     border-radius: 15px;
@@ -6575,7 +6252,7 @@ footer {
     object-fit: cover;
 }
 
-.goldenroutes-hero .hero-text h1 {
+.hero-section.standard-hero-overlay .hero-text h1 {
     font-size: 3.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
@@ -6583,37 +6260,24 @@ footer {
     color: white;
 }
 
-.goldenroutes-subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: #e8f5e8;
-    font-style: italic;
-}
-
-.goldenroutes-location {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    color: #f0f8f0;
-}
-
-.goldenroutes-badges {
+.hero-badges {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
 }
 
-.goldenroutes-badges .badge.primary {
+.hero-badges .badge.primary {
     background: linear-gradient(45deg, #6b9b6b, #8fb38f);
     color: white;
 }
 
-.goldenroutes-badges .badge.secondary {
+.hero-badges .badge.secondary {
     background: rgba(255, 255, 255, 0.2);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.goldenroutes-badges .badge.accent {
+.hero-badges .badge.accent {
     background: linear-gradient(45deg, #4d7a4d, #6b9b6b);
     color: white;
 }
@@ -6743,14 +6407,14 @@ footer {
     text-align: center;
 }
 
-.stat-number {
+.routes-stat-number {
     display: block;
     font-size: 2rem;
     font-weight: bold;
     color: #2c5f4f;
 }
 
-.stat-label {
+.routes-stat-label {
     display: block;
     font-size: 0.9rem;
     color: #5D6D7E;
@@ -6776,25 +6440,20 @@ footer {
 }
 
 /* Process Timeline Section */
-.goldenroutes-main .process-section {
+.process-section {
     padding: 4rem 2rem;
     background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
     color: white;
 }
 
-.goldenroutes-main .process-section .section-header h2,
-.goldenroutes-main .process-section .section-header p {
-    color: white;
-}
-
-.goldenroutes-main .process-timeline {
+.process-timeline {
     max-width: 1000px;
     margin: 0 auto;
     display: grid;
     gap: 2rem;
 }
 
-.goldenroutes-main .process-timeline .timeline-item {
+.process-timeline .timeline-item {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 2rem;
@@ -6805,7 +6464,7 @@ footer {
     backdrop-filter: blur(10px);
 }
 
-.goldenroutes-main .process-timeline .timeline-icon {
+.process-timeline .timeline-icon {
     font-size: 3rem;
     background: rgba(107, 155, 107, 0.2);
     width: 80px;
@@ -6817,13 +6476,13 @@ footer {
     border: 3px solid #6b9b6b;
 }
 
-.goldenroutes-main .process-timeline .timeline-content h3 {
+.process-timeline .timeline-content h3 {
     color: #b3d9b3;
     margin-bottom: 0.5rem;
     font-size: 1.4rem;
 }
 
-.goldenroutes-main .process-timeline .timeline-content p {
+.process-timeline .timeline-content p {
     opacity: 0.9;
     line-height: 1.6;
 }
@@ -6973,6 +6632,11 @@ footer {
     color: white;
 }
 
+.impact-section .section-header h2,
+.impact-section .section-header p {
+    color: white;
+}
+
 .impact-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -7015,62 +6679,8 @@ footer {
     line-height: 1.6;
 }
 
-/* Testimonials Section for Golden Routes */
-.goldenroutes-main .testimonials-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
-    color: white;
-}
 
-.goldenroutes-main .testimonials-section .section-header h2,
-.goldenroutes-main .testimonials-section .section-header p {
-    color: white;
-}
 
-.goldenroutes-main .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.goldenroutes-main .testimonial-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
-}
-
-.goldenroutes-main .testimonial-card:hover {
-    transform: translateY(-5px);
-}
-
-.goldenroutes-main .testimonial-content p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-    font-style: italic;
-    color: white;
-}
-
-.goldenroutes-main .testimonial-author {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-}
-
-.goldenroutes-main .author-name {
-    font-weight: bold;
-    color: #b3d9b3;
-}
-
-.goldenroutes-main .author-location {
-    opacity: 0.8;
-    font-size: 0.9rem;
-    color: white;
-}
 
 /* Involvement Section */
 .involvement-section {
@@ -7182,60 +6792,8 @@ footer {
     line-height: 1.6;
 }
 
-/* Contact Section for Golden Routes */
-.goldenroutes-main .contact-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
-    color: white;
-    text-align: center;
-}
-
-.goldenroutes-main .contact-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.goldenroutes-main .contact-info {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-}
-
-.goldenroutes-main .contact-info h3 {
-    color: #b3d9b3;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.goldenroutes-main .contact-details {
-    margin: 1.5rem 0;
-}
-
-.goldenroutes-main .contact-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
-.goldenroutes-main .contact-icon {
-    font-size: 1.5rem;
-}
-
-.goldenroutes-main .btn-primary {
-    background: linear-gradient(45deg, #6b9b6b, #8fb38f);
-    color: white;
-}
-
-.goldenroutes-main .btn-primary:hover {
-    box-shadow: 0 5px 15px rgba(107, 155, 107, 0.4);
-}
-
 /* Quote Section for Golden Routes */
-.goldenroutes-main .quote-section {
+.quote-section {
     padding: 3rem 2rem;
     background: linear-gradient(135deg, #fdfefe 0%, #f8f9fa 100%);
     text-align: center;
@@ -7262,52 +6820,31 @@ footer {
     font-size: 1.1rem;
 }
 
-/* Section Headers for Golden Routes Page */
-.goldenroutes-main .section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.goldenroutes-main .section-header h2 {
-    font-size: 2.5rem;
-    color: #2C3E50;
-    margin-bottom: 1rem;
-    font-weight: bold;
-}
-
-.goldenroutes-main .section-header p {
-    font-size: 1.2rem;
-    color: #5D6D7E;
-    line-height: 1.6;
-}
 
 /* Responsive Design for Golden Routes Page */
 @media (max-width: 768px) {
-    .goldenroutes-hero-content {
+    .hero-section.standard-hero-overlay .standard-hero-content {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 2rem;
     }
     
-    .goldenroutes-hero .hero-text h1 {
+    .hero-section.standard-hero-overlay .hero-text h1 {
         font-size: 2.5rem;
     }
     
-    .goldenroutes-subtitle {
+    .hero-section.standard-hero-overlay .standard-subtitle {
         font-size: 1.3rem;
     }
     
-    .goldenroutes-main .process-timeline .timeline-item,
+    .process-timeline .timeline-item,
     .center-stats {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 1rem;
     }
     
-    .goldenroutes-main .process-timeline .timeline-icon {
+    .process-timeline .timeline-icon {
         margin: 0 auto;
     }
     
@@ -7326,13 +6863,13 @@ footer {
         grid-template-columns: 1fr;
     }
     
-    .goldenroutes-main .cta-buttons {
+    .cta-buttons {
         flex-direction: column;
         align-items: center;
     }
     
-    .goldenroutes-main .btn-primary,
-    .goldenroutes-main .btn-secondary {
+    .btn-primary,
+    .btn-secondary {
         width: 100%;
         max-width: 300px;
     }
@@ -7342,46 +6879,8 @@ footer {
    ONLINE SADHANA PAGE STYLES
 ============================================= */
 
-.onlinesadhana-main {
-    padding-top: 0;
-    font-family: 'Arial', sans-serif;
-}
-
 /* Hero Section */
-.onlinesadhana-hero {
-    background: linear-gradient(135deg, #2c5f4f 0%, #4d7a4d 50%, #6b9b6b 100%);
-    padding: 4rem 2rem;
-    color: white;
-    min-height: 60vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.onlinesadhana-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1;
-}
-
-.onlinesadhana-hero-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-}
-
-.onlinesadhana-hero-img {
+.hero-section-img {
     width: 100%;
     height: auto;
     border-radius: 15px;
@@ -7389,43 +6888,30 @@ footer {
     object-fit: cover;
 }
 
-.onlinesadhana-hero .hero-text h1 {
+.hero-section.standard-hero-overlay .hero-text h1 {
     font-size: 3.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
 }
 
-.onlinesadhana-subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    opacity: 0.9;
-    font-style: italic;
-}
-
-.onlinesadhana-location {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.8;
-}
-
-.onlinesadhana-badges {
+.hero-badges {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
 }
 
-.onlinesadhana-badges .badge.primary {
+.hero-badges .badge.primary {
     background: linear-gradient(45deg, #6b9b6b, #8fb38f);
     color: white;
 }
 
-.onlinesadhana-badges .badge.secondary {
+.hero-badges .badge.secondary {
     background: rgba(255, 255, 255, 0.2);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.onlinesadhana-badges .badge.accent {
+.hero-badges .badge.accent {
     background: linear-gradient(45deg, #4d7a4d, #6b9b6b);
     color: white;
 }
@@ -7494,45 +6980,6 @@ footer {
     line-height: 1.6;
 }
 
-/* Benefits Section for Online Sadhana */
-.onlinesadhana-main .benefits-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #e8f5e8 0%, #d4e7d4 100%);
-}
-
-.onlinesadhana-main .benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.onlinesadhana-main .benefit-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    border-left: 5px solid #6b9b6b;
-}
-
-.onlinesadhana-main .benefit-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.onlinesadhana-main .benefit-card h3 {
-    color: #2c5f4f;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-}
-
-.onlinesadhana-main .benefit-card p {
-    color: #4d7a4d;
-    line-height: 1.6;
-}
-
 /* Join Steps Section */
 .join-section {
     padding: 4rem 2rem;
@@ -7575,17 +7022,19 @@ footer {
     align-items: center;
     justify-content: center;
     border: 3px solid #6b9b6b;
+    flex-shrink: 0;
 }
 
 .step-content h3 {
-    color: #2c5f4f;
+    color: #6b9b6b;
     margin-bottom: 0.5rem;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
 }
 
 .step-content p {
     color: #4d7a4d;
     line-height: 1.6;
+    margin: 0;
 }
 
 /* Technology Section */
@@ -7595,8 +7044,8 @@ footer {
     color: white;
 }
 
-.onlinesadhana-main .tech-section .section-header h2,
-.onlinesadhana-main .tech-section .section-header p {
+.tech-section .section-header h2,
+.tech-section .section-header p {
     color: white;
 }
 
@@ -7645,8 +7094,8 @@ footer {
     color: white;
 }
 
-.onlinesadhana-main .stories-section .section-header h2,
-.onlinesadhana-main .stories-section .section-header p {
+.stories-section .section-header h2,
+.stories-section .section-header p {
     color: white;
 }
 
@@ -7688,11 +7137,6 @@ footer {
     color: #b3d9b3;
 }
 
-.story-author .author-location {
-    opacity: 0.8;
-    font-size: 0.9rem;
-}
-
 /* Tips Section */
 .tips-section {
     padding: 4rem 2rem;
@@ -7731,60 +7175,8 @@ footer {
     line-height: 1.6;
 }
 
-/* Contact Section for Online Sadhana */
-.onlinesadhana-main .contact-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #2c5f4f 0%, #1f4539 100%);
-    color: white;
-    text-align: center;
-}
-
-.onlinesadhana-main .contact-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.onlinesadhana-main .contact-info {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-}
-
-.onlinesadhana-main .contact-info h3 {
-    color: #b3d9b3;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.onlinesadhana-main .contact-details {
-    margin: 1.5rem 0;
-}
-
-.onlinesadhana-main .contact-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
-.onlinesadhana-main .contact-icon {
-    font-size: 1.5rem;
-}
-
-.onlinesadhana-main .btn-primary {
-    background: linear-gradient(45deg, #6b9b6b, #8fb38f);
-    color: white;
-}
-
-.onlinesadhana-main .btn-primary:hover {
-    box-shadow: 0 5px 15px rgba(107, 155, 107, 0.4);
-}
-
 /* Quote Section for Online Sadhana */
-.onlinesadhana-main .quote-section {
+.quote-section {
     padding: 3rem 2rem;
     background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);
     text-align: center;
@@ -7811,41 +7203,20 @@ footer {
     font-size: 1.1rem;
 }
 
-/* Section Headers for Online Sadhana Page */
-.onlinesadhana-main .section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.onlinesadhana-main .section-header h2 {
-    font-size: 2.5rem;
-    color: #2c5f4f;
-    margin-bottom: 1rem;
-    font-weight: bold;
-}
-
-.onlinesadhana-main .section-header p {
-    font-size: 1.2rem;
-    color: #4d7a4d;
-    line-height: 1.6;
-}
 
 /* Responsive Design for Online Sadhana Page */
 @media (max-width: 768px) {
-    .onlinesadhana-hero-content {
+    .hero-section.standard-hero-overlay .standard-hero-content {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 2rem;
     }
     
-    .onlinesadhana-hero .hero-text h1 {
+    .hero-section.standard-hero-overlay .hero-text h1 {
         font-size: 2.5rem;
     }
     
-    .onlinesadhana-subtitle {
+    .hero-section.standard-hero-overlay .standard-subtitle {
         font-size: 1.3rem;
     }
     
@@ -7871,83 +7242,24 @@ footer {
         grid-template-columns: 1fr;
     }
     
-    .onlinesadhana-main .cta-buttons {
+    .cta-buttons {
         flex-direction: column;
         align-items: center;
     }
     
-    .onlinesadhana-main .btn-primary,
-    .onlinesadhana-main .btn-secondary {
+    .btn-primary,
+    .btn-secondary {
         width: 100%;
         max-width: 300px;
     }
 }
 
 /* ========== FESTIVAL PAGE STYLES ========== */
-.festival-bg {
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-    min-height: 100vh;
-}
 
-.festival-hero {
-    height: 60vh;
-    background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd23f);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    text-align: center;
-    overflow: hidden;
-}
-
-.festival-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="light-rays" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10,0 L12,8 L10,16 L8,8 Z" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23light-rays)"/></svg>');
-    animation: light-pulse 4s ease-in-out infinite;
-}
 
 @keyframes light-pulse {
     0%, 100% { opacity: 0.3; }
     50% { opacity: 0.7; }
-}
-
-.festival-title {
-    font-size: 4rem;
-    font-weight: 700;
-    color: white;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-    margin-bottom: 1rem;
-    position: relative;
-    z-index: 2;
-}
-
-.festival-subtitle {
-    font-size: 1.5rem;
-    color: rgba(255,255,255,0.9);
-    margin-bottom: 2rem;
-    position: relative;
-    z-index: 2;
-}
-
-.festival-highlight {
-    background: rgba(255,255,255,0.2);
-    backdrop-filter: blur(10px);
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    border: 2px solid rgba(255,255,255,0.3);
-    position: relative;
-    z-index: 2;
-}
-
-.highlight-text {
-    color: white;
-    font-weight: 600;
-    font-size: 1.1rem;
 }
 
 .festival-overview {
@@ -7989,12 +7301,11 @@ footer {
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    background: linear-gradient(135deg, #4d7a4d, #6b9b6b);
     padding: 2rem 1.5rem;
     border-radius: 15px;
     text-align: center;
     color: white;
-    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
     transform: translateY(0);
     transition: transform 0.3s ease;
 }
@@ -8003,13 +7314,13 @@ footer {
     transform: translateY(-5px);
 }
 
-.stat-number {
+.festival-stat-number {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
 }
 
-.stat-label {
+.festival-stat-label {
     font-size: 1rem;
     opacity: 0.9;
     font-weight: 500;
@@ -8034,7 +7345,7 @@ footer {
 }
 
 .day-header {
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    background: linear-gradient(135deg, #2c5f4f, #6b9b6b);
     color: white;
     padding: 2rem;
     text-align: center;
@@ -8068,7 +7379,7 @@ footer {
 }
 
 .time {
-    background: linear-gradient(135deg, #ffd23f, #ff6b35);
+    background: linear-gradient(135deg, #2c5f4f, #6b9b6b);
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 25px;
@@ -8132,7 +7443,7 @@ footer {
 
 .festival-registration {
     padding: 5rem 0;
-    background: linear-gradient(135deg, #2c3e50, #34495e);
+    background: linear-gradient(135deg, #2c5f4f, #6b9b6b);
     color: white;
 }
 
@@ -8242,7 +7553,7 @@ footer {
 
 .festival-contact {
     padding: 5rem 0;
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    background: linear-gradient(135deg, #2c5f4f, #6b9b6b);
     color: white;
     text-align: center;
 }
@@ -8283,13 +7594,6 @@ footer {
 
 /* Festival Responsive Design */
 @media (max-width: 768px) {
-    .festival-title {
-        font-size: 2.5rem;
-    }
-
-    .festival-subtitle {
-        font-size: 1.2rem;
-    }
 
     .overview-grid {
         grid-template-columns: 1fr;
@@ -8304,7 +7608,7 @@ footer {
         padding: 1.5rem 1rem;
     }
 
-    .stat-number {
+    .festival-stat-number {
         font-size: 2.5rem;
     }
 
@@ -8331,13 +7635,8 @@ footer {
 
 /* ===== RETREATS PAGE STYLES ===== */
 
-.retreats-main {
-    background: #f8f9fa;
-    min-height: 100vh;
-}
-
 /* Hero Section */
-.retreats-hero {
+.hero-section {
     background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
     color: white;
     padding: 6rem 2rem 4rem;
@@ -8345,7 +7644,7 @@ footer {
     overflow: hidden;
 }
 
-.retreats-hero::before {
+.hero-section::before {
     content: '';
     position: absolute;
     top: 0;
@@ -8356,7 +7655,7 @@ footer {
     z-index: 1;
 }
 
-.retreats-hero-content {
+.hero-section-content {
     position: relative;
     z-index: 2;
     max-width: 1200px;
@@ -8374,14 +7673,14 @@ footer {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
-.retreats-hero-img {
+.hero-section-img {
     width: 100%;
     height: 400px;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
 
-.hero-image:hover .retreats-hero-img {
+.hero-image:hover .hero-section-img {
     transform: scale(1.05);
 }
 
@@ -8396,20 +7695,7 @@ footer {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.retreats-subtitle {
-    font-size: 1.8rem;
-    color: #E8F5E8;
-    margin-bottom: 2rem;
-    font-weight: 300;
-}
-
-.retreats-location {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-}
-
-.retreats-badges {
+.hero-badges {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
@@ -8619,7 +7905,7 @@ footer {
     line-height: 1.6;
 }
 
-/* Testimonials Section */
+/* Testimonials Section - Card Pages */
 .testimonials-section {
     padding: 6rem 2rem;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -8666,11 +7952,6 @@ footer {
 .author-name {
     font-weight: bold;
     color: #2E7D32;
-}
-
-.author-location {
-    color: #888;
-    font-size: 0.9rem;
 }
 
 /* Participation Section */
@@ -8722,7 +8003,7 @@ footer {
 /* Contact Section */
 .contact-section {
     padding: 6rem 2rem;
-    background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+    background: linear-gradient(135deg, #6b9b6b, #5a8f5a);
     color: white;
 }
 
@@ -8784,7 +8065,8 @@ footer {
     flex-wrap: wrap;
 }
 
-.retreats-main .btn-primary {
+/* Retreats Page CTA Button Styles */
+.cta-buttons .btn-primary {
     background: #FF6B6B;
     color: white;
     border: 2px solid #FF6B6B;
@@ -8793,7 +8075,7 @@ footer {
     letter-spacing: 0.5px;
 }
 
-.retreats-main .btn-primary:hover {
+.cta-buttons .btn-primary:hover {
     background: transparent;
     box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
 }
@@ -8846,7 +8128,7 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .retreats-hero-content {
+    .hero-section-content {
         grid-template-columns: 1fr;
         gap: 2rem;
         text-align: center;
@@ -8854,10 +8136,6 @@ footer {
     
     .hero-text h1 {
         font-size: 2.5rem;
-    }
-    
-    .retreats-subtitle {
-        font-size: 1.4rem;
     }
     
     .retreats-grid {
@@ -8903,24 +8181,7 @@ footer {
 
 /* === ADI PUJA PAGE STYLES === */
 
-/* Background */
-.adipuja-bg {
-    background: 
-        linear-gradient(rgba(255, 248, 220, 0.95), rgba(250, 240, 210, 0.95)),
-        url('../images/activities/adi puja.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
 /* Hero Section */
-.adipuja-hero {
-    padding: 4rem 0;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
-    margin-top: 2rem;
-}
-
 .hero-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -8967,19 +8228,13 @@ footer {
 }
 
 /* Main Content */
-.adipuja-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
 .content-container {
     margin: 4rem 0;
 }
 
 .content-container h2 {
     font-size: 2.5rem;
-    color: #8b4513;
+    color: darkgreen;
     text-align: center;
     margin-bottom: 2rem;
     position: relative;
@@ -8993,7 +8248,7 @@ footer {
     transform: translateX(-50%);
     width: 80px;
     height: 3px;
-    background: linear-gradient(90deg, #d4af37, #ffd700);
+    background: linear-gradient(135deg, #6b9b6b, #b3d9b3);
 }
 
 /* About Section */
@@ -9021,7 +8276,7 @@ footer {
 }
 
 .highlight-box h3 {
-    color: #8b4513;
+    color: darkgreen;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
@@ -9060,7 +8315,7 @@ footer {
 
 /* Schedule Section */
 .adipuja-schedule {
-    background: linear-gradient(135deg, #faf0e6, #f5f5dc);
+    background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);
     padding: 4rem 2rem;
     border-radius: 20px;
     margin: 4rem 0;
@@ -9078,7 +8333,7 @@ footer {
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    border-top: 4px solid #d4af37;
+    border-top: 4px solid #6b9b6b;
     transition: transform 0.3s ease;
 }
 
@@ -9090,7 +8345,7 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(135deg, #d4af37, #ffd700);
+    background: linear-gradient(135deg, #6b9b6b, #b3d9b3);
     color: white;
     padding: 1rem;
     border-radius: 10px;
@@ -9119,7 +8374,7 @@ footer {
 }
 
 .schedule-details h3 {
-    color: #8b4513;
+    color: #6b9b6b;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
@@ -9130,44 +8385,12 @@ footer {
     line-height: 1.6;
 }
 
-/* Benefits Section */
+/* Benefits Section - using consolidated .benefit-card from line 5641 */
 .benefits-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
-}
-
-.benefit-card {
-    background: white;
-    padding: 2.5rem 1.5rem;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.benefit-card:hover {
-    transform: translateY(-10px);
-    border-color: #d4af37;
-    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
-}
-
-.benefit-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.benefit-card h3 {
-    color: #8b4513;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-}
-
-.benefit-card p {
-    color: #5d4e37;
-    line-height: 1.6;
 }
 
 /* Participation Steps */
@@ -9190,57 +8413,16 @@ footer {
     gap: 1.5rem;
 }
 
-.step-number {
-    background: linear-gradient(135deg, #d4af37, #ffd700);
-    color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-    flex-shrink: 0;
-}
+/* Step number styles - using consolidated definition from line 7006 */
 
-.step-content h3 {
-    color: #8b4513;
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-}
-
-.step-content p {
-    color: #5d4e37;
-    line-height: 1.6;
-    margin: 0;
-}
+/* Step content styles - using consolidated definitions from line 7020 */
 
 /* Contact Section */
 .adipuja-contact {
     margin: 4rem 0;
 }
 
-.contact-card {
-    background: linear-gradient(135deg, #fff8dc, #faf0e6);
-    padding: 3rem;
-    border-radius: 20px;
-    text-align: center;
-    border: 2px solid #d4af37;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.contact-card h2 {
-    color: #8b4513;
-    margin-bottom: 1rem;
-}
-
-.contact-card p {
-    color: #5d4e37;
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-}
+/* Contact card styles - using consolidated definition from line 4215 */
 
 .contact-actions {
     display: flex;
@@ -9336,20 +8518,9 @@ footer {
    COURSES PAGE STYLES
 ============================================ */
 
-.courses-main {
-    padding-top: 2rem;
-}
-
 /* Courses Hero Section */
-.courses-hero {
-    background: linear-gradient(135deg, #f8fffe 0%, #e8f5f0 50%, #d4f1e5 100%);
-    padding: 4rem 0;
-    border-radius: 30px;
-    margin-bottom: 3rem;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-}
 
-.courses-hero .hero-content {
+.hero-section .hero-content {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 4rem;
@@ -9359,7 +8530,7 @@ footer {
     padding: 0 2rem;
 }
 
-.courses-hero .hero-text h1 {
+.hero-section .hero-text h1 {
     font-size: 3.5rem;
     font-weight: 700;
     color: #2c5530;
@@ -9367,21 +8538,21 @@ footer {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
-.courses-hero .hero-subtitle {
+.hero-section .hero-subtitle {
     font-size: 1.4rem;
     color: #4a7c59;
     font-weight: 600;
     margin-bottom: 1.5rem;
 }
 
-.courses-hero .hero-description {
+.hero-section .hero-description {
     font-size: 1.1rem;
     line-height: 1.7;
     color: #5a7063;
     max-width: 600px;
 }
 
-.courses-hero .hero-image {
+.hero-section .hero-image {
     width: 350px;
     height: 300px;
     border-radius: 20px;
@@ -9391,11 +8562,11 @@ footer {
     transition: transform 0.3s ease;
 }
 
-.courses-hero .hero-image:hover {
+.hero-section .hero-image:hover {
     transform: rotate(0deg) scale(1.05);
 }
 
-.courses-hero .hero-image img {
+.hero-section .hero-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -9497,7 +8668,7 @@ footer {
     gap: 2rem;
 }
 
-.stat-item {
+.training-stat-item {
     text-align: center;
     padding: 2rem;
     background: rgba(255,255,255,0.1);
@@ -9507,18 +8678,18 @@ footer {
     transition: transform 0.3s ease;
 }
 
-.stat-item:hover {
+.training-stat-item:hover {
     transform: translateY(-5px);
 }
 
-.stat-number {
+.training-stat-number {
     font-size: 3rem;
     font-weight: 700;
     color: #f0f8f4;
     display: block;
 }
 
-.stat-label {
+.training-stat-label {
     font-size: 0.9rem;
     opacity: 0.9;
     font-weight: 500;
@@ -9814,24 +8985,19 @@ footer {
     flex-wrap: wrap;
 }
 
-.contact-info {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
 /* Responsive Design for Courses */
 @media (max-width: 768px) {
-    .courses-hero .hero-content {
+    .hero-section .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 2rem;
     }
     
-    .courses-hero .hero-text h1 {
+    .hero-section .hero-text h1 {
         font-size: 2.5rem;
     }
     
-    .courses-hero .hero-image {
+    .hero-section .hero-image {
         width: 280px;
         margin: 0 auto;
     }
@@ -10053,7 +9219,7 @@ footer {
     box-shadow: 0 6px 18px rgba(0,0,0,0.04);
 }
 
-.stat-item {
+.dashboard-stat-item {
     margin-bottom: 12px;
 }
 
@@ -10384,4 +9550,16 @@ html {
 }
 
 /* --- End Testimonial Form Styles --- */
+
+
+
+
+
+
+
+
+
+
+
+
 

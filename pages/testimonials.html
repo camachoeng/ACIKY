@@ -8,7 +8,7 @@
     <link rel="icon" href="../images/black.png" type="image/x-icon">
 </head>
 <body>
-    <main class="testimonials-main">
+    <main class="page-main page-main--padded">
         <!-- Header Section -->
         <section class="testimonials-header">
             <div class="section-header">
@@ -83,21 +83,21 @@
         <!-- Community Stats -->
         <section class="community-stats">
             <div class="stats-grid" id="communityStats">
-                <div class="stat-item">
-                    <div class="stat-number">-</div>
-                    <div class="stat-label">Estudiantes Activos</div>
+                <div class="testimonials-stat-item">
+                    <div class="testimonials-stat-number">500+</div>
+                    <div class="testimonials-stat-label">Estudiantes</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">-</div>
-                    <div class="stat-label">Instructores Certificados</div>
+                <div class="testimonials-stat-item">
+                    <div class="testimonials-stat-number">15</div>
+                    <div class="testimonials-stat-label">Instructores</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">-</div>
-                    <div class="stat-label">Espacios de Práctica</div>
+                <div class="testimonials-stat-item">
+                    <div class="testimonials-stat-number">8</div>
+                    <div class="testimonials-stat-label">Espacios</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">-</div>
-                    <div class="stat-label">Clases Realizadas</div>
+                <div class="testimonials-stat-item">
+                    <div class="testimonials-stat-number">1000+</div>
+                    <div class="testimonials-stat-label">Clases Realizadas</div>
                 </div>
             </div>
         </section>
@@ -272,21 +272,21 @@
                     const statsGrid = document.getElementById('communityStats');
                     
                     statsGrid.innerHTML = `
-                        <div class="stat-item">
-                            <div class="stat-number">${stats.students}+</div>
-                            <div class="stat-label">Estudiantes Activos</div>
+                        <div class="testimonials-stat-item">
+                            <div class="testimonials-stat-number">${stats.students}+</div>
+                            <div class="testimonials-stat-label">Estudiantes Activos</div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">${stats.instructors}+</div>
-                            <div class="stat-label">Instructores Certificados</div>
+                        <div class="testimonials-stat-item">
+                            <div class="testimonials-stat-number">${stats.instructors}+</div>
+                            <div class="testimonials-stat-label">Instructores Certificados</div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">${stats.spaces}</div>
-                            <div class="stat-label">Espacios de Práctica</div>
+                        <div class="testimonials-stat-item">
+                            <div class="testimonials-stat-number">${stats.spaces}</div>
+                            <div class="testimonials-stat-label">Espacios de Práctica</div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">${stats.classes}+</div>
-                            <div class="stat-label">Clases Realizadas</div>
+                        <div class="testimonials-stat-item">
+                            <div class="testimonials-stat-number">${stats.classes}+</div>
+                            <div class="testimonials-stat-label">Clases Realizadas</div>
                         </div>
                     `;
                 }

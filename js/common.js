@@ -380,11 +380,19 @@ document.addEventListener('DOMContentLoaded', function() {
                             <li><a href="${navPrefix}schedule.html">Clases</a></li>
                             <li><a href="${navPrefix}cards/goldenroutes.html">Rutas Doradas</a></li>
                             <li><a href="${navPrefix}cards/spaces.html">Espacios</a></li>
+                            <li><a href="${navPrefix}cards/rebirthing.html">Renacimientos</a></li>
+                            <li><a href="${navPrefix}cards/onlinesadhana.html">Sadhana Online</a></li>
+                            <li><a href="${navPrefix}cards/festival.html">Festival</a></li>
+                            <li><a href="${navPrefix}cards/adipuja.html">Adi Puja</a></li>
                         </ul>
                     </li>
                     <li class="mobile-only"><a href="${navPrefix}schedule.html">Clases</a></li>
                     <li class="mobile-only"><a href="${navPrefix}cards/goldenroutes.html">Rutas Doradas</a></li>
                     <li class="mobile-only"><a href="${navPrefix}cards/spaces.html">Espacios</a></li>
+                    <li class="mobile-only"><a href="${navPrefix}cards/rebirthing.html">Renacimientos</a></li>
+                    <li class="mobile-only"><a href="${navPrefix}cards/onlinesadhana.html">Sadhana Online</a></li>
+                    <li class="mobile-only"><a href="${navPrefix}cards/festival.html">Festival</a></li>
+                    <li class="mobile-only"><a href="${navPrefix}cards/adipuja.html">Adi Puja</a></li>
                     <li class="has-submenu desktop-only">
                         <a href="#">Galería</a>
                         <ul class="submenu">
